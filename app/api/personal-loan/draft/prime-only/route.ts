@@ -31,12 +31,12 @@ export async function POST(request: Request) {
 
   if (!parseResult.success) {
     console.error('Request body validation failed:', parseResult.error)
-    return NextResponse.json(
-      {
-        message: 'Invalid request body',
+    return new Response(JSON.stringify('An error occured while parsing'), {
+      status: 400,
+      headers: {
+        'Content-Type': 'application/json',
       },
-      { status: 400 }
-    )
+    })
   }
 
   // Now we have fully type-safe data
@@ -378,19 +378,12 @@ export async function POST(request: Request) {
     !primeContactDetails ||
     !formFinancialDetails
   ) {
-    return NextResponse.json(
-      {
-        message: 'Missing required form data',
-        missingFields: {
-          preliminaryQuestions: !primePreliminaryQuestions,
-          personalDetails: !primePersonalDetails,
-          employment: !primeEmployment,
-          contactDetails: !primeContactDetails,
-          financialDetails: !formFinancialDetails,
-        },
+    return new Response(JSON.stringify('Missing required form data'), {
+      status: 400,
+      headers: {
+        'Content-Type': 'application/json',
       },
-      { status: 400 }
-    )
+    })
   }
 
   // Create safe parameters for preparePrimeOnlineJson
@@ -461,5 +454,13 @@ export async function POST(request: Request) {
   await insertDraftLoanApplication(draftApplicationInsertData)
 
   //* ------------------ End Of Draft Application Insert ------------------
-  return NextResponse.json({ success: true }, { status: 201 })
+  return new Response(
+    JSON.stringify('Draft application created successfully'),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
 }

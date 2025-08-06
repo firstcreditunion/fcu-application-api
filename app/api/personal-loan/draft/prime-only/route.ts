@@ -23,6 +23,7 @@ import {
 } from '@/types/supabase/membership'
 import { convertToUTCTime } from '@/utils/constants'
 import { processMobileNumber } from '@/utils/occUtils'
+import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
@@ -32,15 +33,12 @@ export async function POST(request: Request) {
 
     if (!parseResult.success) {
       console.error('Request body validation failed:', parseResult.error)
-      return new Response(
-        JSON.stringify({
-          error: 'Invalid request body',
-          details: parseResult.error.issues,
-        }),
+      return NextResponse.json(
         {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+          message: 'Invalid request body',
+          validationErrors: parseResult.error.issues,
+        },
+        { status: 400 }
       )
     }
 
@@ -387,21 +385,18 @@ export async function POST(request: Request) {
       !primeContactDetails ||
       !formFinancialDetails
     ) {
-      return new Response(
-        JSON.stringify({
-          error: 'Missing required form data',
-          missing: {
+      return NextResponse.json(
+        {
+          message: 'Missing required form data',
+          missingFields: {
             preliminaryQuestions: !primePreliminaryQuestions,
             personalDetails: !primePersonalDetails,
             employment: !primeEmployment,
             contactDetails: !primeContactDetails,
             financialDetails: !formFinancialDetails,
           },
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+        },
+        { status: 400 }
       )
     }
 
@@ -475,23 +470,15 @@ export async function POST(request: Request) {
 
     //* ------------------ End Of Draft Application Insert ------------------
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    return NextResponse.json({ success: true }, { status: 201 })
   } catch (error) {
     console.error('Unexpected error in prime-only route:', error)
-    return new Response(
-      JSON.stringify({
-        error: 'Internal server error',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      }),
+    return NextResponse.json(
       {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
+        message: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
     )
   }
 }

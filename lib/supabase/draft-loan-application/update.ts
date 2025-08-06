@@ -30,7 +30,7 @@ export async function insertDraftLoanApplication(
         online_raw_json: _data.online_json,
       })
 
-    // // console.log('Prime Email Update Data & Error: ', data, error)
+    console.log('Draft INSERT FOR PRIME ONLY Data & Error: ', data, error)
 
     if (error) {
       const errorData: typeof insertType_tblMembershipApplicationErrors = {

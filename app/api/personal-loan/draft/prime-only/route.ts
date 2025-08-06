@@ -46,32 +46,6 @@ export async function POST(request: Request) {
     providentInsurance,
   } = body
 
-  console.log(
-    'PRIME ONLY DRAFT APPLCATION DATA ',
-    loanApplicationNumber,
-    primeClientNumber,
-    supabaseIntegrityState,
-    supabaseIntegrityJointState,
-
-    primePreliminaryQuestions,
-    primeDriversLicence,
-    primePassport,
-    primeFirearmsLicence,
-    primeBirthCertificate,
-    primeKiwiAccessCard,
-    primeCommunityServiceCard,
-    goldCard,
-    studentID,
-    primePersonalDetails,
-    primeEmployment,
-    primeContactDetails,
-    formFinancialDetails,
-    vehicleSecurity,
-    providentInsurance
-  )
-
-  // e.g. Insert new user into your DB
-
   const primeMobileNumber = primeContactDetails?.mobileNumber
 
   const primeClientMobileUniqueID =
@@ -376,14 +350,7 @@ export async function POST(request: Request) {
           online_json: JSON.stringify(primeOnlineJson),
         }
 
-      const insertDraftApplicationResult = await insertDraftLoanApplication(
-        draftApplicationInsertData
-      )
-
-      console.log(
-        'Insert Draft Application Result: ',
-        insertDraftApplicationResult
-      )
+      await insertDraftLoanApplication(draftApplicationInsertData)
     }
   }
 

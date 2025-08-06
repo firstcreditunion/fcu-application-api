@@ -15,6 +15,7 @@ import {
   communityServiceCardSchema,
   goldCardSchema,
 } from '@/app/personal-loan/schema/prime/identificationsSchema'
+import { format } from 'date-fns'
 
 // Infer types from Zod schemas
 type DriversLicenceData = z.infer<typeof driversLicenceSchema>
@@ -173,16 +174,24 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'DRVLSC',
       idCode2: primeDriversLicence.licenceType,
-      effectiveDate: primeDriversLicence.licenceIssueDate?.toISOString(),
-      expiryDate: primeDriversLicence.licenceExpiryDate?.toISOString(),
+      effectiveDate: primeDriversLicence.licenceIssueDate
+        ? format(primeDriversLicence.licenceIssueDate, 'yyyy-MM-dd')
+        : undefined,
+      expiryDate: primeDriversLicence.licenceExpiryDate
+        ? format(primeDriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
+        : undefined,
       reference: primeDriversLicence.licenceNumber,
       seq: '1',
     })
     clientIdentifications.push({
       idCode1: 'DRVLSC',
       idCode2: 'DLVERSION',
-      effectiveDate: primeDriversLicence.licenceIssueDate?.toISOString(),
-      expiryDate: primeDriversLicence.licenceExpiryDate?.toISOString(),
+      effectiveDate: primeDriversLicence.licenceIssueDate
+        ? format(primeDriversLicence.licenceIssueDate, 'yyyy-MM-dd')
+        : undefined,
+      expiryDate: primeDriversLicence.licenceExpiryDate
+        ? format(primeDriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
+        : undefined,
       reference: primeDriversLicence.licenceVersion,
       seq: '1',
     })
@@ -192,8 +201,12 @@ export async function buildClientIdentifications(
   if (primePassport.passportNumber) {
     clientIdentifications.push({
       idCode1: 'PASPRT',
-      effectiveDate: primePassport.passportIssueDate?.toISOString(),
-      expiryDate: primePassport.passportExpiryDate?.toISOString(),
+      effectiveDate: primePassport.passportIssueDate
+        ? format(primePassport.passportIssueDate, 'yyyy-MM-dd')
+        : undefined,
+      expiryDate: primePassport.passportExpiryDate
+        ? format(primePassport.passportExpiryDate, 'yyyy-MM-dd')
+        : undefined,
       reference: primePassport.passportNumber,
       seq: String(seqCounter++),
     })
@@ -203,8 +216,12 @@ export async function buildClientIdentifications(
   if (primeFirearmsLicence.firearmsNumber) {
     clientIdentifications.push({
       idCode1: 'FIRELICENS',
-      effectiveDate: primeFirearmsLicence.firearmsIssueDate?.toISOString(),
-      expiryDate: primeFirearmsLicence.firearmsExpiryDate?.toISOString(),
+      effectiveDate: primeFirearmsLicence.firearmsIssueDate
+        ? format(primeFirearmsLicence.firearmsIssueDate, 'yyyy-MM-dd')
+        : undefined,
+      expiryDate: primeFirearmsLicence.firearmsExpiryDate
+        ? format(primeFirearmsLicence.firearmsExpiryDate, 'yyyy-MM-dd')
+        : undefined,
       reference: primeFirearmsLicence.firearmsNumber,
       seq: String(seqCounter++),
     })
@@ -214,8 +231,9 @@ export async function buildClientIdentifications(
   if (primeBirthCertificate.birthCertificateRegNo) {
     clientIdentifications.push({
       idCode1: 'BIRTHCERT',
-      effectiveDate:
-        primeBirthCertificate.birthCertificateIssueDate?.toISOString(),
+      effectiveDate: primeBirthCertificate.birthCertificateIssueDate
+        ? format(primeBirthCertificate.birthCertificateIssueDate, 'yyyy-MM-dd')
+        : undefined,
       reference: primeBirthCertificate.birthCertificateRegNo,
       seq: String(seqCounter++),
     })
@@ -225,8 +243,12 @@ export async function buildClientIdentifications(
   if (primeKiwiAccessCard.kiwiAccessCardNumber) {
     clientIdentifications.push({
       idCode1: 'KIWACCCRD',
-      effectiveDate: primeKiwiAccessCard.kiwiAccessCardIssueDate?.toISOString(),
-      expiryDate: primeKiwiAccessCard.kiwiAccessCardExpiryDate?.toISOString(),
+      effectiveDate: primeKiwiAccessCard.kiwiAccessCardIssueDate
+        ? format(primeKiwiAccessCard.kiwiAccessCardIssueDate, 'yyyy-MM-dd')
+        : undefined,
+      expiryDate: primeKiwiAccessCard.kiwiAccessCardExpiryDate
+        ? format(primeKiwiAccessCard.kiwiAccessCardExpiryDate, 'yyyy-MM-dd')
+        : undefined,
       reference: primeKiwiAccessCard.kiwiAccessCardNumber,
       seq: String(seqCounter++),
     })
@@ -236,10 +258,18 @@ export async function buildClientIdentifications(
   if (primeCommunityServiceCard.communityServiceCardNumber) {
     clientIdentifications.push({
       idCode1: 'COMSERVCRD',
-      effectiveDate:
-        primeCommunityServiceCard.communityServiceCardIssueDate?.toISOString(),
-      expiryDate:
-        primeCommunityServiceCard.communityServiceCardExpiryDate?.toISOString(),
+      effectiveDate: primeCommunityServiceCard.communityServiceCardIssueDate
+        ? format(
+            primeCommunityServiceCard.communityServiceCardIssueDate,
+            'yyyy-MM-dd'
+          )
+        : undefined,
+      expiryDate: primeCommunityServiceCard.communityServiceCardExpiryDate
+        ? format(
+            primeCommunityServiceCard.communityServiceCardExpiryDate,
+            'yyyy-MM-dd'
+          )
+        : undefined,
       reference: primeCommunityServiceCard.communityServiceCardNumber,
       seq: String(seqCounter++),
     })
@@ -249,7 +279,9 @@ export async function buildClientIdentifications(
   if (goldCard.goldCardNumber) {
     clientIdentifications.push({
       idCode1: 'GOLDCARD',
-      effectiveDate: goldCard.goldCardIssueDate?.toISOString(),
+      effectiveDate: goldCard.goldCardIssueDate
+        ? format(goldCard.goldCardIssueDate, 'yyyy-MM-dd')
+        : undefined,
       reference: goldCard.goldCardNumber,
       seq: String(seqCounter++),
     })
@@ -259,8 +291,12 @@ export async function buildClientIdentifications(
   if (studentID.currentStudentCardNumber) {
     clientIdentifications.push({
       idCode1: 'CURSTUDID',
-      effectiveDate: studentID.currentStudentCardIssueDate?.toISOString(),
-      expiryDate: studentID.currentStudentCardExpiryDate?.toISOString(),
+      effectiveDate: studentID.currentStudentCardIssueDate
+        ? format(studentID.currentStudentCardIssueDate, 'yyyy-MM-dd')
+        : undefined,
+      expiryDate: studentID.currentStudentCardExpiryDate
+        ? format(studentID.currentStudentCardExpiryDate, 'yyyy-MM-dd')
+        : undefined,
       reference: studentID.currentStudentCardNumber,
       seq: String(seqCounter++),
     })

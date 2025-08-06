@@ -72,59 +72,49 @@ export async function POST(request: Request) {
 
   // e.g. Insert new user into your DB
 
-  const primeMobileNumber = primeContactDetails.getValues('mobileNumber')
+  const primeMobileNumber = primeContactDetails?.mobileNumber
 
-  const primeClientMobileUniqueID = supabaseIntegrityState.getValues(
-    'primeClientMobileUniqueID'
-  )
+  const primeClientMobileUniqueID =
+    supabaseIntegrityState?.primeClientMobileUniqueID
 
   const primeMobileVerificationCompleted =
-    supabaseIntegrityState.getValues('mobileVerificationCompleted') === true
+    supabaseIntegrityState?.mobileVerificationCompleted === true
 
   //* Work Phone Number Verification
-  const primeWorkPhoneNumber = primeContactDetails.getValues('workPhoneNumber')
+  const primeWorkPhoneNumber = primeContactDetails?.workPhoneNumber
 
-  const primeClientWorkPhoneUniqueID = supabaseIntegrityState.getValues(
-    'primeClientWorkPhoneUniqueID'
-  )
+  const primeClientWorkPhoneUniqueID =
+    supabaseIntegrityState?.primeClientWorkPhoneUniqueID
 
   const primeWorkPhoneVerificationCompleted =
-    supabaseIntegrityState.getValues('workPhoneVerificationCompleted') === true
+    supabaseIntegrityState?.workPhoneVerificationCompleted === true
 
   //* Email Verification
-  const primeEmail = primeContactDetails.getValues('workPhoneNumber')
+  const primeEmail = primeContactDetails?.workPhoneNumber
 
-  const primeEmailUniqueID =
-    supabaseIntegrityState.getValues('primeEmailUniqueID')
+  const primeEmailUniqueID = supabaseIntegrityState?.primeEmailUniqueID
 
   const primeEmailVerificationCompleted =
-    supabaseIntegrityState.getValues('emailVerificationCompleted') === true
+    supabaseIntegrityState?.emailVerificationCompleted === true
 
   //* Residential Address Verification
-  const primeResidentialAddressPxid = primeContactDetails.getValues(
-    'residentialAddressPxid'
-  )
+  const primeResidentialAddressPxid =
+    primeContactDetails?.residentialAddressPxid
 
-  const primeResidentialAddressUniqueID = supabaseIntegrityState.getValues(
-    'primeResidentialAddressUniqueID'
-  )
+  const primeResidentialAddressUniqueID =
+    supabaseIntegrityState?.primeResidentialAddressUniqueID
 
   const primeResidentialAddressVerificationCompleted =
-    supabaseIntegrityState.getValues(
-      'residentialAddressVerificationCompleted'
-    ) === true
+    supabaseIntegrityState?.residentialAddressVerificationCompleted === true
 
   //* Mailing Address Verification
-  const primeMailingAddressPxid =
-    primeContactDetails.getValues('mailingAddressPxid')
+  const primeMailingAddressPxid = primeContactDetails?.mailingAddressPxid
 
-  const primeMailingAddressUniqueID = supabaseIntegrityState.getValues(
-    'primeMailingAddressUniqueID'
-  )
+  const primeMailingAddressUniqueID =
+    supabaseIntegrityState?.primeMailingAddressUniqueID
 
   const primeMailingAddressVerificationCompleted =
-    supabaseIntegrityState.getValues('mailingAddressVerificationCompleted') ===
-    true
+    supabaseIntegrityState?.mailingAddressVerificationCompleted === true
 
   //? API Call - Prime Mobile
   if (

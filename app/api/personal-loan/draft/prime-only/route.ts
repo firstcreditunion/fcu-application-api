@@ -109,32 +109,7 @@ export async function POST(request: Request) {
     providentInsurance: providentInsurance
   } = body
 
-  console.log(
-    'PRIME ONLY DRAFT APPLCATION DATA ',
-    loanApplicationNumber,
-    primeClientNumber,
-    supabaseIntegrityState,
-    supabaseIntegrityJointState,
-
-    primePreliminaryQuestions,
-    primeDriversLicence,
-    primePassport,
-    primeFirearmsLicence,
-    primeBirthCertificate,
-    primeKiwiAccessCard,
-    primeCommunityServiceCard,
-    goldCard,
-    studentID,
-    primePersonalDetails,
-    primeEmployment,
-    primeContactDetails,
-    formFinancialDetails,
-    vehicleSecurity,
-    providentInsurance
-  )
-
   // e.g. Insert new user into your DB
-
   const primeMobileNumber = primeContactDetails.mobileNumber
 
   const primeClientMobileUniqueID =
@@ -188,6 +163,11 @@ export async function POST(request: Request) {
     const primeMobileVerificationMetaData = await verifyMobileNumber({
       phoneNumber: primeMobileNumber,
     })
+
+    console.log(
+      'PRIME MOBILE VERIFICATION META DATA: ',
+      primeMobileVerificationMetaData
+    )
 
     if (
       primeMobileVerificationMetaData &&
@@ -245,6 +225,11 @@ export async function POST(request: Request) {
     const primeWorkPhoneVerificationMetaData = await verifyPhoneNumber({
       phoneNumber: primeWorkPhoneNumber,
     })
+
+    console.log(
+      'PRIME WORK PHONE VERIFICATION META DATA: ',
+      primeWorkPhoneVerificationMetaData
+    )
 
     if (
       primeWorkPhoneVerificationMetaData &&
@@ -306,6 +291,11 @@ export async function POST(request: Request) {
       emailAddress: primeEmail,
     })
 
+    console.log(
+      'PRIME EMAIL VERIFICATION META DATA: ',
+      primeEmailVerificationMetaData
+    )
+
     if (
       primeEmailVerificationMetaData &&
       primeEmailVerificationMetaData?.success === true
@@ -337,117 +327,117 @@ export async function POST(request: Request) {
         )
       }
     }
+  }
 
-    if (
-      primeResidentialAddressVerificationCompleted === false &&
-      primeResidentialAddressPxid !== undefined &&
-      primeResidentialAddressPxid !== null &&
-      primeResidentialAddressPxid !== ''
-    ) {
-      const primeResidentialAddressVerificationMetaData =
-        await getExactAddressFromPxid({
-          pxid: primeResidentialAddressPxid,
-        })
-
-      if (
-        primeResidentialAddressVerificationMetaData &&
-        primeResidentialAddressVerificationMetaData.success === true
-      ) {
-        const primeResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
-          {
-            metadata: JSON.stringify(
-              primeResidentialAddressVerificationMetaData
-            ),
-          }
-
-        if (
-          primeResidentialAddressUniqueID !== null &&
-          primeResidentialAddressUniqueID !== undefined
-        ) {
-          await tblClientAddressMetadataUpdate(
-            primeResidentialAddressUniqueID,
-            primeResidentialAddressVerificationResultData
-          )
-        }
-      }
-
-      //       //? API Call - Prime Mailing Address
-      if (
-        primeMailingAddressVerificationCompleted === false &&
-        primeMailingAddressPxid !== undefined &&
-        primeMailingAddressPxid !== null &&
-        primeMailingAddressPxid !== ''
-      ) {
-        const primeMailingAddressVerificationMetaData =
-          await getExactAddressFromPxid({
-            pxid: primeMailingAddressPxid,
-          })
-
-        if (
-          primeMailingAddressVerificationMetaData &&
-          primeMailingAddressVerificationMetaData.success === true
-        ) {
-          const primeMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
-            {
-              metadata: JSON.stringify(primeMailingAddressVerificationMetaData),
-            }
-
-          if (
-            primeMailingAddressUniqueID !== null &&
-            primeMailingAddressUniqueID !== undefined
-          ) {
-            await tblClientAddressMetadataUpdate(
-              primeMailingAddressUniqueID,
-              primeMailingAddressVerificationResultData
-            )
-          }
-        }
-      }
-
-      const primeOnlineJson = await preparePrimeOnlineJson({
-        primePreliminaryQuestions,
-        primeDriversLicence,
-        primePassport,
-        primeFirearmsLicence,
-        primeBirthCertificate,
-        primeKiwiAccessCard,
-        primeCommunityServiceCard,
-        goldCard,
-        studentID,
-        primePersonalDetails,
-        primeEmployment,
-        primeContactDetails,
-        formFinancialDetails,
-        vehicleSecurity,
-        providentInsurance,
+  if (
+    primeResidentialAddressVerificationCompleted === false &&
+    primeResidentialAddressPxid !== undefined &&
+    primeResidentialAddressPxid !== null &&
+    primeResidentialAddressPxid !== ''
+  ) {
+    const primeResidentialAddressVerificationMetaData =
+      await getExactAddressFromPxid({
+        pxid: primeResidentialAddressPxid,
       })
 
-      const draftApplicationInsertData: typeof insert_tblDraftApplicationInsert =
+    if (
+      primeResidentialAddressVerificationMetaData &&
+      primeResidentialAddressVerificationMetaData.success === true
+    ) {
+      const primeResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
         {
-          application_name:
-            primePersonalDetails?.title +
-            ' ' +
-            primePersonalDetails?.firstName +
-            ' ' +
-            primePersonalDetails?.lastName,
-          dateOfBirth: format(primePersonalDetails?.dateOfBirth, 'yyyy-MM-dd'),
-          datetime: convertToUTCTime(),
-          email: primeEmail,
-          portal_application_number: loanApplicationNumber,
-          trading_branch: 'VIR',
-          online_json: JSON.stringify(primeOnlineJson),
+          metadata: JSON.stringify(primeResidentialAddressVerificationMetaData),
         }
 
-      const insertDraftApplicationResult = await insertDraftLoanApplication(
-        draftApplicationInsertData
+      console.log(
+        'PRIME RESIDENTIAL ADDRESS VERIFICATION RESULT DATA: ',
+        primeResidentialAddressVerificationResultData
       )
 
-      console.log(
-        'Insert Draft Application Result: ',
-        insertDraftApplicationResult
-      )
+      if (
+        primeResidentialAddressUniqueID !== null &&
+        primeResidentialAddressUniqueID !== undefined
+      ) {
+        await tblClientAddressMetadataUpdate(
+          primeResidentialAddressUniqueID,
+          primeResidentialAddressVerificationResultData
+        )
+      }
     }
   }
+
+  //? API Call - Prime Mailing Address
+  if (
+    primeMailingAddressVerificationCompleted === false &&
+    primeMailingAddressPxid !== undefined &&
+    primeMailingAddressPxid !== null &&
+    primeMailingAddressPxid !== ''
+  ) {
+    const primeMailingAddressVerificationMetaData =
+      await getExactAddressFromPxid({
+        pxid: primeMailingAddressPxid,
+      })
+
+    if (
+      primeMailingAddressVerificationMetaData &&
+      primeMailingAddressVerificationMetaData.success === true
+    ) {
+      const primeMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
+        {
+          metadata: JSON.stringify(primeMailingAddressVerificationMetaData),
+        }
+
+      console.log(
+        'PRIME MAILING ADDRESS VERIFICATION RESULT DATA: ',
+        primeMailingAddressVerificationResultData
+      )
+
+      if (
+        primeMailingAddressUniqueID !== null &&
+        primeMailingAddressUniqueID !== undefined
+      ) {
+        await tblClientAddressMetadataUpdate(
+          primeMailingAddressUniqueID,
+          primeMailingAddressVerificationResultData
+        )
+      }
+    }
+  }
+
+  const primeOnlineJson = await preparePrimeOnlineJson({
+    primePreliminaryQuestions,
+    primeDriversLicence,
+    primePassport,
+    primeFirearmsLicence,
+    primeBirthCertificate,
+    primeKiwiAccessCard,
+    primeCommunityServiceCard,
+    goldCard,
+    studentID,
+    primePersonalDetails,
+    primeEmployment,
+    primeContactDetails,
+    formFinancialDetails,
+    vehicleSecurity,
+    providentInsurance,
+  })
+
+  const draftApplicationInsertData: typeof insert_tblDraftApplicationInsert = {
+    application_name:
+      primePersonalDetails?.title +
+      ' ' +
+      primePersonalDetails?.firstName +
+      ' ' +
+      primePersonalDetails?.lastName,
+    dateOfBirth: format(primePersonalDetails?.dateOfBirth, 'yyyy-MM-dd'),
+    datetime: convertToUTCTime(),
+    email: primeEmail,
+    portal_application_number: loanApplicationNumber,
+    trading_branch: 'VIR',
+    online_json: JSON.stringify(primeOnlineJson),
+  }
+
+  await insertDraftLoanApplication(draftApplicationInsertData)
 
   return new Response(JSON.stringify({}), {
     status: 201,

@@ -1,66 +1,66 @@
 // 'use server'
 
 // export const prepareForSubmission = async () => {
-//     if (props.applicationType === 'PRIME') {
+//     if (applicationType === 'PRIME') {
 //       //* Mobile Number Verification
 //       const primeMobileNumber =
-//         props.primeContactDetailsForm.getValues('mobileNumber')
+//         primeContactDetailsForm.getValues('mobileNumber')
 
 //       const primeClientMobileUniqueID =
-//         props.supabaseIntegrityState.getValues('primeClientMobileUniqueID')
+//         supabaseIntegrityState.getValues('primeClientMobileUniqueID')
 
 //       const primeMobileVerificationCompleted =
-//         props.supabaseIntegrityState.getValues(
+//         supabaseIntegrityState.getValues(
 //           'mobileVerificationCompleted'
 //         ) === true
 
 //       //* Work Phone Number Verification
 //       const primeWorkPhoneNumber =
-//         props.primeContactDetailsForm.getValues('workPhoneNumber')
+//         primeContactDetailsForm.getValues('workPhoneNumber')
 
 //       const primeClientWorkPhoneUniqueID =
-//         props.supabaseIntegrityState.getValues('primeClientWorkPhoneUniqueID')
+//         supabaseIntegrityState.getValues('primeClientWorkPhoneUniqueID')
 
 //       const primeWorkPhoneVerificationCompleted =
-//         props.supabaseIntegrityState.getValues(
+//         supabaseIntegrityState.getValues(
 //           'workPhoneVerificationCompleted'
 //         ) === true
 
 //       //* Email Verification
 //       const primeEmail =
-//         props.primeContactDetailsForm.getValues('workPhoneNumber')
+//         primeContactDetailsForm.getValues('workPhoneNumber')
 
 //       const primeEmailUniqueID =
-//         props.supabaseIntegrityState.getValues('primeEmailUniqueID')
+//         supabaseIntegrityState.getValues('primeEmailUniqueID')
 
 //       const primeEmailVerificationCompleted =
-//         props.supabaseIntegrityState.getValues(
+//         supabaseIntegrityState.getValues(
 //           'emailVerificationCompleted'
 //         ) === true
 
 //       //* Residential Address Verification
 //       const primeResidentialAddressPxid =
-//         props.primeContactDetailsForm.getValues('residentialAddressPxid')
+//         primeContactDetailsForm.getValues('residentialAddressPxid')
 
 //       const primeResidentialAddressUniqueID =
-//         props.supabaseIntegrityState.getValues(
+//         supabaseIntegrityState.getValues(
 //           'primeResidentialAddressUniqueID'
 //         )
 
 //       const primeResidentialAddressVerificationCompleted =
-//         props.supabaseIntegrityState.getValues(
+//         supabaseIntegrityState.getValues(
 //           'residentialAddressVerificationCompleted'
 //         ) === true
 
 //       //* Mailing Address Verification
 //       const primeMailingAddressPxid =
-//         props.primeContactDetailsForm.getValues('mailingAddressPxid')
+//         primeContactDetailsForm.getValues('mailingAddressPxid')
 
 //       const primeMailingAddressUniqueID =
-//         props.supabaseIntegrityState.getValues('primeMailingAddressUniqueID')
+//         supabaseIntegrityState.getValues('primeMailingAddressUniqueID')
 
 //       const primeMailingAddressVerificationCompleted =
-//         props.supabaseIntegrityState.getValues(
+//         supabaseIntegrityState.getValues(
 //           'mailingAddressVerificationCompleted'
 //         ) === true
 
@@ -80,23 +80,23 @@
 //           primeMobileVerificationMetaData?.success === true
 //         ) {
 //           //* Set Values for Submission (Internal State)
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'mobileVerificationCompleted',
 //             true
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'sov_mobileNetwork',
 //             processMobileNumber(
 //               primeMobileVerificationMetaData?.formatted_national
 //             ).sov_networkCode
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'sov_mobileNumber',
 //             processMobileNumber(
 //               primeMobileVerificationMetaData?.formatted_national
 //             ).sov_number
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'sov_mobileCallingCode',
 //             primeMobileVerificationMetaData.calling_code
 //           )
@@ -165,23 +165,23 @@
 //           primeWorkPhoneVerificationMetaData?.success === true
 //         ) {
 //           //* Set Values for Submission (Internal State)
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'mobileVerificationCompleted',
 //             true
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'sov_workNetwork',
 //             processMobileNumber(
 //               primeWorkPhoneVerificationMetaData?.formatted_national
 //             ).sov_networkCode
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'sov_workNumber',
 //             processMobileNumber(
 //               primeWorkPhoneVerificationMetaData?.formatted_national
 //             ).sov_number
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'sov_workCallingCode',
 //             primeWorkPhoneVerificationMetaData.calling_code
 //           )
@@ -251,11 +251,11 @@
 //           primeEmailVerificationMetaData?.success === true
 //         ) {
 //           //* Set Values for Submission (Internal State)
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'emailVerificationCompleted',
 //             true
 //           )
-//           props.supabaseIntegrityState.setValue(
+//           supabaseIntegrityState.setValue(
 //             'emailVerificationMetadata',
 //             JSON.stringify(primeEmailVerificationMetaData)
 //           )

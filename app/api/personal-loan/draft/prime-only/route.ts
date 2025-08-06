@@ -373,12 +373,12 @@ export async function POST(request: Request) {
       const draftApplicationInsertData: typeof insert_tblDraftApplicationInsert =
         {
           application_name:
-            primePersonalDetails.getValues('title') +
+            primePersonalDetails?.title +
             ' ' +
-            primePersonalDetails.getValues('firstName') +
+            primePersonalDetails?.firstName +
             ' ' +
-            primePersonalDetails.getValues('lastName'),
-          dateOfBirth: primePersonalDetails.getValues('dateOfBirth'),
+            primePersonalDetails?.lastName,
+          dateOfBirth: primePersonalDetails?.dateOfBirth,
           datetime: convertToUTCTime(),
           email: primeEmail,
           portal_application_number: loanApplicationNumber,

@@ -47,7 +47,6 @@ type primeOnlineJsonProps = {
   primePersonalDetails: z.infer<typeof personalDetailsSchema>
   primeEmployment: z.infer<typeof employmentSchema>
   primeContactDetails: z.infer<typeof contactDetailsSchema>
-
   primeDriversLicence: z.infer<typeof driversLicenceSchema>
   primePassport: z.infer<typeof passportSchema>
   primeFirearmsLicence: z.infer<typeof firearmsLicenceSchema>
@@ -56,10 +55,8 @@ type primeOnlineJsonProps = {
   primeCommunityServiceCard: z.infer<typeof communityServiceCardSchema>
   goldCard: z.infer<typeof goldCardSchema>
   studentID: z.infer<typeof currentStudentCardSchema>
-
   formFinancialDetails: z.infer<typeof financialDetialsSchema>
   vehicleSecurity: z.infer<typeof securitySchema>
-
   providentInsurance: (typeof row_tblProvidentInsuranceCoverTypes)[]
 }
 
@@ -144,7 +141,7 @@ export async function preparePrimeOnlineJson({
     (insurance) =>
       insurance.lambda_code_component === formFinancialDetails.coverType &&
       insurance.cover_type === formFinancialDetails.component
-  )[0].g3_insurance_cover_type
+  )?.[0]?.g3_insurance_cover_type
 
   const bothInsuranceFieldsExist =
     formFinancialDetails.coverType !== null &&

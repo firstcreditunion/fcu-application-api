@@ -52,8 +52,8 @@ export const contactDetailsSchema = z
     }),
     residentialEffectiveDate: z
       .date({
-        required_error: 'Please select the effective date',
-        invalid_type_error: 'That is an invalid date!',
+        message: 'Please select the effective date',
+        error: 'That is an invalid date!',
       })
       .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100)), {
         message: 'Date cannot be before 100 years',

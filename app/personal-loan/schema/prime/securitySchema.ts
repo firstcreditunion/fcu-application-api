@@ -4,19 +4,19 @@ export const securitySchema = z
   .object({
     provideVehicleAsLoanSecurity: z
       .enum(['Y', 'N'], {
-        required_error:
+        message:
           'Please select if you want to provide vehicle as loan security',
       })
       .optional(),
     haveYouPurchasedVehicle: z
       .enum(['Y', 'N'], {
-        required_error: 'Please select if you have purchased the vehicle',
+        message: 'Please select if you have purchased the vehicle',
       })
       .optional(),
     vehicleRegistrationNumber: z.string().optional(),
     isVehicleInsured: z
       .enum(['Y', 'N'], {
-        required_error: 'Please select if the vehicle is in your name',
+        message: 'Please select if the vehicle is in your name',
       })
       .optional(),
     nameOfInsurer: z.string().optional(),

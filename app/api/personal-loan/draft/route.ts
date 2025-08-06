@@ -9,6 +9,7 @@ export async function POST(request: Request) {
   return new Response(JSON.stringify(newUser), {
     status: 201,
     headers: {
-         'Content-Type': 'application/json' },
+      'Content-Type': 'application/json',
+    },
   })
 }

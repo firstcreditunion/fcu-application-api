@@ -8,11 +8,11 @@ export const employmentsToExcludeForIncome = ['RTD', 'UEM', 'STP', 'STU'] // C1
 export const primeFormSchema = z
   .object({
     title: z.enum(['Mr', 'Mrs', 'Miss', 'Ms', 'other', ''], {
-      required_error: 'Please select your title',
+      message: 'Please select your title',
     }),
     firstName: z
       .string({
-        required_error: 'First name is required',
+        message: 'First name is required',
       })
       .trim()
       .min(1, {
@@ -21,22 +21,22 @@ export const primeFormSchema = z
     middleName: z.string().trim().optional(),
     lastName: z
       .string({
-        required_error: 'Last name is required',
+        message: 'Last name is required',
       })
       .trim()
       .min(1, {
         message: 'Last name is required',
       }),
     gender: z.string({
-      required_error: 'Please select your gender.',
+      message: 'Please select your gender.',
     }),
     maritalStatus: z.string({
-      required_error: 'Please select your marital status.',
+      message: 'Please select your marital status.',
     }),
     dateOfBirth: z
       .date({
-        required_error: 'Please select your date of birth',
-        invalid_type_error: 'That is an invalid date!',
+        message: 'Please select your date of birth',
+        error: 'That is an invalid date!',
       })
       .min(new Date(new Date().setFullYear(new Date().getFullYear() - 120)), {
         message: 'Invalid date of birth',
@@ -98,8 +98,8 @@ export const primeFormSchema = z
     }),
     residentialEffectiveDate: z
       .date({
-        required_error: 'Please select the effective date',
-        invalid_type_error: 'That is an invalid date!',
+        message: 'Please select the effective date',
+        error: 'That is an invalid date!',
       })
       .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100)), {
         message: 'Date cannot be before 100 years',
@@ -226,7 +226,7 @@ const employmentSchema = z
   .object({
     employmentType: z
       .string({
-        required_error: 'Please choose your employment type',
+        message: 'Please choose your employment type',
       })
       .min(1, {
         message: 'Please choose an employment type',
@@ -377,7 +377,7 @@ const productsSchema = z.object({
 const finalQuestionsChema = z.object({
   callCentrePassword: z
     .string({
-      required_error: 'Please provide a password',
+      message: 'Please provide a password',
     })
     .min(4, {
       message: 'Password should be at least 4 characters long',

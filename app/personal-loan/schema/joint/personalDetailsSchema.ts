@@ -2,11 +2,11 @@ import z from 'zod'
 
 export const jointPersonalDetailsSchema = z.object({
   title: z.enum(['Mr', 'Mrs', 'Miss', 'Ms', 'other', ''], {
-    required_error: 'Please select your title',
+    message: 'Please select your title',
   }),
   firstName: z
     .string({
-      required_error: 'First name is required',
+      message: 'First name is required',
     })
     .trim()
     .min(1, {
@@ -15,22 +15,22 @@ export const jointPersonalDetailsSchema = z.object({
   middleName: z.string().trim().optional(),
   lastName: z
     .string({
-      required_error: 'Last name is required',
+      message: 'Last name is required',
     })
     .trim()
     .min(1, {
       message: 'Last name is required',
     }),
   gender: z.string({
-    required_error: 'Please select your gender.',
+    message: 'Please select your gender.',
   }),
   maritalStatus: z.string({
-    required_error: 'Please select your marital status.',
+    message: 'Please select your marital status.',
   }),
   dateOfBirth: z
     .date({
-      required_error: 'Please select your date of birth',
-      invalid_type_error: 'That is an invalid date!',
+      message: 'Please select your date of birth',
+      error: 'That is an invalid date!',
     })
     .min(new Date(new Date().setFullYear(new Date().getFullYear() - 120)), {
       message: 'Invalid date of birth',

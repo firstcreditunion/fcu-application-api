@@ -7,7 +7,7 @@ export const employmentSchema = z
   .object({
     employmentType: z
       .string({
-        required_error: 'Please choose your employment type',
+        message: 'Please choose your employment type',
       })
       .min(1, {
         message: 'Please choose an employment type',

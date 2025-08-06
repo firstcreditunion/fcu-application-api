@@ -3,16 +3,16 @@ import z from 'zod'
 export const driversLicenceSchema = z
   .object({
     licenceType: z.enum(['L', 'R', 'F'], {
-      required_error: 'Please select your licence type',
+      message: 'Please select your licence type',
     }),
     licenceNumber: z
       .string({
-        required_error: 'Please enter your licence number',
+        message: 'Please enter your licence number',
       })
       .regex(/^([a-zA-Z][a-zA-Z]\d\d\d\d\d\d*)$/, 'Invalid Drivers Licence'),
     licenceVersion: z
       .string({
-        required_error: 'Please enter your licence number',
+        message: 'Please enter your licence number',
       })
       .regex(/^[0-9]*$/, 'Invalid Version Number'),
     licenceIssueDate: z.date().optional(),
@@ -68,7 +68,7 @@ export const passportSchema = z
   .object({
     passportNumber: z
       .string({
-        required_error: 'Please enter your passport number',
+        message: 'Please enter your passport number',
       })
       .regex(/^([A-Z]{2}\d{6})$|^([A-Z]{1}\d{7})$/, 'Invalid passport number'),
     passportIssueDate: z.date().optional(),
@@ -139,7 +139,7 @@ export const firearmsLicenceSchema = z
   .object({
     firearmsNumber: z
       .string({
-        required_error: 'Please enter your firearms number',
+        message: 'Please enter your firearms number',
       })
       .regex(/^([A-Z]{2}\d{6})$|^([A-Z]{1}\d{7})$/, 'Invalid passport number'),
     firearmsIssueDate: z.date().optional(),
@@ -209,7 +209,7 @@ export const kiwiAccessCardSchema = z
   .object({
     kiwiAccessCardNumber: z
       .string({
-        required_error: 'Please enter your kiwi access card number',
+        message: 'Please enter your kiwi access card number',
       })
       .regex(
         /^([a-zA-Z0-9]{1,32})$/,
@@ -282,7 +282,7 @@ export const communityServiceCardSchema = z
   .object({
     communityServiceCardNumber: z
       .string({
-        required_error: 'Please enter your community service card number',
+        message: 'Please enter your community service card number',
       })
       .regex(
         /^([a-zA-Z0-9]{1,32})$/,
@@ -350,7 +350,7 @@ export const birthCertificateSchema = z
   .object({
     birthCertificateRegNo: z
       .string({
-        required_error: 'Please enter your birth certificate number',
+        message: 'Please enter your birth certificate number',
       })
       .regex(
         /^([a-zA-Z0-9]{1,32})$/,
@@ -387,7 +387,7 @@ export const currentStudentCardSchema = z
   .object({
     currentStudentCardNumber: z
       .string({
-        required_error: 'Please enter your current student card number',
+        message: 'Please enter your current student card number',
       })
       .regex(
         /^([a-zA-Z0-9]{1,32})$/,
@@ -454,7 +454,7 @@ export const goldCardSchema = z
   .object({
     goldCardNumber: z
       .string({
-        required_error: 'Please enter your gold card number',
+        message: 'Please enter your gold card number',
       })
       .regex(
         /^([a-zA-Z0-9]{1,32})$/,

@@ -38,8 +38,8 @@ import {
   passportSchema,
 } from '@/app/personal-loan/schema/prime/identificationsSchema'
 
-import { buildClientIdentifications } from './occUtils'
 import { accommodation, countries } from '@/lib/constants'
+import { buildClientIdentifications } from './globalUtils'
 
 type primeOnlineJsonProps = {
   primePreliminaryQuestions: z.infer<typeof preliminaryQuestionSchema>
@@ -372,7 +372,7 @@ export async function preparePrimeOnlineJson({
     },
   }
 
-  const clientIdentificationProvided = buildClientIdentifications({
+  const clientIdentificationProvided = await buildClientIdentifications({
     primeDriversLicence,
     primePassport,
     primeFirearmsLicence,

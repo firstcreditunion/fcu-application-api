@@ -52,8 +52,7 @@ export const jointcontactDetailsSchema = z
     }),
     residentialEffectiveDate: z
       .date({
-        required_error: 'Please select the effective date',
-        invalid_type_error: 'That is an invalid date!',
+        message: 'Please select the effective date',
       })
       .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100)), {
         message: 'Date cannot be before 100 years',

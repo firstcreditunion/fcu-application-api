@@ -221,6 +221,13 @@ export async function preparePrimeOnlineJson({
     formFinancialDetails.component !== null &&
     formFinancialDetails.component !== undefined
 
+  console.log('bothInsuranceFieldsExist: ', bothInsuranceFieldsExist)
+  
+  console.log(
+    'formFinancialDetails.needCreditCareInsurance : ',
+    formFinancialDetails.needCreditCareInsurance
+  )
+
   const insurances: Insurance[] =
     formFinancialDetails.needCreditCareInsurance === 'Y' &&
     bothInsuranceFieldsExist
@@ -487,8 +494,7 @@ export async function preparePrimeOnlineJson({
               ? [
                   {
                     countryCode: workPhoneVerificationDetails[0].calling_code,
-                    networkCode:
-                      workPhoneVerificationDetails[0].sov_networkCode,
+                    networkCode: workPhoneVerificationDetails[0].sov_stdCode,
                     number: workPhoneVerificationDetails[0].sov_number,
                     preferredMethod: 'N',
                     effectiveDate: `${format(

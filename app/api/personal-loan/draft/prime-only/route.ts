@@ -130,17 +130,11 @@ export async function POST(request: Request) {
   const primeResidentialAddressUniqueID =
     supabaseIntegrityState.primeResidentialAddressUniqueID
 
-  const primeResidentialAddressVerificationCompleted =
-    supabaseIntegrityState.residentialAddressVerificationCompleted === true
-
   //* Mailing Address Verification
   const primeMailingAddressPxid = primeContactDetails.mailingAddressPxid
 
   const primeMailingAddressUniqueID =
     supabaseIntegrityState.primeMailingAddressUniqueID
-
-  const primeMailingAddressVerificationCompleted =
-    supabaseIntegrityState.mailingAddressVerificationCompleted === true
 
   //? API Call - Prime Mobile
   if (
@@ -151,11 +145,6 @@ export async function POST(request: Request) {
     const primeMobileVerificationMetaData = await verifyMobileNumber({
       phoneNumber: primeMobileNumber,
     })
-
-    console.log(
-      'PRIME MOBILE VERIFICATION META DATA: ',
-      primeMobileVerificationMetaData
-    )
 
     if (
       primeMobileVerificationMetaData &&
@@ -213,11 +202,6 @@ export async function POST(request: Request) {
       phoneNumber: primeWorkPhoneNumber,
     })
 
-    console.log(
-      'PRIME WORK PHONE VERIFICATION META DATA: ',
-      primeWorkPhoneVerificationMetaData
-    )
-
     if (
       primeWorkPhoneVerificationMetaData &&
       primeWorkPhoneVerificationMetaData?.success === true
@@ -273,11 +257,6 @@ export async function POST(request: Request) {
       emailAddress: primeEmail,
     })
 
-    console.log(
-      'PRIME EMAIL VERIFICATION META DATA: ',
-      primeEmailVerificationMetaData
-    )
-
     if (
       primeEmailVerificationMetaData &&
       primeEmailVerificationMetaData?.success === true
@@ -330,11 +309,6 @@ export async function POST(request: Request) {
           metadata: JSON.stringify(primeResidentialAddressVerificationMetaData),
         }
 
-      console.log(
-        'PRIME RESIDENTIAL ADDRESS VERIFICATION RESULT DATA: ',
-        primeResidentialAddressVerificationResultData
-      )
-
       if (
         primeResidentialAddressUniqueID !== null &&
         primeResidentialAddressUniqueID !== undefined
@@ -366,11 +340,6 @@ export async function POST(request: Request) {
         {
           metadata: JSON.stringify(primeMailingAddressVerificationMetaData),
         }
-
-      console.log(
-        'PRIME MAILING ADDRESS VERIFICATION RESULT DATA: ',
-        primeMailingAddressVerificationResultData
-      )
 
       if (
         primeMailingAddressUniqueID !== null &&

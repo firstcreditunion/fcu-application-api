@@ -103,6 +103,8 @@ export async function POST(request: NextRequest) {
   // Get the secret from the request's 'X-API-Secret' header.
   const providedSecret = headersList.get('X-API-Secret')
 
+  console.log('PRIME ONLY HEADERLIST: ', headersList)
+
   // Handle missing or incorrect secret.
   if (!providedSecret) {
     return NextResponse.json(

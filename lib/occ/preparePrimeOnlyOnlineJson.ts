@@ -39,10 +39,66 @@ import {
   genderLookup,
   loanPurposeCodesFallback,
   maritalStatusOptions,
+  occupationCodes,
 } from '@/utils/constants'
 import { buildClientIdentifications } from '@/utils/globalUtils'
+import { supabaseIntegritySchemaPrime } from '@/app/personal-loan/schema/supabaseIntegrityPrimeSchema'
+import { tblClientPhone } from '../supabase/membership/select'
+
+const employmentTypes = [
+  { idx: 0, type: 'BNF', desc: 'Beneficiary', emp_details_required: false },
+  { idx: 1, type: 'CAS', desc: 'Casual', emp_details_required: true },
+  { idx: 2, type: 'CONS', desc: 'Consultant', emp_details_required: true },
+  { idx: 3, type: 'CONT', desc: 'Contractor', emp_details_required: true },
+  {
+    idx: 4,
+    type: 'FREE',
+    desc: 'Freelance Employment',
+    emp_details_required: true,
+  },
+  {
+    idx: 5,
+    type: 'FTM',
+    desc: 'Full Time Employment',
+    emp_details_required: true,
+  },
+  {
+    idx: 6,
+    type: 'PTM',
+    desc: 'Part Time Employment',
+    emp_details_required: true,
+  },
+  { idx: 7, type: 'RTD', desc: 'Retired', emp_details_required: false },
+  {
+    idx: 8,
+    type: 'SEAS',
+    desc: 'Seasonal Employment',
+    emp_details_required: false,
+  },
+  { idx: 9, type: 'SEM', desc: 'Self Employed', emp_details_required: false },
+  {
+    idx: 10,
+    type: 'STP',
+    desc: 'I am a Part-Time Student',
+    emp_details_required: null,
+  },
+  {
+    idx: 11,
+    type: 'STU',
+    desc: 'I am a Full-Time Student',
+    emp_details_required: null,
+  },
+  {
+    idx: 12,
+    type: 'TMP',
+    desc: 'Temporary Employment',
+    emp_details_required: true,
+  },
+  { idx: 13, type: 'UEM', desc: 'Unemployed', emp_details_required: false },
+]
 
 type primeOnlineJsonProps = {
+  supabaseIntegrityState: z.infer<typeof supabaseIntegritySchemaPrime>
   primePreliminaryQuestions: z.infer<typeof preliminaryQuestionSchema>
   primePersonalDetails: z.infer<typeof personalDetailsSchema>
   primeEmployment: z.infer<typeof employmentSchema>
@@ -61,6 +117,7 @@ type primeOnlineJsonProps = {
 }
 
 export async function preparePrimeOnlineJson({
+  supabaseIntegrityState,
   primePreliminaryQuestions,
   primeDriversLicence,
   primePassport,
@@ -71,13 +128,24 @@ export async function preparePrimeOnlineJson({
   goldCard,
   studentID,
   primePersonalDetails,
-  // primeEmployment,
+  primeEmployment,
   primeContactDetails,
 
   formFinancialDetails,
   vehicleSecurity,
   providentInsurance,
 }: primeOnlineJsonProps) {
+  const primeMobileUUID = supabaseIntegrityState.primeClientMobileUniqueID
+  const primeWorkPhoneUUID = supabaseIntegrityState.primeClientWorkPhoneUniqueID
+
+  const mobileVerificationDetails = primeMobileUUID
+    ? await tblClientPhone(primeMobileUUID)
+    : undefined
+
+  const workPhoneVerificationDetails = primeWorkPhoneUUID
+    ? await tblClientPhone(primeWorkPhoneUUID)
+    : undefined
+
   const purchasePrice: PurchasePrice = {
     accessories: 0,
     retailPrice: Number(formFinancialDetails.costOfGoods),
@@ -381,6 +449,176 @@ export async function preparePrimeOnlineJson({
     studentID,
   })
 
+  const primeEmailExists =
+    supabaseIntegrityState.emailAddressForProgress !== undefined &&
+    supabaseIntegrityState.emailAddressForProgress !== null &&
+    supabaseIntegrityState.emailAddressForProgress !== ''
+
+  const primeEmploymentExists =
+    primeEmployment.employmentType !== null &&
+    primeEmployment.employmentType !== undefined &&
+    primeEmployment.employmentType !== ''
+
+  const included: unknown[] = []
+
+  const primeBorrowerAssosiatedClients = {
+    type: 'associatedClients',
+    id: '0001022184',
+    attributes: {
+      role: 'PRIMEB',
+      seq: '1',
+      signatureRequired: 'M',
+      creditCheckAuthorised: 'N',
+      order: '1',
+      clientReference: null,
+      clientMaint: {
+        clientID: '0001022184',
+        generalDetails: generalDetails,
+        clientIdentifications: clientIdentificationProvided,
+        contactDetails: {
+          address: [],
+          phone:
+            workPhoneVerificationDetails &&
+            workPhoneVerificationDetails?.length > 0
+              ? [
+                  {
+                    countryCode: workPhoneVerificationDetails[0].calling_code,
+                    networkCode:
+                      workPhoneVerificationDetails[0].sov_networkCode,
+                    number: workPhoneVerificationDetails[0].sov_number,
+                    preferredMethod: 'N',
+                    effectiveDate: `${format(
+                      new Date(),
+                      'yyyy-MM-dd'
+                    )}T00:00:00Z`,
+                    type: 'MB',
+                    seq: '1',
+                  },
+                ]
+              : [],
+          mobile:
+            mobileVerificationDetails && mobileVerificationDetails?.length > 0
+              ? [
+                  {
+                    countryCode: mobileVerificationDetails[0].calling_code,
+                    networkCode: mobileVerificationDetails[0].sov_networkCode,
+                    number: mobileVerificationDetails[0].sov_number,
+                    preferredMethod: 'N',
+                    effectiveDate: `${format(
+                      new Date(),
+                      'yyyy-MM-dd'
+                    )}T00:00:00Z`,
+                    type: 'MB',
+                    seq: '1',
+                  },
+                ]
+              : [],
+          email: primeEmailExists
+            ? [
+                {
+                  address: primeContactDetails.emailAddress,
+                  preferredMethod: 'Y',
+                  effectiveDate: `${format(
+                    new Date(),
+                    'yyyy-MM-dd'
+                  )}T00:00:00Z`,
+                  type: 'HM',
+                  seq: '1',
+                },
+              ]
+            : [],
+        },
+        employmentDetails: primeEmploymentExists
+          ? [
+              {
+                employmentType: {
+                  type: employmentTypes.filter(
+                    (item) => item.type === primeEmployment.employmentType
+                  )[0].type,
+                  description: employmentTypes.filter(
+                    (item) => item.type === primeEmployment.employmentType
+                  )[0].desc,
+                },
+                occupation: occupationCodes.filter(
+                  (item) => item.activity_code === primeEmployment.occupation
+                )[0].sov_activity_code,
+                jobDescription: occupationCodes.filter(
+                  (item) => item.activity_code === primeEmployment.occupation
+                )[0].activity_name,
+                employerName: primeEmployment.employerName,
+                effectiveDate: primeEmployment.employmentEffctiveDate,
+                seq: '1',
+              },
+            ]
+          : [],
+        clientCapacity: {
+          capacityAssessment: {
+            anyExpectedChanges: 'Y',
+            changeDetails: 'N',
+            assessmentQuestionsAsked: 'Y',
+            selfDeclarationAccepted: 'Y',
+          },
+          joint: 'N',
+          assets: [],
+          liabilities: [],
+          incomes: [],
+          expenses: [],
+        },
+        mode: 'Add',
+      },
+    },
+  }
+
+  included?.push(primeBorrowerAssosiatedClients)
+
+  if (hasVehicleSecurity) {
+    included?.push({
+      type: 'securities',
+      id: '0000299612',
+      attributes: {
+        seq: '1',
+        accountSecurity: {
+          primaryCollateral: 'P',
+          effectiveDate: '2025-04-28T00:00:00Z',
+          clientSecurityRelationship: 'O',
+        },
+        asset: {
+          assetType: 'S',
+          classificationCode: 'VEHI',
+          securityPercentageToUse: '100',
+          condition: {
+            code: 'U',
+            description: '',
+          },
+          securityStatus: {
+            code: 'C',
+            description: '',
+          },
+        },
+        vehicleMaint: {
+          assetExtras: [],
+          vehicle: {
+            value: '0000000000',
+            refType: 'ASSIGN',
+          },
+          vehicleDetails: {
+            externalSystemReference: '',
+            make: '',
+            model: '',
+            registrationYear: '',
+            colour: '',
+            nonStandardVehicle: {
+              code: 'Y',
+              description: '',
+            },
+            registrationNumber: '',
+            odometer: '0',
+          },
+        },
+      },
+    })
+  }
+
   const onlineJson: MaxDraftApplicationDetail_OCCTEST = {
     data: {
       type: 'applications',
@@ -433,76 +671,7 @@ export async function preparePrimeOnlineJson({
       },
       relationships: relationships,
     },
-    included: [
-      {
-        type: 'associatedClients',
-        id: '0001022184',
-        attributes: {
-          role: 'PRIMEB',
-          seq: '1',
-          signatureRequired: 'M',
-          creditCheckAuthorised: 'N',
-          order: '1',
-          clientReference: null,
-          clientMaint: {
-            clientID: '0001022184',
-            generalDetails: generalDetails,
-            clientIdentifications: clientIdentificationProvided,
-            contactDetails: {
-              address: [],
-              phone: [],
-              mobile: [
-                {
-                  countryCode: '64',
-                  networkCode: '21',
-                  number: '446886',
-                  preferredMethod: 'N',
-                  effectiveDate: '2025-04-28T00:00:00Z',
-                  type: 'MB',
-                  seq: '1',
-                },
-              ],
-              email: [
-                {
-                  address: 'johndoe@dummy.com',
-                  preferredMethod: 'Y',
-                  effectiveDate: '2025-04-28T00:00:00Z',
-                  type: 'HM',
-                  seq: '1',
-                },
-              ],
-            },
-            employmentDetails: [
-              {
-                employmentType: {
-                  type: 'FTM',
-                  description: 'Full-Time Employment',
-                },
-                occupation: '002',
-                jobDescription: 'Professionals',
-                employerName: 'FCU',
-                effectiveDate: '2022-08-01T00:00:00Z',
-                seq: '1',
-              },
-            ],
-            clientCapacity: {
-              capacityAssessment: {
-                anyExpectedChanges: 'Y',
-                changeDetails: 'N',
-                assessmentQuestionsAsked: 'Y',
-                selfDeclarationAccepted: 'Y',
-              },
-              joint: 'N',
-              assets: [],
-              liabilities: [],
-              incomes: [],
-              expenses: [],
-            },
-            mode: 'Add',
-          },
-        },
-      },
-    ],
+    included: included,
   }
 
   return onlineJson

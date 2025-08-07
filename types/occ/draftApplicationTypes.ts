@@ -544,7 +544,7 @@ export interface MaxDraftApplicationDetail_OCCTEST {
       self: string
     }
   }
-  included: Included_ApplicationIncluded_Base[]
+  included: unknown[]
 }
 
 export interface NewMaxDraftApplicationDetail {
@@ -585,5 +585,5 @@ export interface NewMaxDraftApplicationDetail {
       self: string
     }
   }
-  included: Included_ApplicationIncluded_Base_Draft[]
+  included: unknown[]
 }

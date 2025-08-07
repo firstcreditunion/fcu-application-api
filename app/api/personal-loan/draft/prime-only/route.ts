@@ -68,9 +68,7 @@ export async function POST(request: Request) {
   const body = await request.json()
   const {
     loanApplicationNumber,
-    primeClientNumber,
     supabaseIntegrityState,
-    supabaseIntegrityJointState,
 
     primePreliminaryQuestions,
     primeDriversLicence,
@@ -405,6 +403,7 @@ export async function POST(request: Request) {
   }
 
   const primeOnlineJson = await preparePrimeOnlineJson({
+    supabaseIntegrityState,
     primePreliminaryQuestions,
     primeDriversLicence,
     primePassport,

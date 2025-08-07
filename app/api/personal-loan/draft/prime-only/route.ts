@@ -84,6 +84,12 @@ export async function POST(request: Request) {
   const headersList = await headers()
   const authHeader = headersList.get('Authorization')
 
+  console.log('headersList', headersList)
+
+  console.log('authHeader', authHeader)
+
+  console.log('Secret Key: ', process.env.FCU_API_SECRET_KEY)
+
   if (!authHeader || authHeader !== process.env.FCU_API_SECRET_KEY!) {
     return new Response('Unauthorized', { status: 401 })
   }

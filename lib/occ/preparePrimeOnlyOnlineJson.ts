@@ -221,8 +221,10 @@ export async function preparePrimeOnlineJson({
     formFinancialDetails.component !== null &&
     formFinancialDetails.component !== undefined
 
+  console.log('Full Financial Form Details: ', formFinancialDetails)
+
   console.log('bothInsuranceFieldsExist: ', bothInsuranceFieldsExist)
-  
+
   console.log(
     'formFinancialDetails.needCreditCareInsurance : ',
     formFinancialDetails.needCreditCareInsurance

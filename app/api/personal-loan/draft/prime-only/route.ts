@@ -171,6 +171,7 @@ export async function POST(request: NextRequest) {
     providentInsurance: providentInsurance
   } = body
 
+  console.log('Financial Detials')
   // e.g. Insert new user into your DB
 
   //* --------- Mobile Number Verification ---------

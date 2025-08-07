@@ -152,8 +152,8 @@ export async function preparePrimeOnlineJson({
 
   const purchasePrice: PurchasePrice = {
     accessories: 0,
-    retailPrice: Number(formFinancialDetails.costOfGoods),
-    total: Number(formFinancialDetails.costOfGoods),
+    retailPrice: parseFloatFromCurrency(formFinancialDetails.costOfGoods),
+    total: parseFloatFromCurrency(formFinancialDetails.costOfGoods),
     lct: 0,
   }
 

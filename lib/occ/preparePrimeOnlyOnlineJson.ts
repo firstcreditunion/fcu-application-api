@@ -538,18 +538,28 @@ export async function preparePrimeOnlineJson({
                 employmentType: {
                   type: employmentTypes.filter(
                     (item) => item.type === primeEmployment.employmentType
-                  )[0].type,
-                  description: employmentTypes.filter(
-                    (item) => item.type === primeEmployment.employmentType
-                  )[0].desc,
+                  )[0]?.type,
+                  description: primeEmployment.employmentType
+                    ? employmentTypes.filter(
+                        (item) => item.type === primeEmployment.employmentType
+                      )[0]?.desc
+                    : '',
                 },
-                occupation: occupationCodes.filter(
-                  (item) => item.activity_code === primeEmployment.occupation
-                )[0].sov_activity_code,
-                jobDescription: occupationCodes.filter(
-                  (item) => item.activity_code === primeEmployment.occupation
-                )[0].activity_name,
-                employerName: primeEmployment.employerName,
+                occupation: primeEmployment.occupation
+                  ? occupationCodes.filter(
+                      (item) =>
+                        item.activity_code === primeEmployment.occupation
+                    )[0]?.sov_activity_code
+                  : '',
+                jobDescription: primeEmployment.occupation
+                  ? occupationCodes.filter(
+                      (item) =>
+                        item.activity_code === primeEmployment.occupation
+                    )[0].activity_name
+                  : '',
+                employerName: primeEmployment.employerName
+                  ? primeEmployment.employerName
+                  : '',
                 effectiveDate: primeEmployment.employmentEffctiveDate,
                 seq: '1',
               },

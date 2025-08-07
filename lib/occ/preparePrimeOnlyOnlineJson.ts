@@ -231,7 +231,7 @@ export async function preparePrimeOnlineJson({
   )
 
   const insurances: Insurance[] =
-    formFinancialDetails.needCreditCareInsurance === 'Y' &&
+    formFinancialDetails.needCreditCareInsurance === 'Yes' &&
     bothInsuranceFieldsExist
       ? [
           {

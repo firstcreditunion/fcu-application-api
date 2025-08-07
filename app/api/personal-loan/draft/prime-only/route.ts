@@ -56,6 +56,7 @@ import {
   updateType_tblClientEmail,
   updateType_tblClientPhone,
 } from '@/types/supabase/membership'
+import { NextRequest } from 'next/server'
 
 //* Unique Ids
 type supabaseIntegrityState = z.infer<typeof supabaseIntegritySchemaPrime>
@@ -80,19 +81,18 @@ type formFinancialDetails = z.infer<typeof financialDetialsSchema>
 type vehicleSecurity = z.infer<typeof securitySchema>
 type providentInsurance = (typeof row_tblProvidentInsuranceCoverTypes)[]
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const headersList = await headers()
-  const authHeader = headersList.get('Authorization')
 
   console.log('headersList PRIME', headersList)
 
-  console.log('authHeader PRIME', authHeader)
+  // console.log('authHeader PRIME', authHeader)
 
-  console.log('Secret Key: PRIME', process.env.FCU_API_SECRET_KEY)
+  // console.log('Secret Key: PRIME', process.env.FCU_API_SECRET_KEY)
 
-  if (!authHeader || authHeader !== process.env.FCU_API_SECRET_KEY!) {
-    return new Response('Unauthorized', { status: 401 })
-  }
+  // if (!authHeader || authHeader !== process.env.FCU_API_SECRET_KEY!) {
+  //   return new Response('Unauthorized', { status: 401 })
+  // }
 
   // Parse the request body
   const body = await request.json()

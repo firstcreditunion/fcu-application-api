@@ -14,7 +14,7 @@ export async function tblClientPhone(cid_unique_id: number) {
       .schema(schema)
       .from('s$tblClientPhone')
       .select()
-      .eq('CID_PRIME', cid_unique_id)
+      .eq('CID_Phone', cid_unique_id)
 
     if (!data) return
 

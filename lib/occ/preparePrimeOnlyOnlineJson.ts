@@ -138,13 +138,17 @@ export async function preparePrimeOnlineJson({
   const primeMobileUUID = supabaseIntegrityState.primeClientMobileUniqueID
   const primeWorkPhoneUUID = supabaseIntegrityState.primeClientWorkPhoneUniqueID
 
-  const mobileVerificationDetails = primeMobileUUID
-    ? await tblClientPhone(primeMobileUUID)
-    : undefined
+  let mobileVerificationDetails = undefined
 
-  const workPhoneVerificationDetails = primeWorkPhoneUUID
-    ? await tblClientPhone(primeWorkPhoneUUID)
-    : undefined
+  if (primeMobileUUID) {
+    mobileVerificationDetails = await tblClientPhone(primeMobileUUID)
+  }
+
+  let workPhoneVerificationDetails = undefined
+
+  if (primeWorkPhoneUUID) {
+    workPhoneVerificationDetails = await tblClientPhone(primeWorkPhoneUUID)
+  }
 
   const purchasePrice: PurchasePrice = {
     accessories: 0,
@@ -438,7 +442,7 @@ export async function preparePrimeOnlineJson({
     },
   }
 
-  const clientIdentificationProvided = buildClientIdentifications({
+  const clientIdentificationProvided = await buildClientIdentifications({
     primeDriversLicence,
     primePassport,
     primeFirearmsLicence,
@@ -611,7 +615,7 @@ export async function preparePrimeOnlineJson({
               code: 'Y',
               description: '',
             },
-            registrationNumber: '',
+            registrationNumber: vehicleSecurity.vehicleRegistrationNumber ?? '',
             odometer: '0',
           },
         },

@@ -113,25 +113,16 @@ export async function POST(request: Request) {
   const primeClientMobileUniqueID =
     supabaseIntegrityState.primeClientMobileUniqueID
 
-  const primeMobileVerificationCompleted =
-    supabaseIntegrityState.mobileVerificationCompleted
-
   //* Work Phone Number Verification
   const primeWorkPhoneNumber = primeContactDetails.workPhoneNumber
 
   const primeClientWorkPhoneUniqueID =
     supabaseIntegrityState.primeClientWorkPhoneUniqueID
 
-  const primeWorkPhoneVerificationCompleted =
-    supabaseIntegrityState.workPhoneVerificationCompleted
-
   //* Email Verification
   const primeEmail = primeContactDetails.workPhoneNumber
 
   const primeEmailUniqueID = supabaseIntegrityState.primeEmailUniqueID
-
-  const primeEmailVerificationCompleted =
-    supabaseIntegrityState.emailVerificationCompleted
 
   //* Residential Address Verification
   const primeResidentialAddressPxid = primeContactDetails.residentialAddressPxid
@@ -153,7 +144,6 @@ export async function POST(request: Request) {
 
   //? API Call - Prime Mobile
   if (
-    primeMobileVerificationCompleted === false &&
     primeMobileNumber !== undefined &&
     primeMobileNumber !== null &&
     primeMobileNumber !== ''
@@ -215,7 +205,6 @@ export async function POST(request: Request) {
 
   //       //? API Call - Prime Work Phone
   if (
-    primeWorkPhoneVerificationCompleted === false &&
     primeWorkPhoneNumber !== undefined &&
     primeWorkPhoneNumber !== null &&
     primeWorkPhoneNumber !== ''
@@ -279,12 +268,7 @@ export async function POST(request: Request) {
     }
   }
 
-  if (
-    primeEmailVerificationCompleted === false &&
-    primeEmail !== undefined &&
-    primeEmail !== null &&
-    primeEmail !== ''
-  ) {
+  if (primeEmail !== undefined && primeEmail !== null && primeEmail !== '') {
     const primeEmailVerificationMetaData = await verifyEmailAddress({
       emailAddress: primeEmail,
     })
@@ -328,7 +312,6 @@ export async function POST(request: Request) {
   }
 
   if (
-    primeResidentialAddressVerificationCompleted === false &&
     primeResidentialAddressPxid !== undefined &&
     primeResidentialAddressPxid !== null &&
     primeResidentialAddressPxid !== ''
@@ -366,7 +349,6 @@ export async function POST(request: Request) {
 
   //? API Call - Prime Mailing Address
   if (
-    primeMailingAddressVerificationCompleted === false &&
     primeMailingAddressPxid !== undefined &&
     primeMailingAddressPxid !== null &&
     primeMailingAddressPxid !== ''

@@ -141,7 +141,7 @@ export async function POST(request: Request) {
   }
 
   if (providedSecret === API_SECRET) {
-    console.log('API SECRET IS VALID')
+    console.log('API SECRET IS VALID FOR JOINT')
   }
 
   // IMPORTANT: Use a secure comparison if timing attacks are a concern.
@@ -231,6 +231,42 @@ export async function POST(request: Request) {
   } = body
 
   //? ============================== Prime Checks ==============================
+
+  console.log('Joint BODY', {
+    loanApplicationNumber,
+    supabaseIntegrityState,
+    supabaseIntegrityJointState,
+
+    primePreliminaryQuestions,
+    primeDriversLicence,
+    primePassport,
+    primeFirearmsLicence,
+    primeBirthCertificate,
+    primeKiwiAccessCard,
+    primeCommunityServiceCard,
+    primegoldCard,
+    primestudentID,
+    primePersonalDetails,
+    primeEmployment,
+    primeContactDetails,
+
+    jointPreliminaryQuestions,
+    jointPersonalDetails,
+    jointEmployment,
+    jointContactDetails,
+    jointDriversLicence,
+    jointPassport,
+    jointFirearmsLicence,
+    jointBirthCertificate,
+    jointKiwiAccessCard,
+    jointCommunityServiceCard,
+    jointgoldCard,
+    jointstudentID,
+
+    formFinancialDetails,
+    vehicleSecurity,
+    providentInsurance,
+  })
 
   //* --------- Mobile Number Verification ---------
   const primeMobileNumber = primeContactDetails.mobileNumber

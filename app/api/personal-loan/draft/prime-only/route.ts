@@ -82,7 +82,7 @@ type vehicleSecurity = z.infer<typeof securitySchema>
 type providentInsurance = (typeof row_tblProvidentInsuranceCoverTypes)[]
 
 export async function POST(request: NextRequest) {
-  const headersList = await headers()
+  const headersList = headers()
 
   console.log('headersList PRIME', headersList)
 

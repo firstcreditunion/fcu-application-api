@@ -53,8 +53,8 @@ type primeOnlineJsonProps = {
   primeBirthCertificate: z.infer<typeof birthCertificateSchema>
   primeKiwiAccessCard: z.infer<typeof kiwiAccessCardSchema>
   primeCommunityServiceCard: z.infer<typeof communityServiceCardSchema>
-  goldCard: z.infer<typeof goldCardSchema>
-  studentID: z.infer<typeof currentStudentCardSchema>
+  primegoldCard: z.infer<typeof goldCardSchema>
+  primestudentID: z.infer<typeof currentStudentCardSchema>
 
   formFinancialDetails: z.infer<typeof financialDetialsSchema>
   vehicleSecurity: z.infer<typeof securitySchema>
@@ -70,8 +70,8 @@ export async function preparePrimeOnlineJson({
   primeBirthCertificate,
   primeKiwiAccessCard,
   primeCommunityServiceCard,
-  goldCard,
-  studentID,
+  primegoldCard,
+  primestudentID,
   primePersonalDetails,
   primeEmployment,
   primeContactDetails,
@@ -373,14 +373,14 @@ export async function preparePrimeOnlineJson({
   }
 
   const clientIdentificationProvided = await buildClientIdentifications({
-    primeDriversLicence,
-    primePassport,
-    primeFirearmsLicence,
-    primeBirthCertificate,
-    primeKiwiAccessCard,
-    primeCommunityServiceCard,
-    goldCard,
-    studentID,
+    DriversLicence: primeDriversLicence,
+    Passport: primePassport,
+    FirearmsLicence: primeFirearmsLicence,
+    BirthCertificate: primeBirthCertificate,
+    KiwiAccessCard: primeKiwiAccessCard,
+    CommunityServiceCard: primeCommunityServiceCard,
+    goldCard: primegoldCard,
+    studentID: primestudentID,
   })
 
   const onlineJson: MaxDraftApplicationDetail_OCCTEST = {

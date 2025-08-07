@@ -1,6 +1,20 @@
+import z from 'zod'
+import { format } from 'date-fns'
+import { headers } from 'next/headers'
+import { convertToUTCTime } from '@/utils/constants'
+import { processMobileNumber } from '@/utils/occUtils'
+
+//* Unique IDS
+import { supabaseIntegritySchemaJoint } from '@/app/personal-loan/schema/supabaseIntegrityJointSchema'
+import { supabaseIntegritySchemaPrime } from '@/app/personal-loan/schema/supabaseIntegrityPrimeSchema'
+
+//* Prime
+import { personalDetailsSchema } from '@/app/personal-loan/schema/prime/personalDetailsSchema'
+import { preliminaryQuestionSchema } from '@/app/personal-loan/schema/prime/preliminaryQuestionsSchema'
+import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
 import { contactDetailsSchema } from '@/app/personal-loan/schema/prime/conactSchema'
 import { employmentSchema } from '@/app/personal-loan/schema/prime/employment'
-import { financialDetialsSchema } from '@/app/personal-loan/schema/prime/financialDetailsSchema'
+
 import {
   birthCertificateSchema,
   communityServiceCardSchema,
@@ -11,24 +25,30 @@ import {
   kiwiAccessCardSchema,
   passportSchema,
 } from '@/app/personal-loan/schema/prime/identificationsSchema'
-import { personalDetailsSchema } from '@/app/personal-loan/schema/prime/personalDetailsSchema'
-import { preliminaryQuestionSchema } from '@/app/personal-loan/schema/prime/preliminaryQuestionsSchema'
-import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
-import { supabaseIntegritySchemaJoint } from '@/app/personal-loan/schema/supabaseIntegrityJointSchema'
-import { supabaseIntegritySchemaPrime } from '@/app/personal-loan/schema/supabaseIntegrityPrimeSchema'
+
+//* Common
+import { financialDetialsSchema } from '@/app/personal-loan/schema/prime/financialDetailsSchema'
+
+//External Actions
 import { getExactAddressFromPxid } from '@/lib/externalActions/addressFinder'
 import { verifyEmailAddress } from '@/lib/externalActions/emailVerification'
 import {
   verifyMobileNumber,
   verifyPhoneNumber,
 } from '@/lib/externalActions/phoneVerification'
+
+//* OCC
 import { preparePrimeOnlineJson } from '@/lib/occ/preparePrimeOnlyOnlineJson'
+
+//* Supabase
 import { insertDraftLoanApplication } from '@/lib/supabase/draft-loan-application/update'
 import {
   tblClientAddressMetadataUpdate,
   tblClientEmailVerificationUpdate,
   tblClientPhoneUpdatePhoneVerificationDetails,
 } from '@/lib/supabase/membership/update'
+
+//* Types
 import { insert_tblDraftApplicationInsert } from '@/types/supabase/draftApplication'
 import { row_tblProvidentInsuranceCoverTypes } from '@/types/supabase/insurance/row'
 import {
@@ -36,36 +56,41 @@ import {
   updateType_tblClientEmail,
   updateType_tblClientPhone,
 } from '@/types/supabase/membership'
-import { convertToUTCTime } from '@/utils/constants'
-import { processMobileNumber } from '@/utils/occUtils'
-import { format } from 'date-fns'
-import z from 'zod'
 
+//* Unique Ids
 type supabaseIntegrityState = z.infer<typeof supabaseIntegritySchemaPrime>
 type supabaseIntegrityJointState = z.infer<typeof supabaseIntegritySchemaJoint>
-type primePreliminaryQuestions = z.infer<typeof preliminaryQuestionSchema>
 
+//* Prime
+type primePreliminaryQuestions = z.infer<typeof preliminaryQuestionSchema>
 type primePersonalDetails = z.infer<typeof personalDetailsSchema>
 type primeEmployment = z.infer<typeof employmentSchema>
 type primeContactDetails = z.infer<typeof contactDetailsSchema>
-
 type primeDriversLicence = z.infer<typeof driversLicenceSchema>
 type primePassport = z.infer<typeof passportSchema>
 type primeFirearmsLicence = z.infer<typeof firearmsLicenceSchema>
 type primeBirthCertificate = z.infer<typeof birthCertificateSchema>
 type primeKiwiAccessCard = z.infer<typeof kiwiAccessCardSchema>
 type primeCommunityServiceCard = z.infer<typeof communityServiceCardSchema>
-type goldCard = z.infer<typeof goldCardSchema>
-type studentID = z.infer<typeof currentStudentCardSchema>
+type primegoldCard = z.infer<typeof goldCardSchema>
+type primestudentID = z.infer<typeof currentStudentCardSchema>
 
+//* Common
 type formFinancialDetails = z.infer<typeof financialDetialsSchema>
 type vehicleSecurity = z.infer<typeof securitySchema>
-
 type providentInsurance = (typeof row_tblProvidentInsuranceCoverTypes)[]
 
 export async function POST(request: Request) {
+  const headersList = await headers()
+  const authHeader = headersList.get('Authorization')
+
+  if (!authHeader || authHeader !== process.env.FCU_API_SECRET_KEY!) {
+    return new Response('Unauthorized', { status: 401 })
+  }
+
   // Parse the request body
   const body = await request.json()
+
   const {
     loanApplicationNumber,
     supabaseIntegrityState,
@@ -77,8 +102,8 @@ export async function POST(request: Request) {
     primeBirthCertificate,
     primeKiwiAccessCard,
     primeCommunityServiceCard,
-    goldCard,
-    studentID,
+    primegoldCard,
+    primestudentID,
     primePersonalDetails,
     primeEmployment,
     primeContactDetails,
@@ -97,8 +122,8 @@ export async function POST(request: Request) {
     primeBirthCertificate: primeBirthCertificate
     primeKiwiAccessCard: primeKiwiAccessCard
     primeCommunityServiceCard: primeCommunityServiceCard
-    goldCard: goldCard
-    studentID: studentID
+    primegoldCard: primegoldCard
+    primestudentID: primestudentID
     primePersonalDetails: primePersonalDetails
     primeEmployment: primeEmployment
     primeContactDetails: primeContactDetails
@@ -108,6 +133,8 @@ export async function POST(request: Request) {
   } = body
 
   // e.g. Insert new user into your DB
+
+  //* --------- Mobile Number Verification ---------
   const primeMobileNumber = primeContactDetails.mobileNumber
 
   const primeClientMobileUniqueID =
@@ -192,7 +219,7 @@ export async function POST(request: Request) {
     }
   }
 
-  //       //? API Call - Prime Work Phone
+  //? API Call - Prime Work Phone
   if (
     primeWorkPhoneNumber !== undefined &&
     primeWorkPhoneNumber !== null &&
@@ -362,8 +389,8 @@ export async function POST(request: Request) {
     primeBirthCertificate,
     primeKiwiAccessCard,
     primeCommunityServiceCard,
-    goldCard,
-    studentID,
+    primegoldCard,
+    primestudentID,
     primePersonalDetails,
     primeEmployment,
     primeContactDetails,

@@ -1,27 +1,31 @@
 'use server'
 
+import z from 'zod'
+import { format, differenceInYears } from 'date-fns'
+
 import {
   Fee,
   Insurance,
   InterestRateStructure,
   PurchasePrice,
 } from '@/types/occ/applicationTypes'
+
 import {
   DraftFinancialDetail,
   MaxDraftApplicationDetail_OCCTEST,
-  //   MaxDraftApplicationDetail_OCCTEST,
 } from '@/types/occ/draftApplicationTypes'
-import { row_tblProvidentInsuranceCoverTypes } from '@/types/supabase/insurance/row'
 
-import z from 'zod'
+//* Unique IDS
+import { supabaseIntegritySchemaPrime } from '@/app/personal-loan/schema/supabaseIntegrityPrimeSchema'
+import { supabaseIntegritySchemaJoint } from '@/app/personal-loan/schema/supabaseIntegrityJointSchema'
+
+//* Prime
+
 import { preliminaryQuestionSchema } from '@/app/personal-loan/schema/prime/preliminaryQuestionsSchema'
-
-import { format, differenceInYears } from 'date-fns'
-
-import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
-import { personalDetailsSchema } from '@/app/personal-loan/schema/prime/personalDetailsSchema'
 import { employmentSchema } from '@/app/personal-loan/schema/prime/employment'
 import { contactDetailsSchema } from '@/app/personal-loan/schema/prime/conactSchema'
+import { personalDetailsSchema } from '@/app/personal-loan/schema/prime/personalDetailsSchema'
+
 import {
   birthCertificateSchema,
   communityServiceCardSchema,
@@ -32,17 +36,46 @@ import {
   kiwiAccessCardSchema,
   passportSchema,
 } from '@/app/personal-loan/schema/prime/identificationsSchema'
-import { countries, accommodation } from '@/lib/constants'
+
+//* Joint
+
+import { jointPreliminaryQuestionSchema } from '@/app/personal-loan/schema/joint/preliminaryQuestionsSchema'
+import { jointEmploymentSchema } from '@/app/personal-loan/schema/joint/employment'
+import { jointcontactDetailsSchema } from '@/app/personal-loan/schema/joint/conactSchema'
+import { jointPersonalDetailsSchema } from '@/app/personal-loan/schema/joint/personalDetailsSchema'
+
+import {
+  jointBirthCertificateSchema,
+  jointCommunityServiceCardSchema,
+  jointCurrentStudentCardSchema,
+  jointDriversLicenceSchema,
+  jointFirearmsLicenceSchema,
+  jointGoldCardSchema,
+  jointKiwiAccessCardSchema,
+  jointPassportSchema,
+} from '@/app/personal-loan/schema/joint/identificationsSchema'
+
+//* Common
+import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
 import { financialDetialsSchema } from '@/app/personal-loan/schema/prime/financialDetailsSchema'
-import { parseFloatFromCurrency } from '@/utils/numberFormatting'
+
+//* Constants
+import { countries, accommodation } from '@/lib/constants'
 import {
   genderLookup,
   loanPurposeCodesFallback,
   maritalStatusOptions,
   occupationCodes,
 } from '@/utils/constants'
+
+//* Utils
+import { parseFloatFromCurrency } from '@/utils/numberFormatting'
 import { buildClientIdentifications } from '@/utils/globalUtils'
-import { supabaseIntegritySchemaPrime } from '@/app/personal-loan/schema/supabaseIntegrityPrimeSchema'
+
+//* Types
+import { row_tblProvidentInsuranceCoverTypes } from '@/types/supabase/insurance/row'
+
+//* Supabase
 import { tblClientPhone } from '../supabase/membership/select'
 
 const employmentTypes = [
@@ -97,8 +130,10 @@ const employmentTypes = [
   { idx: 13, type: 'UEM', desc: 'Unemployed', emp_details_required: false },
 ]
 
-type primeOnlineJsonProps = {
+type jointOnlineJsonProps = {
   supabaseIntegrityState: z.infer<typeof supabaseIntegritySchemaPrime>
+  supabaseIntegrityJointState: z.infer<typeof supabaseIntegritySchemaJoint>
+
   primePreliminaryQuestions: z.infer<typeof preliminaryQuestionSchema>
   primePersonalDetails: z.infer<typeof personalDetailsSchema>
   primeEmployment: z.infer<typeof employmentSchema>
@@ -111,13 +146,29 @@ type primeOnlineJsonProps = {
   primeCommunityServiceCard: z.infer<typeof communityServiceCardSchema>
   primegoldCard: z.infer<typeof goldCardSchema>
   primestudentID: z.infer<typeof currentStudentCardSchema>
+
+  jointPreliminaryQuestions: z.infer<typeof jointPreliminaryQuestionSchema>
+  jointPersonalDetails: z.infer<typeof jointPersonalDetailsSchema>
+  jointEmployment: z.infer<typeof jointEmploymentSchema>
+  jointContactDetails: z.infer<typeof jointcontactDetailsSchema>
+  jointDriversLicence: z.infer<typeof jointDriversLicenceSchema>
+  jointPassport: z.infer<typeof jointPassportSchema>
+  jointFirearmsLicence: z.infer<typeof jointFirearmsLicenceSchema>
+  jointBirthCertificate: z.infer<typeof jointBirthCertificateSchema>
+  jointKiwiAccessCard: z.infer<typeof jointKiwiAccessCardSchema>
+  jointCommunityServiceCard: z.infer<typeof jointCommunityServiceCardSchema>
+  jointgoldCard: z.infer<typeof jointGoldCardSchema>
+  jointstudentID: z.infer<typeof jointCurrentStudentCardSchema>
+
   formFinancialDetails: z.infer<typeof financialDetialsSchema>
   vehicleSecurity: z.infer<typeof securitySchema>
   providentInsurance: (typeof row_tblProvidentInsuranceCoverTypes)[]
 }
 
-export async function preparePrimeOnlineJson({
+export async function prepareJointApplicationJson({
   supabaseIntegrityState,
+  supabaseIntegrityJointState,
+
   primePreliminaryQuestions,
   primeDriversLicence,
   primePassport,
@@ -131,10 +182,24 @@ export async function preparePrimeOnlineJson({
   primeEmployment,
   primeContactDetails,
 
+  jointPreliminaryQuestions,
+  jointPersonalDetails,
+  jointEmployment,
+  jointContactDetails,
+  jointDriversLicence,
+  jointPassport,
+  jointFirearmsLicence,
+  jointBirthCertificate,
+  jointKiwiAccessCard,
+  jointCommunityServiceCard,
+  jointgoldCard,
+  jointstudentID,
+
   formFinancialDetails,
   vehicleSecurity,
   providentInsurance,
-}: primeOnlineJsonProps) {
+}: jointOnlineJsonProps) {
+  //* Prime Mobile and Work Phone
   const primeMobileUUID = supabaseIntegrityState.primeClientMobileUniqueID
   const primeWorkPhoneUUID = supabaseIntegrityState.primeClientWorkPhoneUniqueID
 
@@ -148,6 +213,23 @@ export async function preparePrimeOnlineJson({
 
   if (primeWorkPhoneUUID) {
     workPhoneVerificationDetails = await tblClientPhone(primeWorkPhoneUUID)
+  }
+
+  //* Joint Mobile and Work Phone
+  const jointMobileUUID = supabaseIntegrityJointState.jointClientMobileUniqueID
+  const jointWorkPhoneUUID =
+    supabaseIntegrityJointState.jointClientWorkPhoneUniqueID
+
+  let jointMobileVerificationDetails = undefined
+
+  if (jointMobileUUID) {
+    jointMobileVerificationDetails = await tblClientPhone(jointMobileUUID)
+  }
+
+  let jointWorkPhoneVerificationDetails = undefined
+
+  if (jointWorkPhoneUUID) {
+    jointWorkPhoneVerificationDetails = await tblClientPhone(jointWorkPhoneUUID)
   }
 
   const purchasePrice: PurchasePrice = {
@@ -214,8 +296,6 @@ export async function preparePrimeOnlineJson({
       insurance.lambda_code_component === formFinancialDetails.coverType &&
       insurance.cover_type === formFinancialDetails.component
   )?.[0]?.g3_insurance_cover_type
-
-  console.log('insuranceOption: ', insuranceOption)
 
   const bothInsuranceFieldsExist =
     formFinancialDetails.coverType !== null &&
@@ -346,6 +426,10 @@ export async function preparePrimeOnlineJson({
         id: '0001022184',
         type: 'associatedClients',
       },
+      {
+        id: '0000000001',
+        type: 'associatedClients',
+      },
     ],
   }
 
@@ -364,6 +448,8 @@ export async function preparePrimeOnlineJson({
     associatedClients: assosiatedClients,
     securities: securities,
   }
+
+  //* ============== Prime Borrower ==============
 
   const gender = genderLookup.find(
     (item) => item.key === primePersonalDetails.gender
@@ -465,9 +551,9 @@ export async function preparePrimeOnlineJson({
   })
 
   const primeEmailExists =
-    primeContactDetails.emailAddress !== undefined &&
-    primeContactDetails.emailAddress !== null &&
-    primeContactDetails.emailAddress !== ''
+    supabaseIntegrityState.emailAddressForProgress !== undefined &&
+    supabaseIntegrityState.emailAddressForProgress !== null &&
+    supabaseIntegrityState.emailAddressForProgress !== ''
 
   const primeEmploymentExists =
     primeEmployment.employmentType !== null &&
@@ -594,6 +680,231 @@ export async function preparePrimeOnlineJson({
   }
 
   included?.push(primeBorrowerAssosiatedClients)
+
+  //* ============== Joint Borrower ==============
+
+  const jointGender = genderLookup.find(
+    (item) => item.key === jointPersonalDetails.gender
+  )?.value
+
+  const jointDateOfBirth = format(
+    new Date(jointPersonalDetails.dateOfBirth),
+    'yyyy-MM-dd'
+  )
+
+  const jointMaritalStatus = maritalStatusOptions.find(
+    (item) => item.key === jointPersonalDetails.maritalStatus
+  )?.key
+
+  const jointCountryOfResidenceIsNZ =
+    jointPreliminaryQuestions.isNzCitizen === 'Y' ||
+    jointPreliminaryQuestions.isNzResident === 'Y' ||
+    jointPreliminaryQuestions.hasWorkPermit === 'Y'
+
+  // Calculate years since residential effective date
+  const jointYearsSinceResidential = differenceInYears(
+    new Date(),
+    jointContactDetails.residentialEffectiveDate
+  )
+
+  // Select accommodation based on type and years
+  const getJointAccommodationDetails = () => {
+    const accommodationType = jointContactDetails.accommodationType
+
+    if (accommodationType === 'OWN')
+      return accommodation.find((item) => item.code === 'OWN')
+
+    if (accommodationType === 'BOARD')
+      return accommodation.find((item) => item.code === 'BRD')
+
+    if (accommodationType === 'RENT') {
+      // For renting, choose based on years
+      return jointYearsSinceResidential >= 2
+        ? accommodation.find((item) => item.code === 'RNTX') // Renting more than 2 years
+        : accommodation.find((item) => item.code === 'RNT2') // Renting less than 2 years
+    }
+
+    // Default fallback
+    return accommodation.find((item) => item.code === 'OWN')
+  }
+
+  const jointAccommodationDetails = getJointAccommodationDetails()
+
+  const jointGeneralDetails = {
+    externalSystemReference: '',
+    clientType: 'I',
+    status: {
+      code: 'A',
+    },
+    gna: 'N',
+    existingClient: 'Y',
+    defaultManager: '0000148335',
+    individualDetails: {
+      title: jointPersonalDetails.title,
+      forename: jointPersonalDetails.middleName
+        ? jointPersonalDetails.firstName + ' ' + jointPersonalDetails.middleName
+        : jointPersonalDetails.firstName,
+      surname: jointPersonalDetails.lastName,
+      clientOtherNamesExist: 'N',
+      gender: jointGender,
+      dateOfBirth: jointDateOfBirth,
+      dateOfBirthRefused: 'N',
+      maritalStatus: jointMaritalStatus,
+      countryOfResidence: jointCountryOfResidenceIsNZ ? 'NZ' : null,
+      countryOfCitizenship:
+        jointPreliminaryQuestions.isNzCitizen === 'Y'
+          ? 'NZ'
+          : countries.filter(
+              (country) =>
+                country.code === jointPreliminaryQuestions.citizenship
+            )[0].code,
+      numberOfDependants: jointPersonalDetails.dependantChildren.toString(),
+      numberOfAdults: jointPersonalDetails.dependantAdults.toString(),
+      accommodation: {
+        code: jointAccommodationDetails
+          ? jointAccommodationDetails.code
+          : 'OWN',
+        description: jointAccommodationDetails
+          ? jointAccommodationDetails.description
+          : 'Own with Mortgage',
+      },
+      resident: jointCountryOfResidenceIsNZ ? 'Y' : 'N',
+      smoker: 'N',
+    },
+  }
+
+  const jointClientIdentificationProvided = await buildClientIdentifications({
+    DriversLicence: jointDriversLicence,
+    Passport: jointPassport,
+    FirearmsLicence: jointFirearmsLicence,
+    BirthCertificate: jointBirthCertificate,
+    KiwiAccessCard: jointKiwiAccessCard,
+    CommunityServiceCard: jointCommunityServiceCard,
+    goldCard: jointgoldCard,
+    studentID: jointstudentID,
+  })
+
+  const jointEmailExists =
+    jointContactDetails.emailAddress !== undefined &&
+    jointContactDetails.emailAddress !== null &&
+    jointContactDetails.emailAddress !== ''
+
+  const jointEmploymentExists =
+    jointEmployment.employmentType !== null &&
+    jointEmployment.employmentType !== undefined &&
+    jointEmployment.employmentType !== ''
+
+  const jointBorrowerAssosiatedClients = {
+    type: 'associatedClients',
+    id: '0000000001',
+    attributes: {
+      role: 'CO-BOR',
+      seq: '2',
+      signatureRequired: 'O',
+      creditCheckAuthorised: 'N',
+      order: '2',
+      clientReference: null,
+      clientMaint: {
+        clientID: '0000000001',
+        generalDetails: jointGeneralDetails,
+        clientIdentifications: jointClientIdentificationProvided,
+        contactDetails: {
+          address: [],
+          phone:
+            jointWorkPhoneVerificationDetails &&
+            jointWorkPhoneVerificationDetails?.length > 0
+              ? [
+                  {
+                    countryCode:
+                      jointWorkPhoneVerificationDetails[0].calling_code,
+                    networkCode:
+                      jointWorkPhoneVerificationDetails[0].sov_stdCode,
+                    number: jointWorkPhoneVerificationDetails[0].sov_number,
+                    preferredMethod: 'N',
+                    effectiveDate: `${format(
+                      new Date(),
+                      'yyyy-MM-dd'
+                    )}T00:00:00Z`,
+                    type: 'MB',
+                    seq: '1',
+                  },
+                ]
+              : [],
+          mobile:
+            jointMobileVerificationDetails &&
+            jointMobileVerificationDetails?.length > 0
+              ? [
+                  {
+                    countryCode: jointMobileVerificationDetails[0].calling_code,
+                    networkCode:
+                      jointMobileVerificationDetails[0].sov_networkCode,
+                    number: jointMobileVerificationDetails[0].sov_number,
+                    preferredMethod: 'N',
+                    effectiveDate: `${format(
+                      new Date(),
+                      'yyyy-MM-dd'
+                    )}T00:00:00Z`,
+                    type: 'MB',
+                    seq: '1',
+                  },
+                ]
+              : [],
+          email: jointEmailExists
+            ? [
+                {
+                  address: jointContactDetails.emailAddress,
+                  preferredMethod: 'Y',
+                  effectiveDate: `${format(
+                    new Date(),
+                    'yyyy-MM-dd'
+                  )}T00:00:00Z`,
+                  type: 'HM',
+                  seq: '1',
+                },
+              ]
+            : [],
+        },
+        employmentDetails: jointEmploymentExists
+          ? [
+              {
+                employmentType: {
+                  type: employmentTypes.filter(
+                    (item) => item.type === jointEmployment.employmentType
+                  )[0]?.type,
+                  description: jointEmployment.employmentType
+                    ? employmentTypes.filter(
+                        (item) => item.type === jointEmployment.employmentType
+                      )[0]?.desc
+                    : '',
+                },
+                occupation: primeEmployment.occupation
+                  ? occupationCodes.filter(
+                      (item) =>
+                        item.activity_code === jointEmployment.occupation
+                    )[0]?.sov_activity_code
+                  : '',
+                jobDescription: jointEmployment.occupation
+                  ? occupationCodes.filter(
+                      (item) =>
+                        item.activity_code === jointEmployment.occupation
+                    )[0].activity_name
+                  : '',
+                employerName: jointEmployment.employerName
+                  ? jointEmployment.employerName
+                  : '',
+                effectiveDate: jointEmployment.employmentEffctiveDate,
+                seq: '1',
+              },
+            ]
+          : [],
+        mode: 'Add',
+      },
+    },
+  }
+
+  included?.push(jointBorrowerAssosiatedClients)
+
+  //* ============== Vehicle Security ==============
 
   if (hasVehicleSecurity) {
     included?.push({

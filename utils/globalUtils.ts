@@ -141,12 +141,12 @@ export async function getCreditSenseDebugBanks() {
 
 // All possible identification objects bundled together
 interface AllIdentifications {
-  primeDriversLicence: DriversLicenceData
-  primePassport: PassportData
-  primeFirearmsLicence: FirearmsLicenceData
-  primeBirthCertificate: BirthCertificateData
-  primeKiwiAccessCard: KiwiAccessCardData
-  primeCommunityServiceCard: CommunityServiceCardData
+  DriversLicence: DriversLicenceData
+  Passport: PassportData
+  FirearmsLicence: FirearmsLicenceData
+  BirthCertificate: BirthCertificateData
+  KiwiAccessCard: KiwiAccessCardData
+  CommunityServiceCard: CommunityServiceCardData
   goldCard: GoldCardData
   studentID: StudentIDData
 }
@@ -158,118 +158,118 @@ export async function buildClientIdentifications(
   let seqCounter = 1
 
   const {
-    primeDriversLicence,
-    primePassport,
-    primeFirearmsLicence,
-    primeBirthCertificate,
-    primeKiwiAccessCard,
-    primeCommunityServiceCard,
+    DriversLicence,
+    Passport,
+    FirearmsLicence,
+    BirthCertificate,
+    KiwiAccessCard,
+    CommunityServiceCard,
     goldCard,
     studentID,
   } = identifications
 
   // 1. NZ Driver's Licence
-  if (primeDriversLicence.licenceNumber) {
+  if (DriversLicence.licenceNumber) {
     clientIdentifications.push({
       idCode1: 'DRVLSC',
-      idCode2: primeDriversLicence.licenceType,
-      effectiveDate: primeDriversLicence.licenceIssueDate
-        ? format(primeDriversLicence.licenceIssueDate, 'yyyy-MM-dd')
+      idCode2: DriversLicence.licenceType,
+      effectiveDate: DriversLicence.licenceIssueDate
+        ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd')
         : undefined,
-      expiryDate: primeDriversLicence.licenceExpiryDate
-        ? format(primeDriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
+      expiryDate: DriversLicence.licenceExpiryDate
+        ? format(DriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
         : undefined,
-      reference: primeDriversLicence.licenceNumber,
+      reference: DriversLicence.licenceNumber,
       seq: '1',
     })
     clientIdentifications.push({
       idCode1: 'DRVLSC',
       idCode2: 'DLVERSION',
-      effectiveDate: primeDriversLicence.licenceIssueDate
-        ? format(primeDriversLicence.licenceIssueDate, 'yyyy-MM-dd')
+      effectiveDate: DriversLicence.licenceIssueDate
+        ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd')
         : undefined,
-      expiryDate: primeDriversLicence.licenceExpiryDate
-        ? format(primeDriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
+      expiryDate: DriversLicence.licenceExpiryDate
+        ? format(DriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
         : undefined,
-      reference: primeDriversLicence.licenceVersion,
+      reference: DriversLicence.licenceVersion,
       seq: '1',
     })
   }
 
   // 2. NZ Passport
-  if (primePassport.passportNumber) {
+  if (Passport.passportNumber) {
     clientIdentifications.push({
       idCode1: 'PASPRT',
-      effectiveDate: primePassport.passportIssueDate
-        ? format(primePassport.passportIssueDate, 'yyyy-MM-dd')
+      effectiveDate: Passport.passportIssueDate
+        ? format(Passport.passportIssueDate, 'yyyy-MM-dd')
         : undefined,
-      expiryDate: primePassport.passportExpiryDate
-        ? format(primePassport.passportExpiryDate, 'yyyy-MM-dd')
+      expiryDate: Passport.passportExpiryDate
+        ? format(Passport.passportExpiryDate, 'yyyy-MM-dd')
         : undefined,
-      reference: primePassport.passportNumber,
+      reference: Passport.passportNumber,
       seq: String(seqCounter++),
     })
   }
 
   // 3. NZ Firearms Licence
-  if (primeFirearmsLicence.firearmsNumber) {
+  if (FirearmsLicence.firearmsNumber) {
     clientIdentifications.push({
       idCode1: 'FIRELICENS',
-      effectiveDate: primeFirearmsLicence.firearmsIssueDate
-        ? format(primeFirearmsLicence.firearmsIssueDate, 'yyyy-MM-dd')
+      effectiveDate: FirearmsLicence.firearmsIssueDate
+        ? format(FirearmsLicence.firearmsIssueDate, 'yyyy-MM-dd')
         : undefined,
-      expiryDate: primeFirearmsLicence.firearmsExpiryDate
-        ? format(primeFirearmsLicence.firearmsExpiryDate, 'yyyy-MM-dd')
+      expiryDate: FirearmsLicence.firearmsExpiryDate
+        ? format(FirearmsLicence.firearmsExpiryDate, 'yyyy-MM-dd')
         : undefined,
-      reference: primeFirearmsLicence.firearmsNumber,
+      reference: FirearmsLicence.firearmsNumber,
       seq: String(seqCounter++),
     })
   }
 
   // 4. NZ Birth Certificate
-  if (primeBirthCertificate.birthCertificateRegNo) {
+  if (BirthCertificate.birthCertificateRegNo) {
     clientIdentifications.push({
       idCode1: 'BIRTHCERT',
-      effectiveDate: primeBirthCertificate.birthCertificateIssueDate
-        ? format(primeBirthCertificate.birthCertificateIssueDate, 'yyyy-MM-dd')
+      effectiveDate: BirthCertificate.birthCertificateIssueDate
+        ? format(BirthCertificate.birthCertificateIssueDate, 'yyyy-MM-dd')
         : undefined,
-      reference: primeBirthCertificate.birthCertificateRegNo,
+      reference: BirthCertificate.birthCertificateRegNo,
       seq: String(seqCounter++),
     })
   }
 
   // 5. NZ Kiwi Access Card
-  if (primeKiwiAccessCard.kiwiAccessCardNumber) {
+  if (KiwiAccessCard.kiwiAccessCardNumber) {
     clientIdentifications.push({
       idCode1: 'KIWACCCRD',
-      effectiveDate: primeKiwiAccessCard.kiwiAccessCardIssueDate
-        ? format(primeKiwiAccessCard.kiwiAccessCardIssueDate, 'yyyy-MM-dd')
+      effectiveDate: KiwiAccessCard.kiwiAccessCardIssueDate
+        ? format(KiwiAccessCard.kiwiAccessCardIssueDate, 'yyyy-MM-dd')
         : undefined,
-      expiryDate: primeKiwiAccessCard.kiwiAccessCardExpiryDate
-        ? format(primeKiwiAccessCard.kiwiAccessCardExpiryDate, 'yyyy-MM-dd')
+      expiryDate: KiwiAccessCard.kiwiAccessCardExpiryDate
+        ? format(KiwiAccessCard.kiwiAccessCardExpiryDate, 'yyyy-MM-dd')
         : undefined,
-      reference: primeKiwiAccessCard.kiwiAccessCardNumber,
+      reference: KiwiAccessCard.kiwiAccessCardNumber,
       seq: String(seqCounter++),
     })
   }
 
   // 6. NZ Community Service Card
-  if (primeCommunityServiceCard.communityServiceCardNumber) {
+  if (CommunityServiceCard.communityServiceCardNumber) {
     clientIdentifications.push({
       idCode1: 'COMSERVCRD',
-      effectiveDate: primeCommunityServiceCard.communityServiceCardIssueDate
+      effectiveDate: CommunityServiceCard.communityServiceCardIssueDate
         ? format(
-            primeCommunityServiceCard.communityServiceCardIssueDate,
+            CommunityServiceCard.communityServiceCardIssueDate,
             'yyyy-MM-dd'
           )
         : undefined,
-      expiryDate: primeCommunityServiceCard.communityServiceCardExpiryDate
+      expiryDate: CommunityServiceCard.communityServiceCardExpiryDate
         ? format(
-            primeCommunityServiceCard.communityServiceCardExpiryDate,
+            CommunityServiceCard.communityServiceCardExpiryDate,
             'yyyy-MM-dd'
           )
         : undefined,
-      reference: primeCommunityServiceCard.communityServiceCardNumber,
+      reference: CommunityServiceCard.communityServiceCardNumber,
       seq: String(seqCounter++),
     })
   }

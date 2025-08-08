@@ -378,8 +378,8 @@ export async function prepareJointApplicationJson({
           formFinancialDetails.paymentFrequency === 'W'
             ? 'WEEKLY'
             : formFinancialDetails.paymentFrequency === 'F'
-            ? 'FORTNIGHTLY'
-            : 'MONTHLY',
+              ? 'FORTNIGHTLY'
+              : 'MONTHLY',
       },
       paymentFrequencyUnit: 1,
       paymentMethod: {
@@ -958,7 +958,19 @@ export async function prepareJointApplicationJson({
     data: {
       type: 'applications',
       attributes: {
-        applicationName: 'Online Submission',
+        applicationName:
+          primePersonalDetails.title +
+          ' ' +
+          primePersonalDetails.firstName.charAt(0) +
+          ' ' +
+          primePersonalDetails.lastName +
+          ' & ' +
+          jointPersonalDetails.title +
+          ' ' +
+          jointPersonalDetails.firstName.charAt(0) +
+          ' ' +
+          jointPersonalDetails.lastName,
+
         clientApplication: 'FCUWEBAPP',
         comparisonRatesSupplied: 'N',
         externalSystemReference: 'ONL_kjmNWvoESz',

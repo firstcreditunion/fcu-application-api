@@ -172,7 +172,6 @@ export async function buildClientIdentifications(
   if (DriversLicence.licenceNumber) {
     clientIdentifications.push({
       idCode1: 'DRVLSC',
-      idCode2: DriversLicence.licenceType,
       effectiveDate: DriversLicence.licenceIssueDate
         ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd')
         : undefined,

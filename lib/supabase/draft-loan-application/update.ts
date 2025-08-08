@@ -7,6 +7,7 @@ import { tblInsertError } from '../error.actions'
 
 import { insert_tblDraftApplicationInsert } from '@/types/supabase/draftApplication'
 import { insertType_tblMembershipApplicationErrors } from '@/types/supabase/membership'
+import { triggerDraftApplicationMatching } from '@/lib/occ/triggerDraftApplicationMatching'
 
 export async function insertDraftLoanApplication(
   _data: typeof insert_tblDraftApplicationInsert
@@ -29,6 +30,11 @@ export async function insertDraftLoanApplication(
         trading_branch: _data.trading_branch,
         online_raw_json: _data.online_json,
       })
+      .select()
+
+    if (data && data.length > 0) {
+      await triggerDraftApplicationMatching(data[0].application_number)
+    }
 
     console.log('Draft INSERT FOR PRIME ONLY Data & Error: ', data, error)
 

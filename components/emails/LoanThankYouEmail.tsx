@@ -17,7 +17,10 @@ import {
   Tailwind,
 } from '@react-email/components'
 
-const LoanThankYouEmail = (props) => {
+const LoanThankYouEmail = (props: {
+  firstName: string
+  applicationNumber: string
+}) => {
   const { firstName, applicationNumber } = props
 
   return (
@@ -55,7 +58,7 @@ const LoanThankYouEmail = (props) => {
                   </Text>
                 </div>
                 <Heading className='text-[#00687f] text-[24px] font-bold m-0 mb-[8px]'>
-                  We've received your loan application!
+                  We&apos;ve received your loan application!
                 </Heading>
               </Section>
 
@@ -132,8 +135,8 @@ const LoanThankYouEmail = (props) => {
                     </Column>
                     <Column>
                       <Text className='text-[#00687f] text-[16px] m-0 leading-[24px]'>
-                        <strong>Personal Contact:</strong> We'll be in touch
-                        shortly to discuss your application and answer any
+                        <strong>Personal Contact:</strong> We&apos;ll be in
+                        touch shortly to discuss your application and answer any
                         questions you may have.
                       </Text>
                     </Column>
@@ -164,9 +167,9 @@ const LoanThankYouEmail = (props) => {
                   💡 Important Information
                 </Text>
                 <Text className='text-[#00687f] text-[14px] m-0 leading-[20px]'>
-                  Our commitment to clarity and accessibility means we'll
+                  Our commitment to clarity and accessibility means we&apos;ll
                   explain all loan terms and payment options in detail. If you
-                  have any questions at any stage, please don't hesitate to
+                  have any questions at any stage, please don&apos;t hesitate to
                   reach out.
                 </Text>
               </Section>
@@ -174,7 +177,8 @@ const LoanThankYouEmail = (props) => {
               {/* Contact Section */}
               <Section className='text-center mb-[32px]'>
                 <Text className='text-[#00687f] text-[16px] m-0 mb-[20px] leading-[24px]'>
-                  Have questions about your application? We're here to help.
+                  Have questions about your application? We&apos;re here to
+                  help.
                 </Text>
                 <Button
                   href='https://firstcreditunion-loans-test.vercel.app/'

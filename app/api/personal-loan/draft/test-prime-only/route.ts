@@ -127,6 +127,9 @@ export async function POST(request: NextRequest) {
   // --- Verification Successful ---
   // If the secret is valid, proceed with your main logic.
 
+  // Performance optimization: Start timing the entire request processing
+  console.time('Total Request Processing Time')
+
   // Parse the request body
   const body = await request.json()
 
@@ -203,69 +206,65 @@ export async function POST(request: NextRequest) {
   const primeMailingAddressUniqueID =
     supabaseIntegrityState.primeMailingAddressUniqueID
 
-  let primeMobileVerificationMetaData = undefined
-  let primeWorkPhoneVerificationMetaData = undefined
-  let primeEmailVerificationMetaData = undefined
-  let primeResidentialAddressVerificationMetaData = undefined
-  let primeMailingAddressVerificationMetaData = undefined
+  // Performance optimization: Parallelize external API calls
+  console.time('External API Verification Calls')
 
-  //? API Call - Prime Mobile
-  if (
+  const [
+    primeMobileVerificationMetaData,
+    primeWorkPhoneVerificationMetaData,
+    primeEmailVerificationMetaData,
+    primeResidentialAddressVerificationMetaData,
+    primeMailingAddressVerificationMetaData,
+  ] = await Promise.all([
+    // Mobile number verification
     primeMobileNumber !== undefined &&
     primeMobileNumber !== null &&
     primeMobileNumber !== ''
-  ) {
-    primeMobileVerificationMetaData = await verifyMobileNumber({
-      phoneNumber: primeMobileNumber,
-    })
-  }
+      ? verifyMobileNumber({ phoneNumber: primeMobileNumber })
+      : Promise.resolve(undefined),
 
-  //? API Call - Prime Work Phone
-  if (
+    // Work phone verification
     primeWorkPhoneNumber !== undefined &&
     primeWorkPhoneNumber !== null &&
     primeWorkPhoneNumber !== ''
-  ) {
-    primeWorkPhoneVerificationMetaData = await verifyPhoneNumber({
-      phoneNumber: primeWorkPhoneNumber,
-    })
-  }
+      ? verifyPhoneNumber({ phoneNumber: primeWorkPhoneNumber })
+      : Promise.resolve(undefined),
 
-  if (primeEmail !== undefined && primeEmail !== null && primeEmail !== '') {
-    primeEmailVerificationMetaData = await verifyEmailAddress({
-      emailAddress: primeEmail,
-    })
-  }
+    // Email verification
+    primeEmail !== undefined && primeEmail !== null && primeEmail !== ''
+      ? verifyEmailAddress({ emailAddress: primeEmail })
+      : Promise.resolve(undefined),
 
-  if (
+    // Residential address verification
     primeResidentialAddressPxid !== undefined &&
     primeResidentialAddressPxid !== null &&
     primeResidentialAddressPxid !== ''
-  ) {
-    primeResidentialAddressVerificationMetaData = await getExactAddressFromPxid(
-      {
-        pxid: primeResidentialAddressPxid,
-      }
-    )
-  }
+      ? getExactAddressFromPxid({ pxid: primeResidentialAddressPxid })
+      : Promise.resolve(undefined),
 
-  //? API Call - Prime Mailing Address
-  if (
+    // Mailing address verification
     primeMailingAddressPxid !== undefined &&
     primeMailingAddressPxid !== null &&
     primeMailingAddressPxid !== ''
-  ) {
-    primeMailingAddressVerificationMetaData = await getExactAddressFromPxid({
-      pxid: primeMailingAddressPxid,
-    })
-  }
+      ? getExactAddressFromPxid({ pxid: primeMailingAddressPxid })
+      : Promise.resolve(undefined),
+  ])
+
+  console.timeEnd('External API Verification Calls')
 
   //** ============ PRIME UPDATE SUPABASE ============ */
+  // Performance optimization: Parallelize Supabase database updates
+  console.time('Supabase Database Updates')
+
+  const supabaseUpdatePromises = []
+
+  // Mobile phone update
   if (
     primeMobileVerificationMetaData &&
-    primeMobileVerificationMetaData?.success === true
+    primeMobileVerificationMetaData?.success === true &&
+    primeClientMobileUniqueID !== null &&
+    primeClientMobileUniqueID !== undefined
   ) {
-    //* Update Supabase
     const phoneVerificationResultData: typeof updateType_tblClientPhone = {
       is_verified: primeMobileVerificationMetaData?.is_verified,
       line_type: primeMobileVerificationMetaData?.line_type,
@@ -294,22 +293,21 @@ export async function POST(request: NextRequest) {
       metadata: JSON.stringify(primeMobileVerificationMetaData),
     }
 
-    if (
-      primeClientMobileUniqueID !== null &&
-      primeClientMobileUniqueID !== undefined
-    ) {
-      await tblClientPhoneUpdatePhoneVerificationDetails(
+    supabaseUpdatePromises.push(
+      tblClientPhoneUpdatePhoneVerificationDetails(
         primeClientMobileUniqueID,
         phoneVerificationResultData
       )
-    }
+    )
   }
 
+  // Work phone update
   if (
     primeWorkPhoneVerificationMetaData &&
-    primeWorkPhoneVerificationMetaData?.success === true
+    primeWorkPhoneVerificationMetaData?.success === true &&
+    primeClientWorkPhoneUniqueID !== null &&
+    primeClientWorkPhoneUniqueID !== undefined
   ) {
-    //* Update Supabase
     const phoneVerificationResultData: typeof updateType_tblClientPhone = {
       is_verified: primeWorkPhoneVerificationMetaData?.is_verified,
       line_type: primeWorkPhoneVerificationMetaData?.line_type,
@@ -341,22 +339,21 @@ export async function POST(request: NextRequest) {
       metadata: JSON.stringify(primeWorkPhoneVerificationMetaData),
     }
 
-    if (
-      primeClientWorkPhoneUniqueID !== null &&
-      primeClientWorkPhoneUniqueID !== undefined
-    ) {
-      await tblClientPhoneUpdatePhoneVerificationDetails(
+    supabaseUpdatePromises.push(
+      tblClientPhoneUpdatePhoneVerificationDetails(
         primeClientWorkPhoneUniqueID,
         phoneVerificationResultData
       )
-    }
+    )
   }
 
+  // Email update
   if (
     primeEmailVerificationMetaData &&
-    primeEmailVerificationMetaData?.success === true
+    primeEmailVerificationMetaData?.success === true &&
+    primeEmailUniqueID !== null &&
+    primeEmailUniqueID !== undefined
   ) {
-    //* Update Supabase
     const emailVerificationResultData: typeof updateType_tblClientEmail = {
       verified_email: primeEmailVerificationMetaData?.verified_email,
       email_account: primeEmailVerificationMetaData?.email_account,
@@ -375,53 +372,60 @@ export async function POST(request: NextRequest) {
       metadata: JSON.stringify(primeEmailVerificationMetaData),
     }
 
-    if (primeEmailUniqueID !== null && primeEmailUniqueID !== undefined) {
-      await tblClientEmailVerificationUpdate(
+    supabaseUpdatePromises.push(
+      tblClientEmailVerificationUpdate(
         primeEmailUniqueID,
         emailVerificationResultData
       )
-    }
+    )
   }
 
+  // Residential address update
   if (
     primeResidentialAddressVerificationMetaData &&
-    primeResidentialAddressVerificationMetaData.success === true
+    primeResidentialAddressVerificationMetaData.success === true &&
+    primeResidentialAddressUniqueID !== null &&
+    primeResidentialAddressUniqueID !== undefined
   ) {
     const primeResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
       {
         metadata: JSON.stringify(primeResidentialAddressVerificationMetaData),
       }
 
-    if (
-      primeResidentialAddressUniqueID !== null &&
-      primeResidentialAddressUniqueID !== undefined
-    ) {
-      await tblClientAddressMetadataUpdate(
+    supabaseUpdatePromises.push(
+      tblClientAddressMetadataUpdate(
         primeResidentialAddressUniqueID,
         primeResidentialAddressVerificationResultData
       )
-    }
+    )
   }
 
+  // Mailing address update
   if (
     primeMailingAddressVerificationMetaData &&
-    primeMailingAddressVerificationMetaData.success === true
+    primeMailingAddressVerificationMetaData.success === true &&
+    primeMailingAddressUniqueID !== null &&
+    primeMailingAddressUniqueID !== undefined
   ) {
     const primeMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
       {
         metadata: JSON.stringify(primeMailingAddressVerificationMetaData),
       }
 
-    if (
-      primeMailingAddressUniqueID !== null &&
-      primeMailingAddressUniqueID !== undefined
-    ) {
-      await tblClientAddressMetadataUpdate(
+    supabaseUpdatePromises.push(
+      tblClientAddressMetadataUpdate(
         primeMailingAddressUniqueID,
         primeMailingAddressVerificationResultData
       )
-    }
+    )
   }
+
+  // Execute all Supabase updates in parallel
+  if (supabaseUpdatePromises.length > 0) {
+    await Promise.all(supabaseUpdatePromises)
+  }
+
+  console.timeEnd('Supabase Database Updates')
 
   const primeOnlineJson = await preparePrimeOnlineJson({
     supabaseIntegrityState,
@@ -458,6 +462,11 @@ export async function POST(request: NextRequest) {
   }
 
   await insertDraftLoanApplication(draftApplicationInsertData)
+
+  console.timeEnd('Total Request Processing Time')
+  console.log(
+    'Performance optimization completed: External API calls and database updates now run in parallel'
+  )
 
   return new Response(JSON.stringify({}), {
     status: 201,

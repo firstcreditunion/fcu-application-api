@@ -156,6 +156,9 @@ export async function POST(request: Request) {
   // --- Verification Successful ---
   // If the secret is valid, proceed with your main logic.
 
+  // Performance optimization: Start timing the entire request processing
+  console.time('Total Request Processing Time')
+
   // Parse the request body
   const body = await request.json()
 
@@ -330,441 +333,437 @@ export async function POST(request: Request) {
 
   //? ==============================PRIME EXTERNAL CALLS ==============================
 
-  //? API Call - Prime Mobile
-  if (
+  // Performance optimization: Parallelize PRIME external API calls
+  console.time('Prime External API Verification Calls')
+
+  const [
+    primeMobileVerificationMetaData,
+    primeWorkPhoneVerificationMetaData,
+    primeEmailVerificationMetaData,
+    primeResidentialAddressVerificationMetaData,
+    primeMailingAddressVerificationMetaData,
+  ] = await Promise.all([
+    // Prime mobile number verification
     primeMobileNumber !== undefined &&
     primeMobileNumber !== null &&
     primeMobileNumber !== ''
-  ) {
-    const primeMobileVerificationMetaData = await verifyMobileNumber({
-      phoneNumber: primeMobileNumber,
-    })
+      ? verifyMobileNumber({ phoneNumber: primeMobileNumber })
+      : Promise.resolve(undefined),
 
-    if (
-      primeMobileVerificationMetaData &&
-      primeMobileVerificationMetaData?.success === true
-    ) {
-      //* Update Supabase
-      const phoneVerificationResultData: typeof updateType_tblClientPhone = {
-        is_verified: primeMobileVerificationMetaData?.is_verified,
-        line_type: primeMobileVerificationMetaData?.line_type,
-        line_status: primeMobileVerificationMetaData?.line_status,
-        line_status_reason: primeMobileVerificationMetaData?.line_status_reason,
-        country_code: primeMobileVerificationMetaData?.country_code,
-        calling_code: primeMobileVerificationMetaData?.calling_code,
-        raw_national: primeMobileVerificationMetaData?.raw_national,
-        formatted_national: primeMobileVerificationMetaData?.formatted_national,
-        raw_international: primeMobileVerificationMetaData?.raw_international,
-        formatted_international:
-          primeMobileVerificationMetaData?.formatted_international,
-        not_verified_code: primeMobileVerificationMetaData?.not_verified_code,
-        not_verified_reason:
-          primeMobileVerificationMetaData?.not_verified_reason,
-        updated_datetime: convertToUTCTime(),
-        sov_networkCode: primeMobileVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              primeMobileVerificationMetaData?.formatted_national
-            ).sov_networkCode
-          : '',
-        sov_number: primeMobileVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              primeMobileVerificationMetaData?.formatted_national
-            ).sov_number
-          : '',
-        metadata: JSON.stringify(primeMobileVerificationMetaData),
-      }
-
-      if (
-        primeClientMobileUniqueID !== null &&
-        primeClientMobileUniqueID !== undefined
-      ) {
-        await tblClientPhoneUpdatePhoneVerificationDetails(
-          primeClientMobileUniqueID,
-          phoneVerificationResultData
-        )
-      }
-    }
-  }
-
-  //? API Call - Prime Work Phone
-  if (
+    // Prime work phone verification
     primeWorkPhoneNumber !== undefined &&
     primeWorkPhoneNumber !== null &&
     primeWorkPhoneNumber !== ''
-  ) {
-    const primeWorkPhoneVerificationMetaData = await verifyPhoneNumber({
-      phoneNumber: primeWorkPhoneNumber,
-    })
+      ? verifyPhoneNumber({ phoneNumber: primeWorkPhoneNumber })
+      : Promise.resolve(undefined),
 
-    if (
-      primeWorkPhoneVerificationMetaData &&
-      primeWorkPhoneVerificationMetaData?.success === true
-    ) {
-      //* Update Supabase
-      const phoneVerificationResultData: typeof updateType_tblClientPhone = {
-        is_verified: primeWorkPhoneVerificationMetaData?.is_verified,
-        line_type: primeWorkPhoneVerificationMetaData?.line_type,
-        line_status: primeWorkPhoneVerificationMetaData?.line_status,
-        line_status_reason:
-          primeWorkPhoneVerificationMetaData?.line_status_reason,
-        country_code: primeWorkPhoneVerificationMetaData?.country_code,
-        calling_code: primeWorkPhoneVerificationMetaData?.calling_code,
-        raw_national: primeWorkPhoneVerificationMetaData?.raw_national,
-        formatted_national:
-          primeWorkPhoneVerificationMetaData?.formatted_national,
-        raw_international:
-          primeWorkPhoneVerificationMetaData?.raw_international,
-        formatted_international:
-          primeWorkPhoneVerificationMetaData?.formatted_international,
-        not_verified_code:
-          primeWorkPhoneVerificationMetaData?.not_verified_code,
-        not_verified_reason:
-          primeWorkPhoneVerificationMetaData?.not_verified_reason,
-        updated_datetime: convertToUTCTime(),
-        sov_stdCode: primeWorkPhoneVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              primeWorkPhoneVerificationMetaData?.formatted_national
-            ).sov_networkCode
-          : '',
-        sov_number: primeWorkPhoneVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              primeWorkPhoneVerificationMetaData?.formatted_national
-            ).sov_number
-          : '',
-        metadata: JSON.stringify(primeWorkPhoneVerificationMetaData),
-      }
+    // Prime email verification
+    primeEmail !== undefined && primeEmail !== null && primeEmail !== ''
+      ? verifyEmailAddress({ emailAddress: primeEmail })
+      : Promise.resolve(undefined),
 
-      if (
-        primeClientWorkPhoneUniqueID !== null &&
-        primeClientWorkPhoneUniqueID !== undefined
-      ) {
-        await tblClientPhoneUpdatePhoneVerificationDetails(
-          primeClientWorkPhoneUniqueID,
-          phoneVerificationResultData
-        )
-      }
-    }
-  }
-
-  if (primeEmail !== undefined && primeEmail !== null && primeEmail !== '') {
-    const primeEmailVerificationMetaData = await verifyEmailAddress({
-      emailAddress: primeEmail,
-    })
-
-    if (
-      primeEmailVerificationMetaData &&
-      primeEmailVerificationMetaData?.success === true
-    ) {
-      //* Update Supabase
-      const emailVerificationResultData: typeof updateType_tblClientEmail = {
-        verified_email: primeEmailVerificationMetaData?.verified_email,
-        email_account: primeEmailVerificationMetaData?.email_account,
-        email_domain: primeEmailVerificationMetaData?.email_domain,
-        email_provider_domain:
-          primeEmailVerificationMetaData?.email_provider_domain,
-        is_verified: primeEmailVerificationMetaData?.is_verified,
-        is_disposable: primeEmailVerificationMetaData?.is_disposable,
-        is_role: primeEmailVerificationMetaData?.is_role,
-        is_public: primeEmailVerificationMetaData?.is_public,
-        is_catch_all: primeEmailVerificationMetaData?.is_catch_all,
-        not_verified_reason:
-          primeEmailVerificationMetaData?.not_verified_reason,
-        not_verified_code: primeEmailVerificationMetaData?.not_verified_code,
-        success: primeEmailVerificationMetaData?.success,
-        email_verification_triggered: true,
-        metadata: JSON.stringify(primeEmailVerificationMetaData),
-      }
-
-      if (primeEmailUniqueID !== null && primeEmailUniqueID !== undefined) {
-        await tblClientEmailVerificationUpdate(
-          primeEmailUniqueID,
-          emailVerificationResultData
-        )
-      }
-    }
-  }
-
-  if (
+    // Prime residential address verification
     primeResidentialAddressPxid !== undefined &&
     primeResidentialAddressPxid !== null &&
     primeResidentialAddressPxid !== ''
-  ) {
-    const primeResidentialAddressVerificationMetaData =
-      await getExactAddressFromPxid({
-        pxid: primeResidentialAddressPxid,
-      })
+      ? getExactAddressFromPxid({ pxid: primeResidentialAddressPxid })
+      : Promise.resolve(undefined),
 
-    if (
-      primeResidentialAddressVerificationMetaData &&
-      primeResidentialAddressVerificationMetaData.success === true
-    ) {
-      const primeResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
-        {
-          metadata: JSON.stringify(primeResidentialAddressVerificationMetaData),
-        }
-
-      if (
-        primeResidentialAddressUniqueID !== null &&
-        primeResidentialAddressUniqueID !== undefined
-      ) {
-        await tblClientAddressMetadataUpdate(
-          primeResidentialAddressUniqueID,
-          primeResidentialAddressVerificationResultData
-        )
-      }
-    }
-  }
-
-  //? API Call - Prime Mailing Address
-  if (
+    // Prime mailing address verification
     primeMailingAddressPxid !== undefined &&
     primeMailingAddressPxid !== null &&
     primeMailingAddressPxid !== ''
-  ) {
-    const primeMailingAddressVerificationMetaData =
-      await getExactAddressFromPxid({
-        pxid: primeMailingAddressPxid,
-      })
+      ? getExactAddressFromPxid({ pxid: primeMailingAddressPxid })
+      : Promise.resolve(undefined),
+  ])
 
-    if (
-      primeMailingAddressVerificationMetaData &&
-      primeMailingAddressVerificationMetaData.success === true
-    ) {
-      const primeMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
-        {
-          metadata: JSON.stringify(primeMailingAddressVerificationMetaData),
-        }
-
-      if (
-        primeMailingAddressUniqueID !== null &&
-        primeMailingAddressUniqueID !== undefined
-      ) {
-        await tblClientAddressMetadataUpdate(
-          primeMailingAddressUniqueID,
-          primeMailingAddressVerificationResultData
-        )
-      }
-    }
-  }
+  console.timeEnd('Prime External API Verification Calls')
 
   //? ==============================JOINT EXTERNAL CALLS ==============================
 
-  //? API Call - Prime Mobile
-  if (
+  // Performance optimization: Parallelize JOINT external API calls
+  console.time('Joint External API Verification Calls')
+
+  const [
+    jointMobileVerificationMetaData,
+    jointWorkPhoneVerificationMetaData,
+    jointEmailVerificationMetaData,
+    jointResidentialAddressVerificationMetaData,
+    jointMailingAddressVerificationMetaData,
+  ] = await Promise.all([
+    // Joint mobile number verification
     jointMobileNumber !== undefined &&
     jointMobileNumber !== null &&
     jointMobileNumber !== ''
-  ) {
-    const jointMobileVerificationMetaData = await verifyMobileNumber({
-      phoneNumber: jointMobileNumber,
-    })
+      ? verifyMobileNumber({ phoneNumber: jointMobileNumber })
+      : Promise.resolve(undefined),
 
-    if (
-      jointMobileVerificationMetaData &&
-      jointMobileVerificationMetaData?.success === true
-    ) {
-      //* Update Supabase
-      const phoneVerificationResultData: typeof updateType_tblClientPhone = {
-        is_verified: jointMobileVerificationMetaData?.is_verified,
-        line_type: jointMobileVerificationMetaData?.line_type,
-        line_status: jointMobileVerificationMetaData?.line_status,
-        line_status_reason: jointMobileVerificationMetaData?.line_status_reason,
-        country_code: jointMobileVerificationMetaData?.country_code,
-        calling_code: jointMobileVerificationMetaData?.calling_code,
-        raw_national: jointMobileVerificationMetaData?.raw_national,
-        formatted_national: jointMobileVerificationMetaData?.formatted_national,
-        raw_international: jointMobileVerificationMetaData?.raw_international,
-        formatted_international:
-          jointMobileVerificationMetaData?.formatted_international,
-        not_verified_code: jointMobileVerificationMetaData?.not_verified_code,
-        not_verified_reason:
-          jointMobileVerificationMetaData?.not_verified_reason,
-        updated_datetime: convertToUTCTime(),
-        sov_networkCode: jointMobileVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              jointMobileVerificationMetaData?.formatted_national
-            ).sov_networkCode
-          : '',
-        sov_number: jointMobileVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              jointMobileVerificationMetaData?.formatted_national
-            ).sov_number
-          : '',
-        metadata: JSON.stringify(jointMobileVerificationMetaData),
-      }
-
-      if (
-        jointClientMobileUniqueID !== null &&
-        jointClientMobileUniqueID !== undefined
-      ) {
-        await tblClientPhoneUpdatePhoneVerificationDetails(
-          jointClientMobileUniqueID,
-          phoneVerificationResultData
-        )
-      }
-    }
-  }
-
-  //? API Call - Prime Work Phone
-  if (
+    // Joint work phone verification
     jointWorkPhoneNumber !== undefined &&
     jointWorkPhoneNumber !== null &&
     jointWorkPhoneNumber !== ''
-  ) {
-    const jointWorkPhoneVerificationMetaData = await verifyPhoneNumber({
-      phoneNumber: jointWorkPhoneNumber,
-    })
+      ? verifyPhoneNumber({ phoneNumber: jointWorkPhoneNumber })
+      : Promise.resolve(undefined),
 
-    if (
-      jointWorkPhoneVerificationMetaData &&
-      jointWorkPhoneVerificationMetaData?.success === true
-    ) {
-      //* Update Supabase
-      const phoneVerificationResultData: typeof updateType_tblClientPhone = {
-        is_verified: jointWorkPhoneVerificationMetaData?.is_verified,
-        line_type: jointWorkPhoneVerificationMetaData?.line_type,
-        line_status: jointWorkPhoneVerificationMetaData?.line_status,
-        line_status_reason:
-          jointWorkPhoneVerificationMetaData?.line_status_reason,
-        country_code: jointWorkPhoneVerificationMetaData?.country_code,
-        calling_code: jointWorkPhoneVerificationMetaData?.calling_code,
-        raw_national: jointWorkPhoneVerificationMetaData?.raw_national,
-        formatted_national:
-          jointWorkPhoneVerificationMetaData?.formatted_national,
-        raw_international:
-          jointWorkPhoneVerificationMetaData?.raw_international,
-        formatted_international:
-          jointWorkPhoneVerificationMetaData?.formatted_international,
-        not_verified_code:
-          jointWorkPhoneVerificationMetaData?.not_verified_code,
-        not_verified_reason:
-          jointWorkPhoneVerificationMetaData?.not_verified_reason,
-        updated_datetime: convertToUTCTime(),
-        sov_stdCode: jointWorkPhoneVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              jointWorkPhoneVerificationMetaData?.formatted_national
-            ).sov_networkCode
-          : '',
-        sov_number: jointWorkPhoneVerificationMetaData?.formatted_national
-          ? processMobileNumber(
-              jointWorkPhoneVerificationMetaData?.formatted_national
-            ).sov_number
-          : '',
-        metadata: JSON.stringify(jointWorkPhoneVerificationMetaData),
-      }
+    // Joint email verification
+    jointEmail !== undefined && jointEmail !== null && jointEmail !== ''
+      ? verifyEmailAddress({ emailAddress: jointEmail })
+      : Promise.resolve(undefined),
 
-      if (
-        jointClientWorkPhoneUniqueID !== null &&
-        jointClientWorkPhoneUniqueID !== undefined
-      ) {
-        await tblClientPhoneUpdatePhoneVerificationDetails(
-          jointClientWorkPhoneUniqueID,
-          phoneVerificationResultData
-        )
-      }
-    }
-  }
-
-  if (jointEmail !== undefined && jointEmail !== null && jointEmail !== '') {
-    const jointEmailVerificationMetaData = await verifyEmailAddress({
-      emailAddress: jointEmail,
-    })
-
-    if (
-      jointEmailVerificationMetaData &&
-      jointEmailVerificationMetaData?.success === true
-    ) {
-      //* Update Supabase
-      const emailVerificationResultData: typeof updateType_tblClientEmail = {
-        verified_email: jointEmailVerificationMetaData?.verified_email,
-        email_account: jointEmailVerificationMetaData?.email_account,
-        email_domain: jointEmailVerificationMetaData?.email_domain,
-        email_provider_domain:
-          jointEmailVerificationMetaData?.email_provider_domain,
-        is_verified: jointEmailVerificationMetaData?.is_verified,
-        is_disposable: jointEmailVerificationMetaData?.is_disposable,
-        is_role: jointEmailVerificationMetaData?.is_role,
-        is_public: jointEmailVerificationMetaData?.is_public,
-        is_catch_all: jointEmailVerificationMetaData?.is_catch_all,
-        not_verified_reason:
-          jointEmailVerificationMetaData?.not_verified_reason,
-        not_verified_code: jointEmailVerificationMetaData?.not_verified_code,
-        success: jointEmailVerificationMetaData?.success,
-        email_verification_triggered: true,
-        metadata: JSON.stringify(jointEmailVerificationMetaData),
-      }
-
-      if (jointEmailUniqueID !== null && jointEmailUniqueID !== undefined) {
-        await tblClientEmailVerificationUpdate(
-          jointEmailUniqueID,
-          emailVerificationResultData
-        )
-      }
-    }
-  }
-
-  if (
+    // Joint residential address verification
     jointResidentialAddressPxid !== undefined &&
     jointResidentialAddressPxid !== null &&
     jointResidentialAddressPxid !== ''
-  ) {
-    const jointResidentialAddressVerificationMetaData =
-      await getExactAddressFromPxid({
-        pxid: jointResidentialAddressPxid,
-      })
+      ? getExactAddressFromPxid({ pxid: jointResidentialAddressPxid })
+      : Promise.resolve(undefined),
 
-    if (
-      jointResidentialAddressVerificationMetaData &&
-      jointResidentialAddressVerificationMetaData.success === true
-    ) {
-      const jointResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
-        {
-          metadata: JSON.stringify(jointResidentialAddressVerificationMetaData),
-        }
-
-      if (
-        jointResidentialAddressUniqueID !== null &&
-        jointResidentialAddressUniqueID !== undefined
-      ) {
-        await tblClientAddressMetadataUpdate(
-          jointResidentialAddressUniqueID,
-          jointResidentialAddressVerificationResultData
-        )
-      }
-    }
-  }
-
-  //? API Call - Prime Mailing Address
-  if (
+    // Joint mailing address verification
     jointMailingAddressPxid !== undefined &&
     jointMailingAddressPxid !== null &&
     jointMailingAddressPxid !== ''
+      ? getExactAddressFromPxid({ pxid: jointMailingAddressPxid })
+      : Promise.resolve(undefined),
+  ])
+
+  console.timeEnd('Joint External API Verification Calls')
+
+  //? ==============================SUPABASE DATABASE UPDATES ==============================
+
+  // Performance optimization: Parallelize ALL Supabase database updates
+  console.time('Supabase Database Updates')
+
+  const supabaseUpdatePromises = []
+
+  // Prime mobile phone update
+  if (
+    primeMobileVerificationMetaData &&
+    primeMobileVerificationMetaData?.success === true &&
+    primeClientMobileUniqueID !== null &&
+    primeClientMobileUniqueID !== undefined
   ) {
-    const jointMailingAddressVerificationMetaData =
-      await getExactAddressFromPxid({
-        pxid: jointMailingAddressPxid,
-      })
-
-    if (
-      jointMailingAddressVerificationMetaData &&
-      jointMailingAddressVerificationMetaData.success === true
-    ) {
-      const jointMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
-        {
-          metadata: JSON.stringify(jointMailingAddressVerificationMetaData),
-        }
-
-      if (
-        jointMailingAddressUniqueID !== null &&
-        jointMailingAddressUniqueID !== undefined
-      ) {
-        await tblClientAddressMetadataUpdate(
-          jointMailingAddressUniqueID,
-          jointMailingAddressVerificationResultData
-        )
-      }
+    const phoneVerificationResultData: typeof updateType_tblClientPhone = {
+      is_verified: primeMobileVerificationMetaData?.is_verified,
+      line_type: primeMobileVerificationMetaData?.line_type,
+      line_status: primeMobileVerificationMetaData?.line_status,
+      line_status_reason: primeMobileVerificationMetaData?.line_status_reason,
+      country_code: primeMobileVerificationMetaData?.country_code,
+      calling_code: primeMobileVerificationMetaData?.calling_code,
+      raw_national: primeMobileVerificationMetaData?.raw_national,
+      formatted_national: primeMobileVerificationMetaData?.formatted_national,
+      raw_international: primeMobileVerificationMetaData?.raw_international,
+      formatted_international:
+        primeMobileVerificationMetaData?.formatted_international,
+      not_verified_code: primeMobileVerificationMetaData?.not_verified_code,
+      not_verified_reason: primeMobileVerificationMetaData?.not_verified_reason,
+      updated_datetime: convertToUTCTime(),
+      sov_networkCode: primeMobileVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            primeMobileVerificationMetaData?.formatted_national
+          ).sov_networkCode
+        : '',
+      sov_number: primeMobileVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            primeMobileVerificationMetaData?.formatted_national
+          ).sov_number
+        : '',
+      metadata: JSON.stringify(primeMobileVerificationMetaData),
     }
+
+    supabaseUpdatePromises.push(
+      tblClientPhoneUpdatePhoneVerificationDetails(
+        primeClientMobileUniqueID,
+        phoneVerificationResultData
+      )
+    )
   }
+
+  // Prime work phone update
+  if (
+    primeWorkPhoneVerificationMetaData &&
+    primeWorkPhoneVerificationMetaData?.success === true &&
+    primeClientWorkPhoneUniqueID !== null &&
+    primeClientWorkPhoneUniqueID !== undefined
+  ) {
+    const phoneVerificationResultData: typeof updateType_tblClientPhone = {
+      is_verified: primeWorkPhoneVerificationMetaData?.is_verified,
+      line_type: primeWorkPhoneVerificationMetaData?.line_type,
+      line_status: primeWorkPhoneVerificationMetaData?.line_status,
+      line_status_reason:
+        primeWorkPhoneVerificationMetaData?.line_status_reason,
+      country_code: primeWorkPhoneVerificationMetaData?.country_code,
+      calling_code: primeWorkPhoneVerificationMetaData?.calling_code,
+      raw_national: primeWorkPhoneVerificationMetaData?.raw_national,
+      formatted_national:
+        primeWorkPhoneVerificationMetaData?.formatted_national,
+      raw_international: primeWorkPhoneVerificationMetaData?.raw_international,
+      formatted_international:
+        primeWorkPhoneVerificationMetaData?.formatted_international,
+      not_verified_code: primeWorkPhoneVerificationMetaData?.not_verified_code,
+      not_verified_reason:
+        primeWorkPhoneVerificationMetaData?.not_verified_reason,
+      updated_datetime: convertToUTCTime(),
+      sov_stdCode: primeWorkPhoneVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            primeWorkPhoneVerificationMetaData?.formatted_national
+          ).sov_networkCode
+        : '',
+      sov_number: primeWorkPhoneVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            primeWorkPhoneVerificationMetaData?.formatted_national
+          ).sov_number
+        : '',
+      metadata: JSON.stringify(primeWorkPhoneVerificationMetaData),
+    }
+
+    supabaseUpdatePromises.push(
+      tblClientPhoneUpdatePhoneVerificationDetails(
+        primeClientWorkPhoneUniqueID,
+        phoneVerificationResultData
+      )
+    )
+  }
+
+  // Prime email update
+  if (
+    primeEmailVerificationMetaData &&
+    primeEmailVerificationMetaData?.success === true &&
+    primeEmailUniqueID !== null &&
+    primeEmailUniqueID !== undefined
+  ) {
+    const emailVerificationResultData: typeof updateType_tblClientEmail = {
+      verified_email: primeEmailVerificationMetaData?.verified_email,
+      email_account: primeEmailVerificationMetaData?.email_account,
+      email_domain: primeEmailVerificationMetaData?.email_domain,
+      email_provider_domain:
+        primeEmailVerificationMetaData?.email_provider_domain,
+      is_verified: primeEmailVerificationMetaData?.is_verified,
+      is_disposable: primeEmailVerificationMetaData?.is_disposable,
+      is_role: primeEmailVerificationMetaData?.is_role,
+      is_public: primeEmailVerificationMetaData?.is_public,
+      is_catch_all: primeEmailVerificationMetaData?.is_catch_all,
+      not_verified_reason: primeEmailVerificationMetaData?.not_verified_reason,
+      not_verified_code: primeEmailVerificationMetaData?.not_verified_code,
+      success: primeEmailVerificationMetaData?.success,
+      email_verification_triggered: true,
+      metadata: JSON.stringify(primeEmailVerificationMetaData),
+    }
+
+    supabaseUpdatePromises.push(
+      tblClientEmailVerificationUpdate(
+        primeEmailUniqueID,
+        emailVerificationResultData
+      )
+    )
+  }
+
+  // Prime residential address update
+  if (
+    primeResidentialAddressVerificationMetaData &&
+    primeResidentialAddressVerificationMetaData.success === true &&
+    primeResidentialAddressUniqueID !== null &&
+    primeResidentialAddressUniqueID !== undefined
+  ) {
+    const primeResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
+      {
+        metadata: JSON.stringify(primeResidentialAddressVerificationMetaData),
+      }
+
+    supabaseUpdatePromises.push(
+      tblClientAddressMetadataUpdate(
+        primeResidentialAddressUniqueID,
+        primeResidentialAddressVerificationResultData
+      )
+    )
+  }
+
+  // Prime mailing address update
+  if (
+    primeMailingAddressVerificationMetaData &&
+    primeMailingAddressVerificationMetaData.success === true &&
+    primeMailingAddressUniqueID !== null &&
+    primeMailingAddressUniqueID !== undefined
+  ) {
+    const primeMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
+      {
+        metadata: JSON.stringify(primeMailingAddressVerificationMetaData),
+      }
+
+    supabaseUpdatePromises.push(
+      tblClientAddressMetadataUpdate(
+        primeMailingAddressUniqueID,
+        primeMailingAddressVerificationResultData
+      )
+    )
+  }
+
+  // Joint mobile phone update
+  if (
+    jointMobileVerificationMetaData &&
+    jointMobileVerificationMetaData?.success === true &&
+    jointClientMobileUniqueID !== null &&
+    jointClientMobileUniqueID !== undefined
+  ) {
+    const phoneVerificationResultData: typeof updateType_tblClientPhone = {
+      is_verified: jointMobileVerificationMetaData?.is_verified,
+      line_type: jointMobileVerificationMetaData?.line_type,
+      line_status: jointMobileVerificationMetaData?.line_status,
+      line_status_reason: jointMobileVerificationMetaData?.line_status_reason,
+      country_code: jointMobileVerificationMetaData?.country_code,
+      calling_code: jointMobileVerificationMetaData?.calling_code,
+      raw_national: jointMobileVerificationMetaData?.raw_national,
+      formatted_national: jointMobileVerificationMetaData?.formatted_national,
+      raw_international: jointMobileVerificationMetaData?.raw_international,
+      formatted_international:
+        jointMobileVerificationMetaData?.formatted_international,
+      not_verified_code: jointMobileVerificationMetaData?.not_verified_code,
+      not_verified_reason: jointMobileVerificationMetaData?.not_verified_reason,
+      updated_datetime: convertToUTCTime(),
+      sov_networkCode: jointMobileVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            jointMobileVerificationMetaData?.formatted_national
+          ).sov_networkCode
+        : '',
+      sov_number: jointMobileVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            jointMobileVerificationMetaData?.formatted_national
+          ).sov_number
+        : '',
+      metadata: JSON.stringify(jointMobileVerificationMetaData),
+    }
+
+    supabaseUpdatePromises.push(
+      tblClientPhoneUpdatePhoneVerificationDetails(
+        jointClientMobileUniqueID,
+        phoneVerificationResultData
+      )
+    )
+  }
+
+  // Joint work phone update
+  if (
+    jointWorkPhoneVerificationMetaData &&
+    jointWorkPhoneVerificationMetaData?.success === true &&
+    jointClientWorkPhoneUniqueID !== null &&
+    jointClientWorkPhoneUniqueID !== undefined
+  ) {
+    const phoneVerificationResultData: typeof updateType_tblClientPhone = {
+      is_verified: jointWorkPhoneVerificationMetaData?.is_verified,
+      line_type: jointWorkPhoneVerificationMetaData?.line_type,
+      line_status: jointWorkPhoneVerificationMetaData?.line_status,
+      line_status_reason:
+        jointWorkPhoneVerificationMetaData?.line_status_reason,
+      country_code: jointWorkPhoneVerificationMetaData?.country_code,
+      calling_code: jointWorkPhoneVerificationMetaData?.calling_code,
+      raw_national: jointWorkPhoneVerificationMetaData?.raw_national,
+      formatted_national:
+        jointWorkPhoneVerificationMetaData?.formatted_national,
+      raw_international: jointWorkPhoneVerificationMetaData?.raw_international,
+      formatted_international:
+        jointWorkPhoneVerificationMetaData?.formatted_international,
+      not_verified_code: jointWorkPhoneVerificationMetaData?.not_verified_code,
+      not_verified_reason:
+        jointWorkPhoneVerificationMetaData?.not_verified_reason,
+      updated_datetime: convertToUTCTime(),
+      sov_stdCode: jointWorkPhoneVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            jointWorkPhoneVerificationMetaData?.formatted_national
+          ).sov_networkCode
+        : '',
+      sov_number: jointWorkPhoneVerificationMetaData?.formatted_national
+        ? processMobileNumber(
+            jointWorkPhoneVerificationMetaData?.formatted_national
+          ).sov_number
+        : '',
+      metadata: JSON.stringify(jointWorkPhoneVerificationMetaData),
+    }
+
+    supabaseUpdatePromises.push(
+      tblClientPhoneUpdatePhoneVerificationDetails(
+        jointClientWorkPhoneUniqueID,
+        phoneVerificationResultData
+      )
+    )
+  }
+
+  // Joint email update
+  if (
+    jointEmailVerificationMetaData &&
+    jointEmailVerificationMetaData?.success === true &&
+    jointEmailUniqueID !== null &&
+    jointEmailUniqueID !== undefined
+  ) {
+    const emailVerificationResultData: typeof updateType_tblClientEmail = {
+      verified_email: jointEmailVerificationMetaData?.verified_email,
+      email_account: jointEmailVerificationMetaData?.email_account,
+      email_domain: jointEmailVerificationMetaData?.email_domain,
+      email_provider_domain:
+        jointEmailVerificationMetaData?.email_provider_domain,
+      is_verified: jointEmailVerificationMetaData?.is_verified,
+      is_disposable: jointEmailVerificationMetaData?.is_disposable,
+      is_role: jointEmailVerificationMetaData?.is_role,
+      is_public: jointEmailVerificationMetaData?.is_public,
+      is_catch_all: jointEmailVerificationMetaData?.is_catch_all,
+      not_verified_reason: jointEmailVerificationMetaData?.not_verified_reason,
+      not_verified_code: jointEmailVerificationMetaData?.not_verified_code,
+      success: jointEmailVerificationMetaData?.success,
+      email_verification_triggered: true,
+      metadata: JSON.stringify(jointEmailVerificationMetaData),
+    }
+
+    supabaseUpdatePromises.push(
+      tblClientEmailVerificationUpdate(
+        jointEmailUniqueID,
+        emailVerificationResultData
+      )
+    )
+  }
+
+  // Joint residential address update
+  if (
+    jointResidentialAddressVerificationMetaData &&
+    jointResidentialAddressVerificationMetaData.success === true &&
+    jointResidentialAddressUniqueID !== null &&
+    jointResidentialAddressUniqueID !== undefined
+  ) {
+    const jointResidentialAddressVerificationResultData: typeof updateType_tblClientAddress =
+      {
+        metadata: JSON.stringify(jointResidentialAddressVerificationMetaData),
+      }
+
+    supabaseUpdatePromises.push(
+      tblClientAddressMetadataUpdate(
+        jointResidentialAddressUniqueID,
+        jointResidentialAddressVerificationResultData
+      )
+    )
+  }
+
+  // Joint mailing address update
+  if (
+    jointMailingAddressVerificationMetaData &&
+    jointMailingAddressVerificationMetaData.success === true &&
+    jointMailingAddressUniqueID !== null &&
+    jointMailingAddressUniqueID !== undefined
+  ) {
+    const jointMailingAddressVerificationResultData: typeof updateType_tblClientAddress =
+      {
+        metadata: JSON.stringify(jointMailingAddressVerificationMetaData),
+      }
+
+    supabaseUpdatePromises.push(
+      tblClientAddressMetadataUpdate(
+        jointMailingAddressUniqueID,
+        jointMailingAddressVerificationResultData
+      )
+    )
+  }
+
+  // Execute all Supabase updates in parallel
+  if (supabaseUpdatePromises.length > 0) {
+    await Promise.all(supabaseUpdatePromises)
+  }
+
+  console.timeEnd('Supabase Database Updates')
 
   const jointOnlineJson = await prepareJointApplicationJson({
     supabaseIntegrityState,
@@ -817,6 +816,11 @@ export async function POST(request: Request) {
   }
 
   await insertDraftLoanApplication(draftApplicationInsertData)
+
+  console.timeEnd('Total Request Processing Time')
+  console.log(
+    'Performance optimization completed: Prime and Joint external API calls and all database updates now run in parallel'
+  )
 
   return new Response(JSON.stringify({}), {
     status: 201,

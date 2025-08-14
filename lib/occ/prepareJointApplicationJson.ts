@@ -293,8 +293,8 @@ export async function prepareJointApplicationJson({
 
   const insuranceOption = providentInsurance.filter(
     (insurance) =>
-      insurance.lambda_code_component === formFinancialDetails.coverType &&
-      insurance.cover_type === formFinancialDetails.component
+      insurance.cover_type === formFinancialDetails.coverType &&
+      insurance.insurance_type === formFinancialDetails.component
   )?.[0]?.g3_insurance_cover_type
 
   const bothInsuranceFieldsExist =

@@ -212,7 +212,7 @@ export async function preparePrimeOnlineJson({
   const insuranceOption = providentInsurance.filter(
     (insurance) =>
       insurance.lambda_code_component === formFinancialDetails.coverType &&
-      insurance.cover_type === formFinancialDetails.component
+      insurance.lambda_code_cover_type === formFinancialDetails.component
   )?.[0]?.g3_insurance_cover_type
 
   console.log('providentInsurance: ', providentInsurance)

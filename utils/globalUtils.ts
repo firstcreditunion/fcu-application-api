@@ -173,10 +173,10 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'DRVLSC',
       effectiveDate: DriversLicence.licenceIssueDate
-        ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd')
+        ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       expiryDate: DriversLicence.licenceExpiryDate
-        ? format(DriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
+        ? format(DriversLicence.licenceExpiryDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       reference: DriversLicence.licenceNumber,
       seq: '1',
@@ -185,10 +185,10 @@ export async function buildClientIdentifications(
       idCode1: 'DRVLSC',
       idCode2: 'DLVERSION',
       effectiveDate: DriversLicence.licenceIssueDate
-        ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd')
+        ? format(DriversLicence.licenceIssueDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       expiryDate: DriversLicence.licenceExpiryDate
-        ? format(DriversLicence.licenceExpiryDate, 'yyyy-MM-dd')
+        ? format(DriversLicence.licenceExpiryDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       reference: DriversLicence.licenceVersion,
       seq: '1',
@@ -200,10 +200,10 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'PASPRT',
       effectiveDate: Passport.passportIssueDate
-        ? format(Passport.passportIssueDate, 'yyyy-MM-dd')
+        ? format(Passport.passportIssueDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       expiryDate: Passport.passportExpiryDate
-        ? format(Passport.passportExpiryDate, 'yyyy-MM-dd')
+        ? format(Passport.passportExpiryDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       reference: Passport.passportNumber,
       seq: String(seqCounter++),
@@ -215,10 +215,10 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'FIRELICENS',
       effectiveDate: FirearmsLicence.firearmsIssueDate
-        ? format(FirearmsLicence.firearmsIssueDate, 'yyyy-MM-dd')
+        ? format(FirearmsLicence.firearmsIssueDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       expiryDate: FirearmsLicence.firearmsExpiryDate
-        ? format(FirearmsLicence.firearmsExpiryDate, 'yyyy-MM-dd')
+        ? format(FirearmsLicence.firearmsExpiryDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       reference: FirearmsLicence.firearmsNumber,
       seq: String(seqCounter++),
@@ -230,7 +230,8 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'BIRTHCERT',
       effectiveDate: BirthCertificate.birthCertificateIssueDate
-        ? format(BirthCertificate.birthCertificateIssueDate, 'yyyy-MM-dd')
+        ? format(BirthCertificate.birthCertificateIssueDate, 'yyyy-MM-dd') +
+          'T00:00:00'
         : undefined,
       reference: BirthCertificate.birthCertificateRegNo,
       seq: String(seqCounter++),
@@ -242,10 +243,12 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'KIWACCCRD',
       effectiveDate: KiwiAccessCard.kiwiAccessCardIssueDate
-        ? format(KiwiAccessCard.kiwiAccessCardIssueDate, 'yyyy-MM-dd')
+        ? format(KiwiAccessCard.kiwiAccessCardIssueDate, 'yyyy-MM-dd') +
+          'T00:00:00'
         : undefined,
       expiryDate: KiwiAccessCard.kiwiAccessCardExpiryDate
-        ? format(KiwiAccessCard.kiwiAccessCardExpiryDate, 'yyyy-MM-dd')
+        ? format(KiwiAccessCard.kiwiAccessCardExpiryDate, 'yyyy-MM-dd') +
+          'T00:00:00'
         : undefined,
       reference: KiwiAccessCard.kiwiAccessCardNumber,
       seq: String(seqCounter++),
@@ -259,13 +262,13 @@ export async function buildClientIdentifications(
       effectiveDate: CommunityServiceCard.communityServiceCardIssueDate
         ? format(
             CommunityServiceCard.communityServiceCardIssueDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd' + 'T00:00:00'
           )
         : undefined,
       expiryDate: CommunityServiceCard.communityServiceCardExpiryDate
         ? format(
             CommunityServiceCard.communityServiceCardExpiryDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd' + 'T00:00:00'
           )
         : undefined,
       reference: CommunityServiceCard.communityServiceCardNumber,
@@ -278,7 +281,7 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'GOLDCARD',
       effectiveDate: goldCard.goldCardIssueDate
-        ? format(goldCard.goldCardIssueDate, 'yyyy-MM-dd')
+        ? format(goldCard.goldCardIssueDate, 'yyyy-MM-dd') + 'T00:00:00'
         : undefined,
       reference: goldCard.goldCardNumber,
       seq: String(seqCounter++),
@@ -290,10 +293,12 @@ export async function buildClientIdentifications(
     clientIdentifications.push({
       idCode1: 'CURSTUDID',
       effectiveDate: studentID.currentStudentCardIssueDate
-        ? format(studentID.currentStudentCardIssueDate, 'yyyy-MM-dd')
+        ? format(studentID.currentStudentCardIssueDate, 'yyyy-MM-dd') +
+          'T00:00:00'
         : undefined,
       expiryDate: studentID.currentStudentCardExpiryDate
-        ? format(studentID.currentStudentCardExpiryDate, 'yyyy-MM-dd')
+        ? format(studentID.currentStudentCardExpiryDate, 'yyyy-MM-dd') +
+          'T00:00:00'
         : undefined,
       reference: studentID.currentStudentCardNumber,
       seq: String(seqCounter++),

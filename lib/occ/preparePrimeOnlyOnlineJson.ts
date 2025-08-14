@@ -371,7 +371,7 @@ export async function preparePrimeOnlineJson({
 
   const dateOfBirth = format(
     new Date(primePersonalDetails.dateOfBirth),
-    'yyyy-MM-dd'
+    'yyyy-MM-dd' + 'T00:00:00'
   )
 
   const maritalStatus = maritalStatusOptions.find(
@@ -504,7 +504,7 @@ export async function preparePrimeOnlineJson({
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
-                    )}T00:00:00Z`,
+                    )}T00:00:00`,
                     type: 'MB',
                     seq: '1',
                   },
@@ -521,7 +521,7 @@ export async function preparePrimeOnlineJson({
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
-                    )}T00:00:00Z`,
+                    )}T00:00:00`,
                     type: 'MB',
                     seq: '1',
                   },
@@ -532,10 +532,7 @@ export async function preparePrimeOnlineJson({
                 {
                   address: primeContactDetails.emailAddress,
                   preferredMethod: 'Y',
-                  effectiveDate: `${format(
-                    new Date(),
-                    'yyyy-MM-dd'
-                  )}T00:00:00Z`,
+                  effectiveDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00`,
                   type: 'HM',
                   seq: '1',
                 },
@@ -570,7 +567,12 @@ export async function preparePrimeOnlineJson({
                 employerName: primeEmployment.employerName
                   ? primeEmployment.employerName
                   : '',
-                effectiveDate: primeEmployment.employmentEffctiveDate,
+                effectiveDate: primeEmployment.employmentEffctiveDate
+                  ? format(
+                      new Date(primeEmployment.employmentEffctiveDate),
+                      'yyyy-MM-dd'
+                    ) + 'T00:00:00'
+                  : '',
                 seq: '1',
               },
             ]
@@ -603,7 +605,7 @@ export async function preparePrimeOnlineJson({
         seq: '1',
         accountSecurity: {
           primaryCollateral: 'P',
-          effectiveDate: '2025-04-28T00:00:00Z',
+          effectiveDate: '2025-04-28T00:00:00',
           clientSecurityRelationship: 'O',
         },
         asset: {

@@ -590,7 +590,7 @@ export async function prepareJointApplicationJson({
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
-                    )}T00:00:00Z`,
+                    )}T00:00:00`,
                     type: 'MB',
                     seq: '1',
                   },
@@ -607,7 +607,7 @@ export async function prepareJointApplicationJson({
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
-                    )}T00:00:00Z`,
+                    )}T00:00:00`,
                     type: 'MB',
                     seq: '1',
                   },
@@ -618,10 +618,7 @@ export async function prepareJointApplicationJson({
                 {
                   address: primeContactDetails.emailAddress,
                   preferredMethod: 'Y',
-                  effectiveDate: `${format(
-                    new Date(),
-                    'yyyy-MM-dd'
-                  )}T00:00:00Z`,
+                  effectiveDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00`,
                   type: 'HM',
                   seq: '1',
                 },
@@ -656,7 +653,12 @@ export async function prepareJointApplicationJson({
                 employerName: primeEmployment.employerName
                   ? primeEmployment.employerName
                   : '',
-                effectiveDate: primeEmployment.employmentEffctiveDate,
+                effectiveDate: primeEmployment.employmentEffctiveDate
+                  ? format(
+                      new Date(primeEmployment.employmentEffctiveDate),
+                      'yyyy-MM-dd'
+                    ) + 'T00:00:00'
+                  : '',
                 seq: '1',
               },
             ]
@@ -824,7 +826,7 @@ export async function prepareJointApplicationJson({
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
-                    )}T00:00:00Z`,
+                    )}T00:00:00`,
                     type: 'MB',
                     seq: '1',
                   },
@@ -843,7 +845,7 @@ export async function prepareJointApplicationJson({
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
-                    )}T00:00:00Z`,
+                    )}T00:00:00`,
                     type: 'MB',
                     seq: '1',
                   },
@@ -854,10 +856,7 @@ export async function prepareJointApplicationJson({
                 {
                   address: jointContactDetails.emailAddress,
                   preferredMethod: 'Y',
-                  effectiveDate: `${format(
-                    new Date(),
-                    'yyyy-MM-dd'
-                  )}T00:00:00Z`,
+                  effectiveDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00`,
                   type: 'HM',
                   seq: '1',
                 },
@@ -892,7 +891,12 @@ export async function prepareJointApplicationJson({
                 employerName: jointEmployment.employerName
                   ? jointEmployment.employerName
                   : '',
-                effectiveDate: jointEmployment.employmentEffctiveDate,
+                effectiveDate: jointEmployment.employmentEffctiveDate
+                  ? format(
+                      new Date(jointEmployment.employmentEffctiveDate),
+                      'yyyy-MM-dd'
+                    ) + 'T00:00:00'
+                  : '',
                 seq: '1',
               },
             ]

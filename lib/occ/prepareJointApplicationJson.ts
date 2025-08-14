@@ -896,7 +896,7 @@ export async function prepareJointApplicationJson({
                       new Date(jointEmployment.employmentEffctiveDate),
                       'yyyy-MM-dd'
                     ) + 'T00:00:00'
-                  : '',
+                  : format(new Date(), 'yyyy-MM-dd') + 'T00:00:00',
                 seq: '1',
               },
             ]

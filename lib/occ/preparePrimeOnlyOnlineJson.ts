@@ -215,7 +215,17 @@ export async function preparePrimeOnlineJson({
       insurance.cover_type === formFinancialDetails.component
   )?.[0]?.g3_insurance_cover_type
 
+  console.log('providentInsurance: ', providentInsurance.length)
+
   console.log('insuranceOption: ', insuranceOption)
+  console.log(
+    'formFinancialDetails.coverType: ',
+    formFinancialDetails.coverType
+  )
+  console.log(
+    'formFinancialDetails.component: ',
+    formFinancialDetails.component
+  )
 
   const bothInsuranceFieldsExist =
     formFinancialDetails.coverType !== null &&

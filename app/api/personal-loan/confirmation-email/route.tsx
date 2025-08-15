@@ -85,6 +85,25 @@ export async function POST(request: NextRequest) {
     submittedDateTime,
   } = await request.json()
 
+  console.log('Email Props Log: ', {
+    title,
+    firstName,
+    loanAmount,
+    loanTerm,
+    interestRate,
+    totalInterest,
+    totalAmountPayable,
+    instalmentAmount,
+    instalmentFrequencyHeader,
+    insuranceAmount,
+    needProvidentInsurance,
+    insuranceType,
+    coverType,
+    coversIncluded,
+    tempLoanApplicationNumber,
+    submittedDateTime,
+  })
+
   const emailHtml = await render(
     <LoanThankYouEmail
       title={title}

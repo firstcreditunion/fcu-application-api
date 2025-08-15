@@ -127,8 +127,6 @@ export async function POST(request: NextRequest) {
   // --- Verification Successful ---
   // If the secret is valid, proceed with your main logic.
 
-  // Performance optimization: Start timing the entire request processing
-  console.time('Total Request Processing Time')
 
   // Parse the request body
   const body = await request.json()
@@ -206,8 +204,6 @@ export async function POST(request: NextRequest) {
   const primeMailingAddressUniqueID =
     supabaseIntegrityState.primeMailingAddressUniqueID
 
-  // Performance optimization: Parallelize external API calls
-  console.time('External API Verification Calls')
 
   const [
     primeMobileVerificationMetaData,
@@ -250,11 +246,10 @@ export async function POST(request: NextRequest) {
       : Promise.resolve(undefined),
   ])
 
-  console.timeEnd('External API Verification Calls')
+
 
   //** ============ PRIME UPDATE SUPABASE ============ */
-  // Performance optimization: Parallelize Supabase database updates
-  console.time('Supabase Database Updates')
+
 
   const supabaseUpdatePromises = []
 
@@ -425,7 +420,7 @@ export async function POST(request: NextRequest) {
     await Promise.all(supabaseUpdatePromises)
   }
 
-  console.timeEnd('Supabase Database Updates')
+
 
   const primeOnlineJson = await preparePrimeOnlineJson({
     supabaseIntegrityState,
@@ -463,10 +458,7 @@ export async function POST(request: NextRequest) {
 
   await insertDraftLoanApplication(draftApplicationInsertData)
 
-  console.timeEnd('Total Request Processing Time')
-  console.log(
-    'Performance optimization completed: External API calls and database updates now run in parallel'
-  )
+
 
   return new Response(JSON.stringify({}), {
     status: 201,

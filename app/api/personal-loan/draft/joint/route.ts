@@ -157,7 +157,6 @@ export async function POST(request: Request) {
   // If the secret is valid, proceed with your main logic.
 
   // Performance optimization: Start timing the entire request processing
-  console.time('Total Request Processing Time')
 
   // Parse the request body
   const body = await request.json()
@@ -333,8 +332,7 @@ export async function POST(request: Request) {
 
   //? ==============================PRIME EXTERNAL CALLS ==============================
 
-  // Performance optimization: Parallelize PRIME external API calls
-  console.time('Prime External API Verification Calls')
+  // Performance optimization: Parallelize PRIME externa
 
   const [
     primeMobileVerificationMetaData,
@@ -377,12 +375,7 @@ export async function POST(request: Request) {
       : Promise.resolve(undefined),
   ])
 
-  console.timeEnd('Prime External API Verification Calls')
-
   //? ==============================JOINT EXTERNAL CALLS ==============================
-
-  // Performance optimization: Parallelize JOINT external API calls
-  console.time('Joint External API Verification Calls')
 
   const [
     jointMobileVerificationMetaData,
@@ -425,12 +418,7 @@ export async function POST(request: Request) {
       : Promise.resolve(undefined),
   ])
 
-  console.timeEnd('Joint External API Verification Calls')
-
   //? ==============================SUPABASE DATABASE UPDATES ==============================
-
-  // Performance optimization: Parallelize ALL Supabase database updates
-  console.time('Supabase Database Updates')
 
   const supabaseUpdatePromises = []
 
@@ -763,8 +751,6 @@ export async function POST(request: Request) {
     await Promise.all(supabaseUpdatePromises)
   }
 
-  console.timeEnd('Supabase Database Updates')
-
   const jointOnlineJson = await prepareJointApplicationJson({
     supabaseIntegrityState,
     supabaseIntegrityJointState,
@@ -816,11 +802,6 @@ export async function POST(request: Request) {
   }
 
   await insertDraftLoanApplication(draftApplicationInsertData)
-
-  console.timeEnd('Total Request Processing Time')
-  console.log(
-    'Performance optimization completed: Prime and Joint external API calls and all database updates now run in parallel'
-  )
 
   return new Response(JSON.stringify({}), {
     status: 201,

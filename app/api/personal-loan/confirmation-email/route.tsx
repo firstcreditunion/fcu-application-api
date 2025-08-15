@@ -65,7 +65,6 @@ export async function POST(request: NextRequest) {
   // If the secret is valid, proceed with your main logic.
 
   // Performance optimization: Start timing the entire request processing
-  console.time('Total Request Processing Time')
 
   const {
     recipientEmail,

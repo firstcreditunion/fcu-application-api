@@ -19,9 +19,7 @@ export async function tblClientPhone(cid_unique_id: number) {
     if (!data) return
 
     return data
-  } catch (error) {
-    console.timeLog('Error: ', error)
-  }
+  } catch (error) {}
 }
 
 //* ------------------ Lookup tables -------------
@@ -39,7 +37,5 @@ export async function getEmploymentCodes() {
     if (!data) return
 
     return data
-  } catch (error) {
-    console.timeLog('Error: ', error)
-  }
+  } catch (error) {}
 }

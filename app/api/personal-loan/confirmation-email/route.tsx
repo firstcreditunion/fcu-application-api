@@ -7,6 +7,7 @@ import { SES } from '@aws-sdk/client-ses'
 
 import LoanThankYouEmail from '@/components/emails/LoanApplyConfirmationEmail'
 import { headers } from 'next/headers'
+import { emailWhiteList } from '@/utils/emialWhilteList'
 
 // Initialize AWS SES client
 const sesClient = new SES({
@@ -109,6 +110,13 @@ export async function POST(request: NextRequest) {
   if (!recipientEmail) {
     return NextResponse.json(
       { success: false, error: 'Recipient email is missing.' },
+      { status: 400 }
+    )
+  }
+
+  if (!emailWhiteList.includes(recipientEmail)) {
+    return NextResponse.json(
+      { success: false, error: 'Recipient email is not in the white list.' },
       { status: 400 }
     )
   }

@@ -15,6 +15,7 @@ import {
 } from '@react-email/components'
 
 interface EmailProps {
+  recipientEmail: string
   title?: string
   firstName?: string
   loanAmount?: string
@@ -38,6 +39,7 @@ const linkToIdentification = process.env.IDENTIFICATION_LINK_WEBSITE!
 const toCurrentYear = new Date().getFullYear()
 
 export default function PapermarkYearInReviewEmail({
+  recipientEmail,
   firstName,
   loanAmount,
   totalInterest,

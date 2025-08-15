@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
   console.time('Total Request Processing Time')
 
   const {
+    recipientEmail,
     title,
     firstName,
     loanAmount,
@@ -86,6 +87,7 @@ export async function POST(request: NextRequest) {
   } = await request.json()
 
   console.log('Email Props Log: ', {
+    recipientEmail,
     title,
     firstName,
     loanAmount,
@@ -104,8 +106,16 @@ export async function POST(request: NextRequest) {
     submittedDateTime,
   })
 
+  if (!recipientEmail) {
+    return NextResponse.json(
+      { success: false, error: 'Recipient email is missing.' },
+      { status: 400 }
+    )
+  }
+
   const emailHtml = await render(
     <LoanThankYouEmail
+      recipientEmail={recipientEmail}
       title={title}
       firstName={firstName}
       loanAmount={loanAmount}
@@ -126,9 +136,9 @@ export async function POST(request: NextRequest) {
   )
 
   const params: SendEmailCommandInput = {
-    Source: 'do-not-reply@firstcu.co.nz',
+    Source: 'welcome@firstcu.co.nz',
     Destination: {
-      ToAddresses: ['isaac.vicliph@firstcu.co.nz'],
+      ToAddresses: [recipientEmail],
     },
     Message: {
       Body: {
@@ -139,7 +149,7 @@ export async function POST(request: NextRequest) {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: 'Your loan application has been received - Application #1234567890',
+        Data: 'Your loan application has been received',
       },
     },
   }

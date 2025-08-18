@@ -84,6 +84,8 @@ export async function POST(request: NextRequest) {
     coversIncluded,
     tempLoanApplicationNumber,
     submittedDateTime,
+    loanApplicationNumber,
+    applicantName,
   } = await request.json()
 
   console.log('Email Props Log: ', {
@@ -104,11 +106,20 @@ export async function POST(request: NextRequest) {
     coversIncluded,
     tempLoanApplicationNumber,
     submittedDateTime,
+    loanApplicationNumber,
+    applicantName,
   })
 
   if (!recipientEmail) {
     return NextResponse.json(
       { success: false, error: 'Recipient email is missing.' },
+      { status: 400 }
+    )
+  }
+
+  if (!loanApplicationNumber) {
+    return NextResponse.json(
+      { success: false, error: 'Loan application number is missing.' },
       { status: 400 }
     )
   }
@@ -139,6 +150,10 @@ export async function POST(request: NextRequest) {
       coversIncluded={coversIncluded}
       tempLoanApplicationNumber={tempLoanApplicationNumber}
       submittedDateTime={submittedDateTime}
+      loanApplicationNumber={loanApplicationNumber}
+      applicantName={
+        applicantName || `${title || ''} ${firstName || ''}`.trim()
+      }
     />
   )
 
@@ -156,7 +171,7 @@ export async function POST(request: NextRequest) {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: 'Your loan application has been received',
+        Data: `Loan Application Confirmation - #${loanApplicationNumber}`,
       },
     },
   }
@@ -172,7 +187,14 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error sending email:', error)
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: 'Failed to send email',
+      },
+      {
+        status: 500,
+      }
+    )
   } finally {
   }
 }

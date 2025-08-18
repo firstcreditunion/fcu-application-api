@@ -13,6 +13,10 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components'
+import {
+  generateLoanStatusLink,
+  generateSecureToken,
+} from '../../lib/loan-status-link-generator'
 
 interface EmailProps {
   recipientEmail: string
@@ -32,13 +36,16 @@ interface EmailProps {
   coversIncluded?: string
   tempLoanApplicationNumber?: string
   submittedDateTime: string
+  // Add these new fields for status link
+  loanApplicationNumber: string // Required for status link
+  applicantName?: string // Optional but recommended
 }
 
 const linkToIdentification = process.env.IDENTIFICATION_LINK_WEBSITE!
 
 const toCurrentYear = new Date().getFullYear()
 
-export default function PapermarkYearInReviewEmail({
+export default function LoanApplyConfirmationEmail({
   recipientEmail,
   firstName,
   loanAmount,
@@ -52,7 +59,20 @@ export default function PapermarkYearInReviewEmail({
   coverType,
   coversIncluded,
   submittedDateTime,
+  loanApplicationNumber,
+  applicantName,
 }: EmailProps) {
+  // Generate the loan status link with security token
+  const securityToken = generateSecureToken(
+    recipientEmail,
+    loanApplicationNumber
+  )
+  const loanStatusLink = generateLoanStatusLink({
+    email: recipientEmail,
+    loanApplicationNumber: loanApplicationNumber,
+    applicantName: applicantName || firstName || 'Valued Customer',
+    token: securityToken,
+  })
   return (
     <Html>
       <Head />
@@ -83,7 +103,7 @@ export default function PapermarkYearInReviewEmail({
             </Section>
             <Section className='pb-16 text-center'>
               <Link
-                href='https://firstcreditunion.co.nz/'
+                href={loanStatusLink}
                 className='inline-flex items-center rounded-full bg-[#bbbb14] px-12 py-4 text-center font-bold text-base text-white no-underline tracking-tight'
               >
                 Track my application

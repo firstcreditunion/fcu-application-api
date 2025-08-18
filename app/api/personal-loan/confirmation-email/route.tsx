@@ -111,6 +111,8 @@ export async function POST(request: NextRequest) {
   })
 
   if (!recipientEmail) {
+    console.log('Recipient email is missing.')
+
     return NextResponse.json(
       { success: false, error: 'Recipient email is missing.' },
       { status: 400 }
@@ -118,6 +120,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (!loanApplicationNumber) {
+    console.log('Loan application number is missing.')
     return NextResponse.json(
       { success: false, error: 'Loan application number is missing.' },
       { status: 400 }
@@ -125,6 +128,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (!emailWhiteList.includes(recipientEmail)) {
+    console.log('Recipient email is not in the white list.')
     return NextResponse.json(
       { success: false, error: 'Recipient email is not in the white list.' },
       { status: 400 }

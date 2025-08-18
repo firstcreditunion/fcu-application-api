@@ -8,10 +8,11 @@ export default function Home() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Secret': process.env.NEXT_PUBLIC_API_SECRET || 'test-secret',
+        'X-API-Secret':
+          'Lq87XxXgnNs2uyKQ.AuGyZFRNG6XnbXKKKeAknvA7arVcKbAY_6iRYWQP@aRx_Ju',
       },
       body: JSON.stringify({
-        recipientEmail: 'test@example.com',
+        recipientEmail: 'isaac.vicliph@firstcu.co.nz',
         title: 'Mr',
         firstName: 'John',
         loanAmount: '10000',
@@ -28,7 +29,7 @@ export default function Home() {
         coversIncluded: 'Death, Disability, Involuntary Unemployment',
         tempLoanApplicationNumber: 'TEMP-12345',
         submittedDateTime: new Date().toLocaleString(),
-        loanApplicationNumber: 'FCU-2024-12345',
+        loanApplicationNumber: '569',
         applicantName: 'Mr John Doe',
       }),
     })

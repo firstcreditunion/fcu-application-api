@@ -12,9 +12,9 @@ export default function Home() {
           'Lq87XxXgnNs2uyKQ.AuGyZFRNG6XnbXKKKeAknvA7arVcKbAY_6iRYWQP@aRx_Ju',
       },
       body: JSON.stringify({
-        recipientEmail: 'isaac.vicliph@firstcu.co.nz',
+        recipientEmail: 'mcurulala@yahoo.com',
         title: 'Mr',
-        firstName: 'John',
+        firstName: 'Malakai',
         loanAmount: '10000',
         loanTerm: '5 years',
         interestRate: '8.95%',
@@ -29,7 +29,7 @@ export default function Home() {
         coversIncluded: 'Death, Disability, Involuntary Unemployment',
         tempLoanApplicationNumber: 'TEMP-12345',
         submittedDateTime: new Date().toLocaleString(),
-        loanApplicationNumber: '569',
+        loanApplicationNumber: '568',
         applicantName: 'Mr John Doe',
       }),
     })
@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <div className='font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20'>
-      <Button onClick={async () => await sendEmail()}>Send Email</Button>
+      {/* <Button onClick={async () => await sendEmail()}>Send Email</Button> */}
     </div>
   )
 }

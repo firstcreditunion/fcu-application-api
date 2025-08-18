@@ -6,4 +6,5 @@ export const emailWhiteList = [
   'melissa.hay@firstcu.co.nz',
   'fay.ren@firstcu.co.nz',
   'Richard.ORegan@firstcu.co.nz',
+  'mister.tai96@gmail.com',
 ]

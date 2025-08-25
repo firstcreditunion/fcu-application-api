@@ -30,7 +30,7 @@ export async function triggerDraftApplicationMatching(
 
     const result = JSON.parse(Buffer.from(Payload).toString())
 
-    // console.log('Result:', result)
+    console.log('Result:', result)
 
     if (result.statusCode !== 200) {
       return null

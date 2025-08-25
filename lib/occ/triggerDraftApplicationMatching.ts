@@ -18,13 +18,23 @@ export async function triggerDraftApplicationMatching(
 
   console.log('Params:', params)
 
+  console.log('Outside try catch')
   try {
+    console.log('Inside try catch')
+
     const command = new InvokeCommand(params)
+
+    console.log('Past Command')
+
     const { Payload } = await lambdaClient.send(command)
+
+    console.log('past lambda client send')
 
     console.log('BeginFCULoanWorkflow Payload:', Payload)
 
     if (!Payload) {
+      console.log('Empty response from Lambda function')
+
       throw new Error('Empty response from Lambda function')
     }
 

@@ -26,6 +26,8 @@ export async function triggerDraftApplicationMatching(
 
     console.log('Past Command')
 
+    console.log('Lambda Client', await lambdaClient)
+
     const { Payload } = await lambdaClient.send(command)
 
     console.log('past lambda client send')

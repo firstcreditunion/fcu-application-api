@@ -12,7 +12,7 @@ export default function Home() {
           'Lq87XxXgnNs2uyKQ.AuGyZFRNG6XnbXKKKeAknvA7arVcKbAY_6iRYWQP@aRx_Ju',
       },
       body: JSON.stringify({
-        recipientEmail: 'mcurulala@yahoo.com',
+        recipientEmail: 'isaac.vicliph@firstcu.co.nz',
         title: 'Mr',
         firstName: 'Malakai',
         loanAmount: '10000',

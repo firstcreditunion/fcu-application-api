@@ -16,11 +16,13 @@ export async function triggerDraftApplicationMatching(
     }),
   }
 
-  // console.log('Params:', params)
+  console.log('Params:', params)
 
   try {
     const command = new InvokeCommand(params)
     const { Payload } = await lambdaClient.send(command)
+
+    console.log('BeginFCULoanWorkflow Payload:', Payload)
 
     if (!Payload) {
       throw new Error('Empty response from Lambda function')

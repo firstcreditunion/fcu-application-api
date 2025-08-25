@@ -418,7 +418,7 @@ export async function POST(request: Request) {
       : Promise.resolve(undefined),
   ])
 
-  //? ==============================SUPABASE DATABASE UPDATES ==============================
+  //? ============================== SUPABASE DATABASE UPDATES ==============================
 
   const supabaseUpdatePromises = []
 
@@ -785,6 +785,8 @@ export async function POST(request: Request) {
     vehicleSecurity,
     providentInsurance,
   })
+
+  console.log('Joint Online JSON:', jointOnlineJson)
 
   const draftApplicationInsertData: typeof insert_tblDraftApplicationInsert = {
     application_name:

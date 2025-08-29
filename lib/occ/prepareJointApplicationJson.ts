@@ -455,10 +455,9 @@ export async function prepareJointApplicationJson({
     (item) => item.key === primePersonalDetails.gender
   )?.value
 
-  const dateOfBirth = format(
-    new Date(primePersonalDetails.dateOfBirth),
-    'yyyy-MM-dd'
-  )
+  const dateOfBirth =
+    format(new Date(primePersonalDetails.dateOfBirth), 'yyyy-MM-dd') +
+    'T00:00:00'
 
   const maritalStatus = maritalStatusOptions.find(
     (item) => item.key === primePersonalDetails.maritalStatus

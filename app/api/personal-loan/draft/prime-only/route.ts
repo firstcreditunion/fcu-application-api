@@ -203,7 +203,6 @@ export async function POST(request: NextRequest) {
   const primeMailingAddressUniqueID =
     supabaseIntegrityState.primeMailingAddressUniqueID
 
-
   const [
     primeMobileVerificationMetaData,
     primeWorkPhoneVerificationMetaData,
@@ -416,8 +415,6 @@ export async function POST(request: NextRequest) {
     await Promise.all(supabaseUpdatePromises)
   }
 
-
-
   const primeOnlineJson = await preparePrimeOnlineJson({
     supabaseIntegrityState,
     primePreliminaryQuestions,
@@ -453,8 +450,6 @@ export async function POST(request: NextRequest) {
   }
 
   await insertDraftLoanApplication(draftApplicationInsertData)
-
-
 
   return new Response(JSON.stringify({}), {
     status: 201,

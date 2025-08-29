@@ -255,10 +255,10 @@ export async function preparePrimeOnlineJson({
             jointCover: '',
             policyDescription: `Provident CCI ${insuranceOption}`,
             sumInsured: parseFloatFromCurrency(
-              formFinancialDetails.costOfGoods
+              formFinancialDetails.costOfGoods //! TODO: Check with Richard
             ),
             surrenderValue: 0,
-            commencementDate: '2025-04-27T00:00:00Z',
+            commencementDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00`,
             term: {
               unit: 'M',
               value: formFinancialDetails.Loan_Term_1,
@@ -274,8 +274,8 @@ export async function preparePrimeOnlineJson({
   const interestRateStructure: InterestRateStructure = {
     initialRate: {
       rateType: 'VARIABLE',
-      baseRate: 'PL',
-      margin: 0,
+      baseRate: 'P2',
+      margin: -1.2, //* TODO Set Margin Later. Talk to Richard and Tai
     },
   }
 
@@ -288,13 +288,13 @@ export async function preparePrimeOnlineJson({
       deposit: {
         bond: 0,
         cashRefund: 0,
-        depositAmount: 0,
-        payoutAmount: 0,
+        depositAmount: 0, //* TODO: check in modify function
+        payoutAmount: 0, //* TODO: check in modify function
         tradeInAmount: 0,
       },
       fees: {
         capitalised: 0,
-        fee: fees,
+        fee: fees, //* TODO: check in modify function
         nonCapitalised: 0,
         refresh: 'Y',
       },
@@ -311,21 +311,21 @@ export async function preparePrimeOnlineJson({
               ? 'FORTNIGHTLY'
               : 'MONTHLY',
       },
-      paymentFrequencyUnit: 1,
+      paymentFrequencyUnit: 1, //* TODO: check in modify function
       paymentMethod: {
-        paymentMethod: 'AUTOPAY',
+        paymentMethod: 'AUTOPAY', //* TODO: check in modify function
       },
-      product: 'PERN',
-      purchasePrice: purchasePrice,
+      product: 'PERN', //* TODO: check in modify function
+      purchasePrice: purchasePrice, //* TODO: check in modify function
       reapplyDefaults: null,
       residualValue: 0,
       seq: '1',
-      settlementDate: '2025-04-27T00:00:00Z',
-      signatureDate: '2025-04-27T00:00:00Z',
+      settlementDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00Z`, //* TODO: check in modify function
+      signatureDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00Z`, //* TODO: check in modify function
       taxTreatment: null,
-      term: formFinancialDetails.Loan_Term_1,
+      term: formFinancialDetails.Loan_Term_1, //* TODO: check in modify function
       termType: 'M',
-      valueOfAdvInstalment: 0,
+      valueOfAdvInstalment: 0, //* TODO: check in modify function
     },
   ]
 
@@ -379,10 +379,9 @@ export async function preparePrimeOnlineJson({
     (item) => item.key === primePersonalDetails.gender
   )?.value
 
-  const dateOfBirth = format(
-    new Date(primePersonalDetails.dateOfBirth),
-    'yyyy-MM-dd' + 'T00:00:00'
-  )
+  const dateOfBirth =
+    format(new Date(primePersonalDetails.dateOfBirth), 'yyyy-MM-dd') +
+    'T00:00:00'
 
   const maritalStatus = maritalStatusOptions.find(
     (item) => item.key === primePersonalDetails.maritalStatus
@@ -403,8 +402,8 @@ export async function preparePrimeOnlineJson({
   const getAccommodationDetails = () => {
     const accommodationType = primeContactDetails.accommodationType
 
-    if (accommodationType === 'OWN')
-      return accommodation.find((item) => item.code === 'OWN')
+    if (accommodationType === 'OWOM')
+      return accommodation.find((item) => item.code === 'OWOM')
 
     if (accommodationType === 'BOARD')
       return accommodation.find((item) => item.code === 'BRD')

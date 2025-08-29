@@ -63,7 +63,6 @@ export async function POST(request: NextRequest) {
 
   // --- Verification Successful ---
   // If the secret is valid, proceed with your main logic.
-
   // Performance optimization: Start timing the entire request processing
 
   const {
@@ -112,7 +111,6 @@ export async function POST(request: NextRequest) {
 
   if (!recipientEmail) {
     console.log('Recipient email is missing.')
-
     return NextResponse.json(
       { success: false, error: 'Recipient email is missing.' },
       { status: 400 }

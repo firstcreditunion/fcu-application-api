@@ -309,18 +309,3 @@ export async function buildClientIdentifications(
 
   return clientIdentifications
 }
-
-export const months = [
-  { month_no: 1, month: 'January' },
-  { month_no: 2, month: 'February' },
-  { month_no: 3, month: 'March' },
-  { month_no: 4, month: 'April' },
-  { month_no: 5, month: 'May' },
-  { month_no: 6, month: 'June' },
-  { month_no: 7, month: 'July' },
-  { month_no: 8, month: 'August' },
-  { month_no: 9, month: 'September' },
-  { month_no: 10, month: 'October' },
-  { month_no: 11, month: 'November' },
-  { month_no: 12, month: 'December' },
-]

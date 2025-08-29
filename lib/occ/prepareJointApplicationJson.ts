@@ -60,7 +60,7 @@ import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
 import { financialDetialsSchema } from '@/app/personal-loan/schema/prime/financialDetailsSchema'
 
 //* Constants
-import { countries, accommodation } from '@/lib/constants'
+import { countries, accommodation, months } from '@/lib/constants'
 import {
   genderLookup,
   loanPurposeCodesFallback,
@@ -475,14 +475,9 @@ export async function prepareJointApplicationJson({
   )
 
   // Select accommodation based on type and years
+  // Select accommodation based on type and years
   const getAccommodationDetails = () => {
     const accommodationType = primeContactDetails.accommodationType
-
-    if (accommodationType === 'OWN')
-      return accommodation.find((item) => item.code === 'OWN')
-
-    if (accommodationType === 'BOARD')
-      return accommodation.find((item) => item.code === 'BRD')
 
     if (accommodationType === 'RENT') {
       // For renting, choose based on years
@@ -491,8 +486,17 @@ export async function prepareJointApplicationJson({
         : accommodation.find((item) => item.code === 'RNT2') // Renting less than 2 years
     }
 
+    if (accommodationType === 'BOARD')
+      return accommodation.find((item) => item.code === 'BRD')
+
+    if (accommodationType === 'OWM')
+      return accommodation.find((item) => item.code === 'OWM')
+
+    if (accommodationType === 'OWOM')
+      return accommodation.find((item) => item.code === 'OWOM')
+
     // Default fallback
-    return accommodation.find((item) => item.code === 'OWN')
+    return accommodation.find((item) => item.code === 'OWM')
   }
 
   const accommodationDetails = getAccommodationDetails()
@@ -654,7 +658,14 @@ export async function prepareJointApplicationJson({
                   : '',
                 effectiveDate: primeEmployment.employmentEffctiveDate
                   ? format(
-                      new Date(primeEmployment.employmentEffctiveDate),
+                      new Date(
+                        parseInt(primeEmployment.expceptionEmpYear),
+                        months.filter(
+                          (item) =>
+                            item.month === primeEmployment.exceptionEmpMonth
+                        )[0].month_no,
+                        1
+                      ),
                       'yyyy-MM-dd'
                     ) + 'T00:00:00'
                   : '',
@@ -892,7 +903,14 @@ export async function prepareJointApplicationJson({
                   : '',
                 effectiveDate: jointEmployment.employmentEffctiveDate
                   ? format(
-                      new Date(jointEmployment.employmentEffctiveDate),
+                      new Date(
+                        parseInt(primeEmployment.expceptionEmpYear),
+                        months.filter(
+                          (item) =>
+                            item.month === primeEmployment.exceptionEmpMonth
+                        )[0].month_no,
+                        1
+                      ),
                       'yyyy-MM-dd'
                     ) + 'T00:00:00'
                   : format(new Date(), 'yyyy-MM-dd') + 'T00:00:00',

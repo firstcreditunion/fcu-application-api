@@ -32,7 +32,7 @@ import {
   kiwiAccessCardSchema,
   passportSchema,
 } from '@/app/personal-loan/schema/prime/identificationsSchema'
-import { countries, accommodation } from '@/lib/constants'
+import { countries, accommodation, months } from '@/lib/constants'
 import { financialDetialsSchema } from '@/app/personal-loan/schema/prime/financialDetailsSchema'
 import { parseFloatFromCurrency } from '@/utils/numberFormatting'
 import {
@@ -402,12 +402,6 @@ export async function preparePrimeOnlineJson({
   const getAccommodationDetails = () => {
     const accommodationType = primeContactDetails.accommodationType
 
-    if (accommodationType === 'OWOM')
-      return accommodation.find((item) => item.code === 'OWOM')
-
-    if (accommodationType === 'BOARD')
-      return accommodation.find((item) => item.code === 'BRD')
-
     if (accommodationType === 'RENT') {
       // For renting, choose based on years
       return yearsSinceResidential >= 2
@@ -415,8 +409,17 @@ export async function preparePrimeOnlineJson({
         : accommodation.find((item) => item.code === 'RNT2') // Renting less than 2 years
     }
 
+    if (accommodationType === 'BOARD')
+      return accommodation.find((item) => item.code === 'BRD')
+
+    if (accommodationType === 'OWM')
+      return accommodation.find((item) => item.code === 'OWM')
+
+    if (accommodationType === 'OWOM')
+      return accommodation.find((item) => item.code === 'OWOM')
+
     // Default fallback
-    return accommodation.find((item) => item.code === 'OWN')
+    return accommodation.find((item) => item.code === 'OWM')
   }
 
   const accommodationDetails = getAccommodationDetails()
@@ -578,7 +581,14 @@ export async function preparePrimeOnlineJson({
                   : '',
                 effectiveDate: primeEmployment.employmentEffctiveDate
                   ? format(
-                      new Date(primeEmployment.employmentEffctiveDate),
+                      new Date(
+                        parseInt(primeEmployment.expceptionEmpYear),
+                        months.filter(
+                          (item) =>
+                            item.month === primeEmployment.exceptionEmpMonth
+                        )[0].month_no,
+                        1
+                      ),
                       'yyyy-MM-dd'
                     ) + 'T00:00:00'
                   : '',

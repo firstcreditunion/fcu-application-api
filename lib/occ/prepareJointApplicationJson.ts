@@ -656,19 +656,21 @@ export async function prepareJointApplicationJson({
                 employerName: primeEmployment.employerName
                   ? primeEmployment.employerName
                   : '',
-                effectiveDate: primeEmployment.employmentEffctiveDate
-                  ? format(
-                      new Date(
-                        parseInt(primeEmployment.expceptionEmpYear),
-                        months.filter(
-                          (item) =>
-                            item.month === primeEmployment.exceptionEmpMonth
-                        )[0].month_no,
-                        1
-                      ),
-                      'yyyy-MM-dd'
-                    ) + 'T00:00:00'
-                  : '',
+                effectiveDate:
+                  primeEmployment.expceptionEmpYear &&
+                  primeEmployment.exceptionEmpMonth
+                    ? format(
+                        new Date(
+                          parseInt(primeEmployment.expceptionEmpYear),
+                          months.filter(
+                            (item) =>
+                              item.month === primeEmployment.exceptionEmpMonth
+                          )[0].month_no,
+                          1
+                        ),
+                        'yyyy-MM-dd'
+                      ) + 'T00:00:00'
+                    : '',
                 seq: '1',
               },
             ]
@@ -901,19 +903,21 @@ export async function prepareJointApplicationJson({
                 employerName: jointEmployment.employerName
                   ? jointEmployment.employerName
                   : '',
-                effectiveDate: jointEmployment.employmentEffctiveDate
-                  ? format(
-                      new Date(
-                        parseInt(primeEmployment.expceptionEmpYear),
-                        months.filter(
-                          (item) =>
-                            item.month === primeEmployment.exceptionEmpMonth
-                        )[0].month_no,
-                        1
-                      ),
-                      'yyyy-MM-dd'
-                    ) + 'T00:00:00'
-                  : format(new Date(), 'yyyy-MM-dd') + 'T00:00:00',
+                effectiveDate:
+                  jointEmployment.expceptionEmpYear &&
+                  jointEmployment.exceptionEmpMonth
+                    ? format(
+                        new Date(
+                          parseInt(jointEmployment.expceptionEmpYear),
+                          months.filter(
+                            (item) =>
+                              item.month === jointEmployment.exceptionEmpMonth
+                          )[0].month_no,
+                          1
+                        ),
+                        'yyyy-MM-dd'
+                      ) + 'T00:00:00'
+                    : format(new Date(), 'yyyy-MM-dd') + 'T00:00:00',
                 seq: '1',
               },
             ]

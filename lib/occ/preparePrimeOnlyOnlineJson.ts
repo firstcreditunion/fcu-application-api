@@ -453,7 +453,10 @@ export async function preparePrimeOnlineJson({
                 country.code === primePreliminaryQuestions.citizenship
             )[0].code,
       numberOfDependants: primePersonalDetails.dependantChildren.toString(),
-      numberOfAdults: primePersonalDetails.dependantAdults.toString(),
+      numberOfAdults:
+        primePersonalDetails.dependantAdults.toString() === '0'
+          ? '1'
+          : primePersonalDetails.dependantAdults.toString(),
       accommodation: {
         code: accommodationDetails ? accommodationDetails.code : 'OWN',
         description: accommodationDetails

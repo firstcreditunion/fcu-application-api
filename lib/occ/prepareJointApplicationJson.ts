@@ -658,7 +658,7 @@ export async function prepareJointApplicationJson({
                   : '',
                 employerName: primeEmployment.employerName
                   ? primeEmployment.employerName
-                  : '',
+                  : primeEmployment.employmentType,
                 effectiveDate:
                   primeEmployment.expceptionEmpYear &&
                   primeEmployment.exceptionEmpMonth
@@ -905,7 +905,7 @@ export async function prepareJointApplicationJson({
                   : '',
                 employerName: jointEmployment.employerName
                   ? jointEmployment.employerName
-                  : '',
+                  : jointEmployment.employmentType,
                 effectiveDate:
                   jointEmployment.expceptionEmpYear &&
                   jointEmployment.exceptionEmpMonth

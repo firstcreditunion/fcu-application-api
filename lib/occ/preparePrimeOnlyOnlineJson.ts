@@ -581,7 +581,7 @@ export async function preparePrimeOnlineJson({
                   : '',
                 employerName: primeEmployment.employerName
                   ? primeEmployment.employerName
-                  : '',
+                  : primeEmployment.employmentType,
                 effectiveDate:
                   primeEmployment.expceptionEmpYear &&
                   primeEmployment.exceptionEmpMonth

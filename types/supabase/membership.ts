@@ -1,7 +1,8 @@
 import { Database } from '@/database.types'
 
 // Define the possible schema types
-type SchemaType = 'api'
+// Define the possible schema types
+type SchemaType = 'production' | 'api'
 
 export let insertType_tblCRMContact: Database[SchemaType]['Tables']['s$tblCRMContact']['Insert']
 export let insertType_tblLoanApplication: Database[SchemaType]['Tables']['tblLoanApplication']['Insert']

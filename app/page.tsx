@@ -323,11 +323,11 @@ export default function Home() {
   }
 
   return (
-    <div className='font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20'>
-      <Button onClick={async () => await sendEmail()}>Send Email</Button>
-      <Button onClick={async () => await callLambdaWorkflowForJoint()}>
-        Test Joint Lambda Workflow
-      </Button>
+    <div className='h-screen flex flex-col items-center justify-center text-fcu-primary-500 text-5xl font-light gap-2'>
+      <div>First Credit Union API</div>
+      <div className='text-xl font-light text-fcu-secondary-300'>
+        Current Version: 1.0.0
+      </div>
     </div>
   )
 }

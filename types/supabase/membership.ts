@@ -63,7 +63,6 @@ export let updateType_tblMembershipStaffPortalErrorLogs: Database[SchemaType]['T
 export let updateType_tblSchoolsAndTertiaryInstitutions: Database[SchemaType]['Tables']['tblSchoolsAndTertiaryInstitutions']['Update']
 
 export let insertType_tblMembershipApplicationErrors: Database[SchemaType]['Tables']['tblMembershipApplicationErrors']['Insert']
-
 export let rowType_tblLoanPurposeCodes: Database[SchemaType]['Tables']['tblLoanPurposeCodes']['Row']
 export let rowType_tblIdentificationsCodes: Database[SchemaType]['Tables']['tblIdentificationsCodes']['Row']
 export let rowType_tblEmploymentTypes: Database['public']['Tables']['tblEmploymentTypes']['Row']

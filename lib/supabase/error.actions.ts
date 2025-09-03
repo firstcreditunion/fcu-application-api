@@ -1,14 +1,15 @@
 'use server'
 
 import { insertType_tblMembershipApplicationErrors } from '@/types/supabase/membership'
+import { getSchemaToUse } from '@/utils/schemToUse'
+
 import { createClient } from '@/utils/supabase/server'
 
 export async function tblInsertError(
   errorData: typeof insertType_tblMembershipApplicationErrors
 ) {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
-  const schema = 'api'
+  const schema = await getSchemaToUse()
 
   const { data } = await supabase
     .schema(schema)

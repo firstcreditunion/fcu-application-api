@@ -59,34 +59,6 @@ export async function getEnvironemnt() {
   return 'test'
 }
 
-type Schema = 'api' | 'production'
-
-export async function getSchemaToUse(): Promise<Schema> {
-  const host = await getHost()
-
-  if (
-    process.env.SCHEMEA_TO_USE === '' &&
-    host &&
-    host.startsWith('localhost')
-  ) {
-    return 'api'
-  }
-
-  if (host && host === 'staff-portal-test.vercel.app') {
-    return 'api'
-  }
-
-  if (
-    host &&
-    (host === 'staff-portal-production.vercel.app' ||
-      host === 'portal.firstcreditunion.co.nz')
-  ) {
-    return 'production'
-  }
-
-  return 'api'
-}
-
 export async function getCreditSenseStoreCode() {
   const host = await getHost()
 

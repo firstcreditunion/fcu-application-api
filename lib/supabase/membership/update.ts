@@ -10,6 +10,7 @@ import { convertToUTCTime } from '@/utils/constants'
 // import { getSchemaToUse } from '@/utils/globalUtils'
 import { createClient } from '@/utils/supabase/server'
 import { tblInsertError } from '../error.actions'
+import { getSchemaToUse } from '@/utils/schemToUse'
 
 //? Client Address Metadata Update
 export async function tblClientAddressMetadataUpdate(
@@ -17,8 +18,7 @@ export async function tblClientAddressMetadataUpdate(
   _data: typeof updateType_tblClientAddress
 ) {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
-  const schema = 'api'
+  const schema = await getSchemaToUse()
 
   try {
     const { data, error } = await supabase
@@ -63,8 +63,7 @@ export async function tblClientEmailVerificationUpdate(
   _data: typeof updateType_tblClientEmail
 ) {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
-  const schema = 'api'
+  const schema = await getSchemaToUse()
 
   try {
     const { data, error } = await supabase
@@ -122,8 +121,7 @@ export async function tblClientPhoneUpdatePhoneVerificationDetails(
   _data: typeof updateType_tblClientPhone
 ) {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
-  const schema = 'api'
+  const schema = await getSchemaToUse()
 
   try {
     const { data, error } = await supabase

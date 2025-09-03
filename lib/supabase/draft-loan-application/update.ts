@@ -1,20 +1,20 @@
 'use server'
 
 import { convertToUTCTime } from '@/utils/constants'
-// import { getSchemaToUse } from '@/utils/globalUtils'
+
 import { createClient } from '@/utils/supabase/server'
 import { tblInsertError } from '../error.actions'
 
 import { insert_tblDraftApplicationInsert } from '@/types/supabase/draftApplication'
 import { insertType_tblMembershipApplicationErrors } from '@/types/supabase/membership'
 import { triggerDraftApplicationMatching } from '@/lib/occ/triggerDraftApplicationMatching'
+import { getSchemaToUse } from '@/utils/schemToUse'
 
 export async function insertDraftLoanApplication(
   _data: typeof insert_tblDraftApplicationInsert
 ) {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
-  const schema = 'api'
+  const schema = await getSchemaToUse()
 
   try {
     const { data, error } = await supabase

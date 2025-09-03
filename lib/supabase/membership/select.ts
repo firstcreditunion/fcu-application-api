@@ -1,13 +1,11 @@
 'use server'
 
+import { getSchemaToUse } from '@/utils/schemToUse'
 import { createClient } from '@/utils/supabase/server'
-
-// import { getSchemaToUse } from '@/utils/globalUtils'
 
 export async function tblClientPhone(cid_unique_id: number) {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
-  const schema = 'api'
+  const schema = await getSchemaToUse()
 
   try {
     const { data } = await supabase
@@ -26,7 +24,7 @@ export async function tblClientPhone(cid_unique_id: number) {
 
 export async function getEmploymentCodes() {
   const supabase = await createClient()
-  // const schema = await getSchemaToUse()
+  const schema = await getSchemaToUse()
 
   try {
     const { data } = await supabase

@@ -8,6 +8,7 @@ import { SES } from '@aws-sdk/client-ses'
 import LoanThankYouEmail from '@/components/emails/LoanApplyConfirmationEmail'
 import { headers } from 'next/headers'
 import { emailWhiteList } from '@/utils/emialWhilteList'
+import { getHost } from '@/utils/globalUtils'
 
 // Initialize AWS SES client
 const sesClient = new SES({
@@ -23,6 +24,13 @@ const sesClient = new SES({
 const API_SECRET = process.env.API_SECRET
 
 export async function POST(request: NextRequest) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Warning: Production Not ready yet!',
+    },
+    { status: 500 }
+  )
   // First, check if the secret is even configured on the server.
   if (!API_SECRET) {
     // This is a server configuration error, so we return a 500.

@@ -29,8 +29,11 @@ type StudentIDData = z.infer<typeof currentStudentCardSchema>
 
 export async function getHost() {
   const headersList = await headers()
-  const origin = headersList.get('host')
-  return origin
+  const host = headersList.get('host')
+
+  console.log('host: ', host)
+
+  return host
 }
 
 export async function getEnvironemnt() {

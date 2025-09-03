@@ -99,6 +99,16 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  if (API_SECRET) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Warning: Production Not ready yet!',
+      },
+      { status: 500 }
+    )
+  }
+
   const headersList = await headers()
   // Get the secret from the request's 'X-API-Secret' header.
   const providedSecret = headersList.get('X-API-Secret')
@@ -126,7 +136,6 @@ export async function POST(request: NextRequest) {
 
   // --- Verification Successful ---
   // If the secret is valid, proceed with your main logic.
-
 
   // Parse the request body
   const body = await request.json()
@@ -204,7 +213,6 @@ export async function POST(request: NextRequest) {
   const primeMailingAddressUniqueID =
     supabaseIntegrityState.primeMailingAddressUniqueID
 
-
   const [
     primeMobileVerificationMetaData,
     primeWorkPhoneVerificationMetaData,
@@ -246,10 +254,7 @@ export async function POST(request: NextRequest) {
       : Promise.resolve(undefined),
   ])
 
-
-
   //** ============ PRIME UPDATE SUPABASE ============ */
-
 
   const supabaseUpdatePromises = []
 
@@ -420,8 +425,6 @@ export async function POST(request: NextRequest) {
     await Promise.all(supabaseUpdatePromises)
   }
 
-
-
   const primeOnlineJson = await preparePrimeOnlineJson({
     supabaseIntegrityState,
     primePreliminaryQuestions,
@@ -457,8 +460,6 @@ export async function POST(request: NextRequest) {
   }
 
   await insertDraftLoanApplication(draftApplicationInsertData)
-
-
 
   return new Response(JSON.stringify({}), {
     status: 201,

@@ -128,6 +128,16 @@ export async function POST(request: Request) {
     )
   }
 
+  if (API_SECRET) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Warning: Production Not ready yet!',
+      },
+      { status: 500 }
+    )
+  }
+
   const headersList = await headers()
   // Get the secret from the request's 'X-API-Secret' header.
   const providedSecret = headersList.get('X-API-Secret')

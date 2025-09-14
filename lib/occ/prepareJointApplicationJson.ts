@@ -535,7 +535,7 @@ export async function prepareJointApplicationJson({
           ? '1'
           : primePersonalDetails.dependantAdults.toString(),
       accommodation: {
-        code: accommodationDetails ? accommodationDetails.code : 'OWN',
+        code: accommodationDetails ? accommodationDetails.code : 'OWM',
         description: accommodationDetails
           ? accommodationDetails.description
           : 'Own with Mortgage',
@@ -728,21 +728,24 @@ export async function prepareJointApplicationJson({
   const getJointAccommodationDetails = () => {
     const accommodationType = jointContactDetails.accommodationType
 
-    if (accommodationType === 'OWN')
-      return accommodation.find((item) => item.code === 'OWN')
-
-    if (accommodationType === 'BOARD')
-      return accommodation.find((item) => item.code === 'BRD')
-
     if (accommodationType === 'RENT') {
       // For renting, choose based on years
-      return jointYearsSinceResidential >= 2
+      return yearsSinceResidential >= 2
         ? accommodation.find((item) => item.code === 'RNTX') // Renting more than 2 years
         : accommodation.find((item) => item.code === 'RNT2') // Renting less than 2 years
     }
 
+    if (accommodationType === 'BOARD')
+      return accommodation.find((item) => item.code === 'BRD')
+
+    if (accommodationType === 'OWM')
+      return accommodation.find((item) => item.code === 'OWM')
+
+    if (accommodationType === 'OWOM')
+      return accommodation.find((item) => item.code === 'OWOM')
+
     // Default fallback
-    return accommodation.find((item) => item.code === 'OWN')
+    return accommodation.find((item) => item.code === 'OWM')
   }
 
   const jointAccommodationDetails = getJointAccommodationDetails()
@@ -783,7 +786,7 @@ export async function prepareJointApplicationJson({
       accommodation: {
         code: jointAccommodationDetails
           ? jointAccommodationDetails.code
-          : 'OWN',
+          : 'OWM',
         description: jointAccommodationDetails
           ? jointAccommodationDetails.description
           : 'Own with Mortgage',

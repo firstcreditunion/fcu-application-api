@@ -458,7 +458,7 @@ export async function preparePrimeOnlineJson({
           ? '1'
           : primePersonalDetails.dependantAdults.toString(),
       accommodation: {
-        code: accommodationDetails ? accommodationDetails.code : 'OWN',
+        code: accommodationDetails ? accommodationDetails.code : 'OWM',
         description: accommodationDetails
           ? accommodationDetails.description
           : 'Own with Mortgage',

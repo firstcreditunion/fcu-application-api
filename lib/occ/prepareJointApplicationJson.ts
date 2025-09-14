@@ -776,7 +776,10 @@ export async function prepareJointApplicationJson({
                 country.code === jointPreliminaryQuestions.citizenship
             )[0].code,
       numberOfDependants: jointPersonalDetails.dependantChildren.toString(),
-      numberOfAdults: jointPersonalDetails.dependantAdults.toString(),
+      numberOfAdults:
+        jointPersonalDetails.dependantAdults.toString() === '0'
+          ? '1'
+          : jointPersonalDetails.dependantAdults.toString(),
       accommodation: {
         code: jointAccommodationDetails
           ? jointAccommodationDetails.code

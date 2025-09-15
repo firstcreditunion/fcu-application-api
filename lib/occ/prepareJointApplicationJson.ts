@@ -343,9 +343,9 @@ export async function prepareJointApplicationJson({
 
   const interestRateStructure: InterestRateStructure = {
     initialRate: {
-      rateType: 'VARIABLE',
-      baseRate: 'PL',
-      margin: 0,
+      rateType: 'FIXED',
+      baseRate: 'P2',
+      margin: -1.2,
     },
   }
 

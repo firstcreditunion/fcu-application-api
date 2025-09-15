@@ -273,7 +273,7 @@ export async function preparePrimeOnlineJson({
 
   const interestRateStructure: InterestRateStructure = {
     initialRate: {
-      rateType: 'VARIABLE',
+      rateType: 'FIXED',
       baseRate: 'P2',
       margin: -1.2, //* TODO Set Margin Later. Talk to Richard and Tai
     },

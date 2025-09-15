@@ -346,6 +346,10 @@ export async function prepareJointApplicationJson({
       rateType: 'FIXED',
       baseRate: 'P2',
       margin: -1.2,
+      ratePeriod: {
+        term: formFinancialDetails.Loan_Term_1,
+        termType: 'M',
+      },
     },
   }
 

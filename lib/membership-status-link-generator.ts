@@ -3,17 +3,16 @@
 /**
  * Configuration for loan status portal
  */
-const LOAN_STATUS_CONFIG = {
-  baseUrl:
-    process.env.STATUS_HUB_BASE_URL || 'https://loan-link-dev.vercel.app',
+const MEMBERSHIP_STATUS_CONFIG = {
+  baseUrl: process.env.STATUS_HUB_BASE_URL,
 }
 
 /**
  * Interface for loan status link parameters
  */
-interface LoanStatusLinkParams {
+interface MembershipStatusLinkParams {
   email: string
-  loanApplicationNumber: string | number
+  membershipApplicationNumber: string | number
   applicantName: string
   token?: string // Optional security token
 }
@@ -23,18 +22,18 @@ interface LoanStatusLinkParams {
  * @param params - Link parameters
  * @returns Complete URL to loan status portal
  */
-export function generateLoanStatusLink({
+export function generateMembershipStatusLink({
   email,
-  loanApplicationNumber,
+  membershipApplicationNumber,
   applicantName: _applicantName, // Keep for API compatibility, not used in URL
   token,
-}: LoanStatusLinkParams): string {
-  const baseUrl = LOAN_STATUS_CONFIG.baseUrl
+}: MembershipStatusLinkParams): string {
+  const baseUrl = MEMBERSHIP_STATUS_CONFIG.baseUrl
 
   // Create URL parameters
   const params = new URLSearchParams({
     email: email.trim(),
-    loan: loanApplicationNumber.toString(),
+    membership: membershipApplicationNumber.toString(),
   })
 
   // Add optional security token
@@ -49,12 +48,15 @@ export function generateLoanStatusLink({
  * Generate a simple security token (recommended)
  * This creates a base64-encoded token with email, loan number, and timestamp
  * @param email - User email
- * @param loanNumber - Loan application number
+ * @param membershipNumber - Membership application number
  * @returns Base64 encoded security token
  */
-export function generateSecureToken(email: string, loanNumber: string): string {
+export function generateSecureToken(
+  email: string,
+  membershipNumber: string
+): string {
   const timestamp = Date.now().toString()
-  const payload = `${email}:${loanNumber}:${timestamp}`
+  const payload = `${email}:${membershipNumber}:${timestamp}`
 
   // Create base64url encoded token
   return Buffer.from(payload).toString('base64url')
@@ -64,20 +66,20 @@ export function generateSecureToken(email: string, loanNumber: string): string {
  * Validate token format (optional - for debugging)
  * @param token - Token to validate
  * @param email - Expected email
- * @param loanNumber - Expected loan number
+ * @param membershipNumber - Expected membership number
  * @returns Whether token is valid
  */
 export function validateToken(
   token: string,
   email: string,
-  loanNumber: string
+  membershipNumber: string
 ): boolean {
   try {
     const decoded = Buffer.from(token, 'base64url').toString()
-    const [tokenEmail, tokenLoan, timestamp] = decoded.split(':')
+    const [tokenEmail, tokenMembership, timestamp] = decoded.split(':')
 
     // Validate email and loan number match
-    if (tokenEmail !== email || tokenLoan !== loanNumber) {
+    if (tokenEmail !== email || tokenMembership !== membershipNumber) {
       return false
     }
 
@@ -95,9 +97,9 @@ export function validateToken(
  * Example usage function
  */
 export function createExampleLink(): string {
-  return generateLoanStatusLink({
+  return generateMembershipStatusLink({
     email: 'john.doe@example.com',
-    loanApplicationNumber: '12345',
+    membershipApplicationNumber: '12345',
     applicantName: 'John Doe',
     token: generateSecureToken('john.doe@example.com', '12345'),
   })

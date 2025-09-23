@@ -159,11 +159,12 @@ export async function POST(request: NextRequest) {
       requireRemoteBanking={requireRemoteBanking}
       requireDebitCard={requireDebitCard}
       submittedDateTime={submittedDateTime}
+      membershipApplicationNumber={membershipApplicationNumber}
     />
   )
 
   const params: SendEmailCommandInput = {
-    Source: 'welcome@firstcu.co.nz',
+    Source: 'First Credit Union <welcome@firstcu.co.nz>',
     Destination: {
       ToAddresses: [recipientEmail],
     },

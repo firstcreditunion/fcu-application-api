@@ -22,7 +22,7 @@ const sesClient = new SES({
 
 // Retrieve the API Secret from environment variables on the server.
 // This is done once when the server starts.
-const API_SECRET = process.env.API_SECRET
+const API_SECRET = process.env.MEMBERSHIP_ENDPOINT_SECRET
 
 export async function POST(request: NextRequest) {
   // First, check if the secret is even configured on the server.

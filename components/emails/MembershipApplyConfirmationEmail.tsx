@@ -107,7 +107,7 @@ export default function MembershipConfirmationEmail({
                 Application Number
               </Heading>
               <Text className='mt-4 mb-10 font-bold text-5xl text-white leading-none tracking-tight'>
-                ${membershipApplicationNumber}
+                {membershipApplicationNumber}
               </Text>
 
               <Heading className='pt-5 font-medium text-[#bbbb14] text-xs uppercase tracking-widest'>
@@ -130,14 +130,14 @@ export default function MembershipConfirmationEmail({
                 <Row className='mt-5'>
                   <Column className='w-full text-center'>
                     <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Savings
+                      Savings Products Chosen
                     </Text>
                     {savingProducts.map((product) => (
                       <Text
                         key={product}
                         className='my-1 font-semibold text-2xl text-white tracking-tight'
                       >
-                        ${product}
+                        {product}
                       </Text>
                     ))}
                   </Column>
@@ -147,14 +147,14 @@ export default function MembershipConfirmationEmail({
                 <Row className='mt-5'>
                   <Column className='w-full text-center'>
                     <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Savings
+                      Transactional Products Chosen
                     </Text>
                     {transactionalProducts.map((product) => (
                       <Text
                         key={product}
                         className='my-1 font-semibold text-2xl text-white tracking-tight'
                       >
-                        ${product}
+                        {product}
                       </Text>
                     ))}
                   </Column>

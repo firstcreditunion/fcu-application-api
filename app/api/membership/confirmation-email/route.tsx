@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
   if (schemaToUse === 'api') {
     const emailWhiteList = await getEmailWhitelist()
 
-    if (emailWhiteList && !emailWhiteListForComms.includes(recipientEmail)) {
+    if (emailWhiteList && !emailWhiteList.includes(recipientEmail)) {
       return NextResponse.json(
         { success: false, error: 'Recipient email is not in the white list.' },
         { status: 400 }

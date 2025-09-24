@@ -7,8 +7,8 @@ import { SES } from '@aws-sdk/client-ses'
 
 import LoanThankYouEmail from '@/components/emails/LoanApplyConfirmationEmail'
 import { headers } from 'next/headers'
-import { emailWhiteList } from '@/utils/emialWhilteList'
-// import { getHost } from '@/utils/globalUtils'
+import { getSchemaToUse } from '@/utils/schemToUse'
+import { getEmailWhitelist } from '@/lib/supabase/controls'
 
 // Initialize AWS SES client
 const sesClient = new SES({
@@ -36,16 +36,6 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-
-  // if (API_SECRET) {
-  //   return NextResponse.json(
-  //     {
-  //       success: false,
-  //       error: 'Warning: Production Not ready yet!',
-  //     },
-  //     { status: 500 }
-  //   )
-  // }
 
   const headersList = await headers()
   // Get the secret from the request's 'X-API-Secret' header.
@@ -136,14 +126,18 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  if (!emailWhiteList.includes(recipientEmail)) {
-    console.log('Recipient email is not in the white list.')
-    return NextResponse.json(
-      { success: false, error: 'Recipient email is not in the white list.' },
-      { status: 400 }
-    )
-  }
+  const schemaToUse = await getSchemaToUse()
 
+  if (schemaToUse === 'api') {
+    const emailWhiteList = await getEmailWhitelist()
+
+    if (emailWhiteList && !emailWhiteList.includes(recipientEmail)) {
+      return NextResponse.json(
+        { success: false, error: 'Recipient email is not in the white list.' },
+        { status: 400 }
+      )
+    }
+  }
   const emailHtml = await render(
     <LoanThankYouEmail
       recipientEmail={recipientEmail}

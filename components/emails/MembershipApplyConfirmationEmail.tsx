@@ -135,7 +135,7 @@ export default function MembershipConfirmationEmail({
                     {savingProducts.map((product) => (
                       <Text
                         key={product}
-                        className='my-1 font-semibold text-2xl text-white tracking-tight'
+                        className='my-1 font-semibold text-xl text-white tracking-tight'
                       >
                         {product}
                       </Text>
@@ -152,7 +152,7 @@ export default function MembershipConfirmationEmail({
                     {transactionalProducts.map((product) => (
                       <Text
                         key={product}
-                        className='my-1 font-semibold text-2xl text-white tracking-tight'
+                        className='my-1 font-semibold text-xl text-white tracking-tight'
                       >
                         {product}
                       </Text>
@@ -166,7 +166,7 @@ export default function MembershipConfirmationEmail({
                     <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
                       Term Deposit
                     </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white tracking-tight'>
+                    <Text className='my-1 font-semibold text-xl text-white tracking-tight'>
                       Yes
                     </Text>
                   </Column>
@@ -178,7 +178,7 @@ export default function MembershipConfirmationEmail({
                     <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
                       Remote Banking
                     </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white '>
+                    <Text className='my-1 font-semibold text-xl text-white '>
                       Yes
                     </Text>
                   </Column>
@@ -190,7 +190,7 @@ export default function MembershipConfirmationEmail({
                     <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
                       First Credit Union Debit Mastercard®
                     </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white '>
+                    <Text className='my-1 font-semibold text-xl text-white '>
                       Yes
                     </Text>
                   </Column>

@@ -6,8 +6,10 @@ import { render } from '@react-email/components'
 import { SES } from '@aws-sdk/client-ses'
 
 import { headers } from 'next/headers'
-import { emailWhiteList } from '@/utils/emialWhilteList'
+import { emailWhiteListForComms } from '@/utils/emailWhitelist'
 import MembershipConfirmationEmail from '@/components/emails/MembershipApplyConfirmationEmail'
+import { getEmailWhitelist } from '@/lib/supabase/controls'
+import { getSchemaToUse } from '@/utils/schemToUse'
 
 // import { getHost } from '@/utils/globalUtils'
 
@@ -38,18 +40,7 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // if (API_SECRET) {
-  //   return NextResponse.json(
-  //     {
-  //       success: false,
-  //       error: 'Warning: Production Not ready yet!',
-  //     },
-  //     { status: 500 }
-  //   )
-  // }
-
   const headersList = await headers()
-  // Get the secret from the request's 'X-API-Secret' header.
   const providedSecret = headersList.get('X-API-Secret')
 
   // Handle missing or incorrect secret.
@@ -135,12 +126,17 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  if (!emailWhiteList.includes(recipientEmail)) {
-    console.log('Recipient email is not in the white list.')
-    return NextResponse.json(
-      { success: false, error: 'Recipient email is not in the white list.' },
-      { status: 400 }
-    )
+  const schemaToUse = await getSchemaToUse()
+
+  if (schemaToUse === 'api') {
+    const emailWhiteList = await getEmailWhitelist()
+
+    if (emailWhiteList && !emailWhiteListForComms.includes(recipientEmail)) {
+      return NextResponse.json(
+        { success: false, error: 'Recipient email is not in the white list.' },
+        { status: 400 }
+      )
+    }
   }
 
   const emailHtml = await render(
@@ -184,8 +180,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const result = await sesClient.sendEmail(params)
-
-    console.log('result: ', result)
 
     return NextResponse.json({
       success: true,

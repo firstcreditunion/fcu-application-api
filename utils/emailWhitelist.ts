@@ -1,4 +1,4 @@
-export const emailWhiteList = [
+export const emailWhiteListForComms = [
   'isaac.vicliph@firstcu.co.nz',
   'samisaac75@gmail.com',
   'malakai.curulala@firstcu.co.nz',

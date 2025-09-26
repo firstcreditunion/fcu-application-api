@@ -133,10 +133,12 @@ export async function POST(request: NextRequest) {
   if (schemaToUse === 'api') {
     const emailWhiteList = await getEmailWhitelist()
 
-    console.log('Email white list: ', emailWhiteList)
+    const emailsOnly = emailWhiteList?.map((email) => email.email_address)
+
+    console.log('Email white list: ', emailsOnly)
     console.log('Recipient email: ', recipientEmail)
 
-    if (emailWhiteList && !emailWhiteList.includes(recipientEmail)) {
+    if (emailsOnly && !emailsOnly.includes(recipientEmail)) {
       console.log('Recipient email is not in the white list.')
       return NextResponse.json(
         { success: false, error: 'Recipient email is not in the white list.' },

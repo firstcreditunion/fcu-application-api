@@ -227,9 +227,10 @@ export default function MembershipConfirmationEmail({
                     <strong>Identification and Proof of Address</strong>
                   </Text>
                   <Text className='m-0 mt-[8px] text-[16px] leading-[24px]'>
-                    Two colour copies of identifications and Proof of Address.
-                    At least one form of identification{' '}
-                    <strong>must contain a photo</strong>.{' '}
+                    If you have a NZ Passport we only require one form of
+                    identification.  Otherwise we require two forms of
+                    identification, and a Proof of Address. At least one form of
+                    identification <strong>must contain a photo</strong>.{' '}
                     <Link style={anchor} href={linkToIdentification}>
                       Click here
                     </Link>{' '}

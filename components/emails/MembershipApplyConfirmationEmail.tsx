@@ -407,6 +407,7 @@ const documentSectionStyle = {
 
 const documentHeadingStyle = {
   margin: '0 0 12px 0',
+  padding: '0 16px',
   fontSize: '18px',
   fontWeight: '600',
   lineHeight: '1.4',

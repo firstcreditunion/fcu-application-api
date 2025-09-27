@@ -312,7 +312,8 @@ const introTextStyle = {
 
 const applicationBoxTableStyle = {
   width: '100%',
-  backgroundColor: '#1e40af',
+  backgroundColor: '#00687f',
+  borderRadius: '16px',
   marginBottom: '32px',
   borderCollapse: 'collapse' as const,
 }
@@ -393,7 +394,7 @@ const submittedDateStyle = {
 
 const bodyTextStyle = {
   margin: '0 0 16px 0',
-  padding: '0 32px',
+  padding: '0 16px',
   fontSize: '16px',
   lineHeight: '1.6',
   color: '#374151',
@@ -413,13 +414,14 @@ const documentHeadingStyle = {
 }
 
 const linkStyle = {
-  color: '#1e40af',
+  color: '#00687f',
   textDecoration: 'underline',
 }
 
 const hrStyle = {
   borderColor: '#e5e7eb',
   margin: '32px 0',
+  padding: '0 16px',
   border: '1px solid #e5e7eb',
   width: '100%',
 }

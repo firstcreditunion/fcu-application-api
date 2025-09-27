@@ -1,6 +1,5 @@
 import {
   Body,
-  Column,
   Container,
   Head,
   Heading,
@@ -8,9 +7,7 @@ import {
   Html,
   Link,
   Preview,
-  Row,
   Section,
-  Tailwind,
   Text,
 } from '@react-email/components'
 
@@ -38,8 +35,8 @@ interface ConfirmationEmailProps {
   submittedDateTime: string
   membershipApplicationNumber?: number
 }
-const linkToIdentification = process.env.IDENTIFICATION_LINK_WEBSITE!
 
+const linkToIdentification = process.env.IDENTIFICATION_LINK_WEBSITE!
 const toCurrentYear = new Date().getFullYear()
 
 export default function MembershipConfirmationEmail({
@@ -56,252 +53,373 @@ export default function MembershipConfirmationEmail({
   termDeposit,
   requireRemoteBanking,
   requireDebitCard,
-
   submittedDateTime,
   membershipApplicationNumber,
 }: ConfirmationEmailProps) {
-  // Generate the loan status link with security token
-
-  // const membershipStatusLink = generateMembershipStatusLink({
-  //   email: recipientEmail,
-  //   membershipApplicationNumber: membershipApplicationNumber,
-  //   applicantName: applicantName || firstName || 'Valued Customer',
-  //   token: securityToken,
-  // })
   return (
     <Html>
       <Head />
       <Preview>
         First Credit Union - Membership Application Confirmation
       </Preview>
-      <Tailwind>
-        <Body className='bg-white font-sans'>
-          <Container className='mx-auto w-full max-w-[600px] p-0'>
-            <Section className='p-8 text-start'>
-              {/* <Text className='mx-0 mt-4 mb-8 p-0 text-center font-normal text-2xl'>
-                  <span className='font-bold tracking-tighter text-fcu-primary-500'>
-                    First Credit Union
-                  </span>
-                </Text> */}
-              <Text className='font-normal text-sm uppercase text-center tracking-wider text-[#828282]'>
-                Membership Application Confirmation
-              </Text>
-              <Heading className='my-4 font-medium text-lg leading-tight text-center'>
-                Your Membership Application has been received.
-              </Heading>
-              <Text className='text-lg mt-8 font-medium leading-none tracking-tight'>
-                Hi {primeFirstName},
-              </Text>
+      <Body style={bodyStyle}>
+        <Container style={containerStyle}>
+          <Section style={headerSectionStyle}>
+            <Text style={subHeaderStyle}>
+              Membership Application Confirmation
+            </Text>
+            <Heading style={mainHeadingStyle}>
+              Your Membership Application has been received.
+            </Heading>
+            <Text style={greetingStyle}>Hi {primeFirstName},</Text>
 
-              <Text className='mb-8 text-lg leading-8 tracking-tight'>
-                Thank you for applying for a membership with First Credit Union.
-                Please find below the details of your membership application.
-              </Text>
-            </Section>
+            <Text style={introTextStyle}>
+              Thank you for applying for a membership with First Credit Union.
+              Please find below the details of your membership application.
+            </Text>
+          </Section>
 
-            <Section
-              style={codeBox}
-              className='my-6 bg-[#29819a] bg-[radial-gradient(circle_at_bottom_right,#00687f_0%,transparent_60%)] p-8 text-center'
-            >
-              <Heading className='m-0 font-light text-2xl text-[#fff] tracking-tight'>
-                Application Number
-              </Heading>
-              <Text className='mt-4 mb-10 font-bold text-5xl text-white leading-none tracking-tight'>
-                {membershipApplicationNumber}
-              </Text>
+          <Section style={applicationBoxStyle}>
+            <table style={tableStyle}>
+              <tr>
+                <td style={tableCellStyle}>
+                  <Heading style={applicationNumberHeadingStyle}>
+                    Application Number
+                  </Heading>
+                  <Text style={applicationNumberStyle}>
+                    {membershipApplicationNumber}
+                  </Text>
 
-              <Heading className='pt-5 font-medium text-[#bbbb14] text-xs uppercase tracking-widest'>
-                Application Details
-              </Heading>
+                  <Heading style={detailsHeadingStyle}>
+                    Application Details
+                  </Heading>
 
-              {isJointApplication === true && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Joint Applicant
-                    </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white tracking-tight'>
-                      {jointTitle} {jointFirstName} {jointLastName}
-                    </Text>
-                  </Column>
-                </Row>
-              )}
-              {savingProducts && savingProducts.length > 0 && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Savings Products Chosen
-                    </Text>
-                    {savingProducts.map((product) => (
-                      <Text
-                        key={product}
-                        className='my-1 font-medium text-base text-white tracking-tight'
-                      >
-                        {product}
+                  {isJointApplication === true && (
+                    <div style={detailRowStyle}>
+                      <Text style={detailLabelStyle}>Joint Applicant</Text>
+                      <Text style={detailValueStyle}>
+                        {jointTitle} {jointFirstName} {jointLastName}
                       </Text>
-                    ))}
-                  </Column>
-                </Row>
-              )}
-              {transactionalProducts && transactionalProducts.length > 0 && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Transactional Products Chosen
-                    </Text>
-                    {transactionalProducts.map((product) => (
-                      <Text
-                        key={product}
-                        className='my-1 font-medium text-base text-white tracking-tight'
-                      >
-                        {product}
-                      </Text>
-                    ))}
-                  </Column>
-                </Row>
-              )}
-              {termDeposit === true && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Term Deposit
-                    </Text>
-                    <Text className='my-1 font-medium text-base text-white tracking-tight'>
-                      Yes
-                    </Text>
-                  </Column>
-                </Row>
-              )}
-              {requireRemoteBanking === true && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Remote Banking
-                    </Text>
-                    <Text className='my-1 font-medium text-base text-white '>
-                      Yes
-                    </Text>
-                  </Column>
-                </Row>
-              )}
-              {requireDebitCard === true && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      First Credit Union Debit Mastercard®
-                    </Text>
-                    <Text className='my-1 font-medium text-base text-white '>
-                      Yes
-                    </Text>
-                  </Column>
-                </Row>
-              )}
+                    </div>
+                  )}
 
-              {submittedDateTime && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='my-1 font-light text-xs text-gray-200 uppercase'>
-                      Submitted Date & Time:{' '}
-                      {format(
-                        new Date(submittedDateTime),
-                        'dd/MM/yyyy hh:mm:ss aaaa'
-                      )}
-                    </Text>
-                    {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                  </Column>
-                </Row>
-              )}
-            </Section>
-            <Section>
-              <Row>
-                <Text className='m-0 mt-[8px] text-[16px] leading-[24px]'>
-                  Before we can open your account, we require the following
-                  documents:
-                </Text>
-              </Row>
-            </Section>
-            <Section>
-              <Row className='items-center'>
-                <Column className='w-[90%]'>
-                  <Text className='m-0 text-[20px] font-semibold leading-[28px]'>
+                  {savingProducts && savingProducts.length > 0 && (
+                    <div style={detailRowStyle}>
+                      <Text style={detailLabelStyle}>
+                        Savings Products Chosen
+                      </Text>
+                      {savingProducts.map((product) => (
+                        <Text key={product} style={detailValueStyle}>
+                          {product}
+                        </Text>
+                      ))}
+                    </div>
+                  )}
+
+                  {transactionalProducts &&
+                    transactionalProducts.length > 0 && (
+                      <div style={detailRowStyle}>
+                        <Text style={detailLabelStyle}>
+                          Transactional Products Chosen
+                        </Text>
+                        {transactionalProducts.map((product) => (
+                          <Text key={product} style={detailValueStyle}>
+                            {product}
+                          </Text>
+                        ))}
+                      </div>
+                    )}
+
+                  {termDeposit === true && (
+                    <div style={detailRowStyle}>
+                      <Text style={detailLabelStyle}>Term Deposit</Text>
+                      <Text style={detailValueStyle}>Yes</Text>
+                    </div>
+                  )}
+
+                  {requireRemoteBanking === true && (
+                    <div style={detailRowStyle}>
+                      <Text style={detailLabelStyle}>Remote Banking</Text>
+                      <Text style={detailValueStyle}>Yes</Text>
+                    </div>
+                  )}
+
+                  {requireDebitCard === true && (
+                    <div style={detailRowStyle}>
+                      <Text style={detailLabelStyle}>
+                        First Credit Union Debit Mastercard®
+                      </Text>
+                      <Text style={detailValueStyle}>Yes</Text>
+                    </div>
+                  )}
+
+                  {submittedDateTime && (
+                    <div style={detailRowStyle}>
+                      <Text style={submittedDateStyle}>
+                        Submitted Date & Time:{' '}
+                        {format(
+                          new Date(submittedDateTime),
+                          'dd/MM/yyyy hh:mm:ss aaaa'
+                        )}
+                      </Text>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            </table>
+          </Section>
+
+          <Section>
+            <Text style={bodyTextStyle}>
+              Before we can open your account, we require the following
+              documents:
+            </Text>
+          </Section>
+
+          <Section>
+            <table style={tableStyle}>
+              <tr>
+                <td style={documentSectionStyle}>
+                  <Text style={documentHeadingStyle}>
                     <strong>Identification and Proof of Address</strong>
                   </Text>
-                  <Text className='m-0 mt-[8px] text-[16px] leading-[24px]'>
+                  <Text style={bodyTextStyle}>
                     If you have a NZ Passport we only require one form of
-                    identification.  Otherwise we require two forms of
+                    identification. Otherwise we require two forms of
                     identification, and a Proof of Address. At least one form of
-                    identification <strong>must contain a photo</strong>.{' '}
-                    <Link style={anchor} href={linkToIdentification}>
+                    identification <strong>must contain a photo</strong>.{' '}
+                    <Link style={linkStyle} href={linkToIdentification}>
                       Click here
                     </Link>{' '}
                     to view the forms of identification and proof of address we
                     can accept.
                   </Text>
-                </Column>
-              </Row>
-            </Section>
+                </td>
+              </tr>
+            </table>
+          </Section>
 
-            <Hr className='mx-0 my-[24px] w-full border border-solid !border-gray-300' />
-            <Text>
-              Please note that all identification and proof of address need to
-              be certified by a trusted referee which is outlined in forms of
-              identification link.
-            </Text>
-            <Text>
-              Please email the above documents through to this email. Upon
-              receiving your documents, you will receive a link by email to
-              validate that your identity documents are authentic through a
-              third-party company called Cloudcheck. Once that process is done,
-              we will then get in touch with you.
-            </Text>
-            <Text>
-              <strong>
-                Please note: If we do not receive the above documents, we will
-                be unable to open your First Credit Union account.
-              </strong>
-            </Text>
-            <Text>
-              If you have any questions, please give us a call. Our call centre
-              is open Monday 10am-5pm and Tuesday – Friday 8am-5pm (excluding
-              public holidays).
-            </Text>
-            <Text>We look forward to hearing from you.</Text>
-            <Text>— First Credit Union team</Text>
+          <Hr style={hrStyle} />
 
-            <Hr style={hr} />
-            <Section style={footer}>
-              <Row>
-                <Text style={{ textAlign: 'center', color: '#474747' }}>
-                  ©{toCurrentYear} First Credit Union, All Rights Reserved{' '}
-                  <br />
-                  111 Collingwood Street, Hamilton Central, Hamilton 3204
-                </Text>
-              </Row>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
+          <Text style={bodyTextStyle}>
+            Please note that all identification and proof of address need to be
+            certified by a trusted referee which is outlined in forms of
+            identification link.
+          </Text>
+
+          <Text style={bodyTextStyle}>
+            Please email the above documents through to this email. Upon
+            receiving your documents, you will receive a link by email to
+            validate that your identity documents are authentic through a
+            third-party company called Cloudcheck. Once that process is done, we
+            will then get in touch with you.
+          </Text>
+
+          <Text style={bodyTextStyle}>
+            <strong>
+              Please note: If we do not receive the above documents, we will be
+              unable to open your First Credit Union account.
+            </strong>
+          </Text>
+
+          <Text style={bodyTextStyle}>
+            If you have any questions, please give us a call. Our call centre is
+            open Monday 10am-5pm and Tuesday – Friday 8am-5pm (excluding public
+            holidays).
+          </Text>
+
+          <Text style={bodyTextStyle}>
+            We look forward to hearing from you.
+          </Text>
+          <Text style={bodyTextStyle}>— First Credit Union team</Text>
+
+          <Hr style={hrStyle} />
+
+          <Section style={footerStyle}>
+            <Text style={footerTextStyle}>
+              ©{toCurrentYear} First Credit Union, All Rights Reserved <br />
+              111 Collingwood Street, Hamilton Central, Hamilton 3204
+            </Text>
+          </Section>
+        </Container>
+      </Body>
     </Html>
   )
 }
 
-const hr = {
-  borderColor: '#e6ebf1',
-  margin: '20px 0',
+const bodyStyle = {
+  backgroundColor: '#ffffff',
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+  margin: '0',
+  padding: '0',
 }
 
-const footer = {
+const containerStyle = {
+  margin: '0 auto',
+  width: '100%',
+  maxWidth: '600px',
+  padding: '0',
+}
+
+const headerSectionStyle = {
+  padding: '32px',
+  textAlign: 'left' as const,
+}
+
+const subHeaderStyle = {
+  fontWeight: 'normal',
+  fontSize: '14px',
+  textTransform: 'uppercase' as const,
+  textAlign: 'center' as const,
+  letterSpacing: '0.1em',
+  color: '#828282',
+  margin: '0',
+}
+
+const mainHeadingStyle = {
+  margin: '16px 0',
+  fontWeight: '500',
+  fontSize: '18px',
+  lineHeight: '1.3',
+  textAlign: 'center' as const,
+  color: '#000000',
+}
+
+const greetingStyle = {
+  fontSize: '18px',
+  marginTop: '32px',
+  fontWeight: '500',
+  lineHeight: '1',
+  color: '#000000',
+  margin: '32px 0 0 0',
+}
+
+const introTextStyle = {
+  marginBottom: '32px',
+  fontSize: '18px',
+  lineHeight: '1.4',
+  color: '#000000',
+  margin: '0 0 32px 0',
+}
+
+const applicationBoxStyle = {
+  backgroundColor: '#29819a',
+  borderRadius: '16px',
+  marginBottom: '30px',
+  padding: '32px 16px',
+  textAlign: 'center' as const,
+}
+
+const tableStyle = {
+  width: '100%',
+  borderCollapse: 'collapse' as const,
+}
+
+const tableCellStyle = {
+  padding: '0',
+  textAlign: 'center' as const,
+}
+
+const applicationNumberHeadingStyle = {
+  margin: '0',
+  fontWeight: '300',
+  fontSize: '24px',
+  color: '#ffffff',
+  letterSpacing: '-0.025em',
+}
+
+const applicationNumberStyle = {
+  marginTop: '16px',
+  marginBottom: '40px',
+  fontWeight: 'bold',
+  fontSize: '48px',
+  color: '#ffffff',
+  lineHeight: '1',
+  letterSpacing: '-0.025em',
+}
+
+const detailsHeadingStyle = {
+  paddingTop: '20px',
+  fontWeight: '500',
+  color: '#bbbb14',
+  fontSize: '12px',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.15em',
+  margin: '0',
+}
+
+const detailRowStyle = {
+  marginTop: '20px',
+}
+
+const detailLabelStyle = {
+  fontWeight: '300',
+  color: '#ffffff',
+  fontSize: '14px',
+  letterSpacing: '0.15em',
+  textTransform: 'uppercase' as const,
+  margin: '0',
+}
+
+const detailValueStyle = {
+  margin: '4px 0',
+  fontWeight: '600',
+  fontSize: '24px',
+  color: '#ffffff',
+  letterSpacing: '-0.025em',
+}
+
+const submittedDateStyle = {
+  margin: '4px 0',
+  fontWeight: '300',
+  fontSize: '12px',
+  color: '#e5e5e5',
+  textTransform: 'uppercase' as const,
+}
+
+const bodyTextStyle = {
+  margin: '0 0 16px 0',
+  fontSize: '16px',
+  lineHeight: '1.5',
+  color: '#000000',
+}
+
+const documentSectionStyle = {
+  width: '90%',
+  padding: '0',
+}
+
+const documentHeadingStyle = {
+  margin: '0',
+  fontSize: '20px',
+  fontWeight: '600',
+  lineHeight: '1.4',
+  color: '#000000',
+}
+
+const linkStyle = {
+  color: '#00687f',
+  textDecoration: 'underline',
+}
+
+const hrStyle = {
+  borderColor: '#e6ebf1',
+  margin: '24px 0',
+  border: '1px solid #e6ebf1',
+  width: '100%',
+}
+
+const footerStyle = {
   color: '#8898aa',
   fontSize: '12px',
   lineHeight: '16px',
 }
 
-const codeBox = {
-  borderRadius: '16px',
-  marginBottom: '30px',
-  padding: '30px 10px',
-}
-
-const anchor = {
-  color: '#00687f',
+const footerTextStyle = {
+  textAlign: 'center' as const,
+  color: '#474747',
+  fontSize: '12px',
+  lineHeight: '16px',
+  margin: '0',
 }

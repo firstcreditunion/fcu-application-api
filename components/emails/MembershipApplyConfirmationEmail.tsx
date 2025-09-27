@@ -354,7 +354,7 @@ const applicationNumberStyle = {
 const detailsHeadingStyle = {
   paddingTop: '24px',
   fontWeight: '600',
-  color: '#fbbf24',
+  color: '#e0e7ff',
   fontSize: '12px',
   textTransform: 'uppercase' as const,
   letterSpacing: '0.1em',
@@ -420,10 +420,10 @@ const linkStyle = {
 }
 
 const hrStyle = {
-  borderColor: '#6b7280',
-  margin: '32px 0',
+  borderColor: '#e0e7ff',
+  margin: '16px 0',
   padding: '0 16px',
-  border: '1px solid #6b7280',
+  border: '1px solid #e0e7ff',
   width: '100%',
 }
 

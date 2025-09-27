@@ -402,7 +402,7 @@ const bodyTextStyle = {
 
 const documentSectionStyle = {
   width: '100%',
-  padding: '0 32px',
+  padding: '0 16px',
 }
 
 const documentHeadingStyle = {

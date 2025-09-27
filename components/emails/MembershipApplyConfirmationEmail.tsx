@@ -392,9 +392,8 @@ const submittedDateStyle = {
   color: '#e5e5e5',
   textTransform: 'uppercase' as const,
 }
-
 const bodyTextStyle = {
-  padding: '32px 16px',
+  padding: '0px 16px', // 32px is height-related (top and bottom padding)
   margin: '0 0 16px 0',
   fontSize: '16px',
   lineHeight: '1.5',
@@ -408,6 +407,7 @@ const documentSectionStyle = {
 
 const documentHeadingStyle = {
   margin: '0',
+  padding: '0px 16px',
   fontSize: '20px',
   fontWeight: '600',
   lineHeight: '1.4',

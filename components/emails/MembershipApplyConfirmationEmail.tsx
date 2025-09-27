@@ -39,6 +39,11 @@ interface ConfirmationEmailProps {
 const linkToIdentification = process.env.IDENTIFICATION_LINK_WEBSITE!
 const toCurrentYear = new Date().getFullYear()
 
+const tableStyle = {
+  width: '100%',
+  borderCollapse: 'collapse' as const,
+}
+
 export default function MembershipConfirmationEmail({
   recipientEmail,
   primeTitle,
@@ -79,95 +84,99 @@ export default function MembershipConfirmationEmail({
             </Text>
           </Section>
 
-          <Section style={applicationBoxStyle}>
-            <table style={tableStyle}>
-              <tr>
-                <td style={tableCellStyle}>
-                  <Heading style={applicationNumberHeadingStyle}>
-                    Application Number
-                  </Heading>
-                  <Text style={applicationNumberStyle}>
-                    {membershipApplicationNumber}
-                  </Text>
-
-                  <Heading style={detailsHeadingStyle}>
-                    Application Details
-                  </Heading>
-
-                  {isJointApplication === true && (
-                    <div style={detailRowStyle}>
-                      <Text style={detailLabelStyle}>Joint Applicant</Text>
-                      <Text style={detailValueStyle}>
-                        {jointTitle} {jointFirstName} {jointLastName}
+          <table style={applicationBoxTableStyle}>
+            <tr>
+              <td style={applicationBoxCellStyle}>
+                <table style={innerTableStyle}>
+                  <tr>
+                    <td style={innerCellStyle}>
+                      <Heading style={applicationNumberHeadingStyle}>
+                        Application Number
+                      </Heading>
+                      <Text style={applicationNumberStyle}>
+                        {membershipApplicationNumber}
                       </Text>
-                    </div>
-                  )}
 
-                  {savingProducts && savingProducts.length > 0 && (
-                    <div style={detailRowStyle}>
-                      <Text style={detailLabelStyle}>
-                        Savings Products Chosen
-                      </Text>
-                      {savingProducts.map((product) => (
-                        <Text key={product} style={detailValueStyle}>
-                          {product}
-                        </Text>
-                      ))}
-                    </div>
-                  )}
+                      <Heading style={detailsHeadingStyle}>
+                        Application Details
+                      </Heading>
 
-                  {transactionalProducts &&
-                    transactionalProducts.length > 0 && (
-                      <div style={detailRowStyle}>
-                        <Text style={detailLabelStyle}>
-                          Transactional Products Chosen
-                        </Text>
-                        {transactionalProducts.map((product) => (
-                          <Text key={product} style={detailValueStyle}>
-                            {product}
+                      {isJointApplication === true && (
+                        <div style={detailRowStyle}>
+                          <Text style={detailLabelStyle}>Joint Applicant</Text>
+                          <Text style={detailValueStyle}>
+                            {jointTitle} {jointFirstName} {jointLastName}
                           </Text>
-                        ))}
-                      </div>
-                    )}
+                        </div>
+                      )}
 
-                  {termDeposit === true && (
-                    <div style={detailRowStyle}>
-                      <Text style={detailLabelStyle}>Term Deposit</Text>
-                      <Text style={detailValueStyle}>Yes</Text>
-                    </div>
-                  )}
+                      {savingProducts && savingProducts.length > 0 && (
+                        <div style={detailRowStyle}>
+                          <Text style={detailLabelStyle}>
+                            Savings Products Chosen
+                          </Text>
+                          {savingProducts.map((product) => (
+                            <Text key={product} style={detailValueStyle}>
+                              {product}
+                            </Text>
+                          ))}
+                        </div>
+                      )}
 
-                  {requireRemoteBanking === true && (
-                    <div style={detailRowStyle}>
-                      <Text style={detailLabelStyle}>Remote Banking</Text>
-                      <Text style={detailValueStyle}>Yes</Text>
-                    </div>
-                  )}
-
-                  {requireDebitCard === true && (
-                    <div style={detailRowStyle}>
-                      <Text style={detailLabelStyle}>
-                        First Credit Union Debit Mastercard®
-                      </Text>
-                      <Text style={detailValueStyle}>Yes</Text>
-                    </div>
-                  )}
-
-                  {submittedDateTime && (
-                    <div style={detailRowStyle}>
-                      <Text style={submittedDateStyle}>
-                        Submitted Date & Time:{' '}
-                        {format(
-                          new Date(submittedDateTime),
-                          'dd/MM/yyyy hh:mm:ss aaaa'
+                      {transactionalProducts &&
+                        transactionalProducts.length > 0 && (
+                          <div style={detailRowStyle}>
+                            <Text style={detailLabelStyle}>
+                              Transactional Products Chosen
+                            </Text>
+                            {transactionalProducts.map((product) => (
+                              <Text key={product} style={detailValueStyle}>
+                                {product}
+                              </Text>
+                            ))}
+                          </div>
                         )}
-                      </Text>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            </table>
-          </Section>
+
+                      {termDeposit === true && (
+                        <div style={detailRowStyle}>
+                          <Text style={detailLabelStyle}>Term Deposit</Text>
+                          <Text style={detailValueStyle}>Yes</Text>
+                        </div>
+                      )}
+
+                      {requireRemoteBanking === true && (
+                        <div style={detailRowStyle}>
+                          <Text style={detailLabelStyle}>Remote Banking</Text>
+                          <Text style={detailValueStyle}>Yes</Text>
+                        </div>
+                      )}
+
+                      {requireDebitCard === true && (
+                        <div style={detailRowStyle}>
+                          <Text style={detailLabelStyle}>
+                            First Credit Union Debit Mastercard®
+                          </Text>
+                          <Text style={detailValueStyle}>Yes</Text>
+                        </div>
+                      )}
+
+                      {submittedDateTime && (
+                        <div style={detailRowStyle}>
+                          <Text style={submittedDateStyle}>
+                            Submitted Date & Time:{' '}
+                            {format(
+                              new Date(submittedDateTime),
+                              'dd/MM/yyyy hh:mm:ss aaaa'
+                            )}
+                          </Text>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
 
           <Section>
             <Text style={bodyTextStyle}>
@@ -303,20 +312,24 @@ const introTextStyle = {
   margin: '0 0 32px 0',
 }
 
-const applicationBoxStyle = {
+const applicationBoxTableStyle = {
+  width: '100%',
   backgroundColor: '#29819a',
-  borderRadius: '16px',
   marginBottom: '30px',
+  borderCollapse: 'collapse' as const,
+}
+
+const applicationBoxCellStyle = {
   padding: '32px 16px',
   textAlign: 'center' as const,
 }
 
-const tableStyle = {
+const innerTableStyle = {
   width: '100%',
   borderCollapse: 'collapse' as const,
 }
 
-const tableCellStyle = {
+const innerCellStyle = {
   padding: '0',
   textAlign: 'center' as const,
 }

@@ -41,7 +41,6 @@ const toCurrentYear = new Date().getFullYear()
 
 const tableStyle = {
   width: '100%',
-  padding: '32px 16px',
   borderCollapse: 'collapse' as const,
 }
 
@@ -283,46 +282,43 @@ const subHeaderStyle = {
   textTransform: 'uppercase' as const,
   textAlign: 'center' as const,
   letterSpacing: '0.1em',
-  color: '#828282',
+  color: '#6b7280',
   margin: '0',
 }
 
 const mainHeadingStyle = {
   margin: '16px 0',
-  fontWeight: '500',
-  fontSize: '18px',
+  fontWeight: '600',
+  fontSize: '20px',
   lineHeight: '1.3',
   textAlign: 'center' as const,
-  color: '#000000',
+  color: '#111827',
 }
 
 const greetingStyle = {
   fontSize: '18px',
-  marginTop: '32px',
   fontWeight: '500',
-  lineHeight: '1',
-  color: '#000000',
+  lineHeight: '1.4',
+  color: '#111827',
   margin: '32px 0 0 0',
 }
 
 const introTextStyle = {
-  marginBottom: '32px',
-  fontSize: '18px',
-  lineHeight: '1.4',
-  color: '#000000',
-  margin: '0 0 32px 0',
+  fontSize: '16px',
+  lineHeight: '1.5',
+  color: '#374151',
+  margin: '16px 0 32px 0',
 }
 
 const applicationBoxTableStyle = {
   width: '100%',
-  backgroundColor: '#29819a',
-  borderRadius: '10px',
-  marginBottom: '30px',
+  backgroundColor: '#1e40af',
+  marginBottom: '32px',
   borderCollapse: 'collapse' as const,
 }
 
 const applicationBoxCellStyle = {
-  padding: '32px 16px',
+  padding: '32px 24px',
   textAlign: 'center' as const,
 }
 
@@ -338,104 +334,104 @@ const innerCellStyle = {
 
 const applicationNumberHeadingStyle = {
   margin: '0',
-  fontWeight: '300',
-  fontSize: '24px',
-  color: '#ffffff',
-  letterSpacing: '-0.025em',
+  fontWeight: '400',
+  fontSize: '18px',
+  color: '#e0e7ff',
+  letterSpacing: '0.025em',
 }
 
 const applicationNumberStyle = {
-  marginTop: '16px',
-  marginBottom: '40px',
-  fontWeight: 'bold',
-  fontSize: '48px',
+  marginTop: '12px',
+  marginBottom: '32px',
+  fontWeight: '700',
+  fontSize: '42px',
   color: '#ffffff',
   lineHeight: '1',
   letterSpacing: '-0.025em',
 }
 
 const detailsHeadingStyle = {
-  paddingTop: '20px',
-  fontWeight: '500',
-  color: '#bbbb14',
+  paddingTop: '24px',
+  fontWeight: '600',
+  color: '#fbbf24',
   fontSize: '12px',
   textTransform: 'uppercase' as const,
-  letterSpacing: '0.15em',
+  letterSpacing: '0.1em',
   margin: '0',
 }
 
 const detailRowStyle = {
-  marginTop: '20px',
+  marginTop: '16px',
 }
 
 const detailLabelStyle = {
-  fontWeight: '300',
-  color: '#ffffff',
-  fontSize: '14px',
-  letterSpacing: '0.15em',
+  fontWeight: '400',
+  color: '#e0e7ff',
+  fontSize: '13px',
+  letterSpacing: '0.05em',
   textTransform: 'uppercase' as const,
-  margin: '0',
+  margin: '0 0 4px 0',
 }
 
 const detailValueStyle = {
-  margin: '4px 0',
+  margin: '0 0 8px 0',
   fontWeight: '600',
-  fontSize: '24px',
+  fontSize: '18px',
   color: '#ffffff',
-  letterSpacing: '-0.025em',
+  letterSpacing: '-0.015em',
+  lineHeight: '1.3',
 }
 
 const submittedDateStyle = {
-  margin: '4px 0',
-  fontWeight: '300',
-  fontSize: '12px',
-  color: '#e5e5e5',
+  margin: '8px 0 0 0',
+  fontWeight: '400',
+  fontSize: '11px',
+  color: '#cbd5e1',
   textTransform: 'uppercase' as const,
+  letterSpacing: '0.05em',
 }
+
 const bodyTextStyle = {
-  padding: '0px 16px', // 32px is height-related (top and bottom padding)
   margin: '0 0 16px 0',
+  padding: '0 32px',
   fontSize: '16px',
-  lineHeight: '1.5',
-  color: '#000000',
+  lineHeight: '1.6',
+  color: '#374151',
 }
 
 const documentSectionStyle = {
-  width: '90%',
-  padding: '0',
+  width: '100%',
+  padding: '0 32px',
 }
 
 const documentHeadingStyle = {
-  margin: '0',
-  padding: '0px 16px',
-  fontSize: '20px',
+  margin: '0 0 12px 0',
+  fontSize: '18px',
   fontWeight: '600',
   lineHeight: '1.4',
-  color: '#000000',
+  color: '#111827',
 }
 
 const linkStyle = {
-  color: '#00687f',
+  color: '#1e40af',
   textDecoration: 'underline',
 }
 
 const hrStyle = {
-  borderColor: '#e6ebf1',
-  margin: '24px 0',
-  border: '1px solid #e6ebf1',
+  borderColor: '#e5e7eb',
+  margin: '32px 0',
+  border: '1px solid #e5e7eb',
   width: '100%',
 }
 
 const footerStyle = {
-  color: '#8898aa',
-  fontSize: '12px',
-  lineHeight: '16px',
+  padding: '0 32px',
 }
 
 const footerTextStyle = {
   textAlign: 'center' as const,
-  color: '#474747',
+  color: '#6b7280',
   fontSize: '12px',
-  lineHeight: '16px',
+  lineHeight: '1.5',
   margin: '0',
 }

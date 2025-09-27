@@ -41,6 +41,7 @@ const toCurrentYear = new Date().getFullYear()
 
 const tableStyle = {
   width: '100%',
+  padding: '32px 16px',
   borderCollapse: 'collapse' as const,
 }
 
@@ -315,6 +316,7 @@ const introTextStyle = {
 const applicationBoxTableStyle = {
   width: '100%',
   backgroundColor: '#29819a',
+  borderRadius: '10px',
   marginBottom: '30px',
   borderCollapse: 'collapse' as const,
 }
@@ -392,6 +394,7 @@ const submittedDateStyle = {
 }
 
 const bodyTextStyle = {
+  padding: '32px 16px',
   margin: '0 0 16px 0',
   fontSize: '16px',
   lineHeight: '1.5',

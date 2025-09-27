@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 import type { SendEmailCommandInput } from '@aws-sdk/client-ses'
 
-import { render } from '@react-email/components'
 import { SES } from '@aws-sdk/client-ses'
 
 import { headers } from 'next/headers'
@@ -10,6 +9,8 @@ import { emailWhiteListForComms } from '@/utils/emailWhitelist'
 import MembershipConfirmationEmail from '@/components/emails/MembershipApplyConfirmationEmail'
 import { getEmailWhitelist } from '@/lib/supabase/controls'
 import { getSchemaToUse } from '@/utils/schemToUse'
+
+import { render, pretty } from '@react-email/render'
 
 // import { getHost } from '@/utils/globalUtils'
 
@@ -147,24 +148,26 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const emailHtml = await render(
-    <MembershipConfirmationEmail
-      recipientEmail={recipientEmail}
-      primeTitle={primeTitle}
-      primeFirstName={primeFirstName}
-      primeLastName={primeLastName}
-      isJointApplication={isJointApplication}
-      jointTitle={jointTitle}
-      jointFirstName={jointFirstName}
-      jointLastName={jointLastName}
-      savingProducts={savingProducts}
-      transactionalProducts={transactionalProducts}
-      termDeposit={termDeposit}
-      requireRemoteBanking={requireRemoteBanking}
-      requireDebitCard={requireDebitCard}
-      submittedDateTime={submittedDateTime}
-      membershipApplicationNumber={membershipApplicationNumber}
-    />
+  const emailHtml = await pretty(
+    await render(
+      <MembershipConfirmationEmail
+        recipientEmail={recipientEmail}
+        primeTitle={primeTitle}
+        primeFirstName={primeFirstName}
+        primeLastName={primeLastName}
+        isJointApplication={isJointApplication}
+        jointTitle={jointTitle}
+        jointFirstName={jointFirstName}
+        jointLastName={jointLastName}
+        savingProducts={savingProducts}
+        transactionalProducts={transactionalProducts}
+        termDeposit={termDeposit}
+        requireRemoteBanking={requireRemoteBanking}
+        requireDebitCard={requireDebitCard}
+        submittedDateTime={submittedDateTime}
+        membershipApplicationNumber={membershipApplicationNumber}
+      />
+    )
   )
 
   const params: SendEmailCommandInput = {

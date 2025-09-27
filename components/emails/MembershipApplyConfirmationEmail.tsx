@@ -402,7 +402,7 @@ const bodyTextStyle = {
 
 const documentSectionStyle = {
   width: '100%',
-  padding: '0 16px',
+  padding: '0 0px',
 }
 
 const documentHeadingStyle = {
@@ -419,10 +419,10 @@ const linkStyle = {
 }
 
 const hrStyle = {
-  borderColor: '#e5e7eb',
+  borderColor: '#6b7280',
   margin: '32px 0',
   padding: '0 16px',
-  border: '1px solid #e5e7eb',
+  border: '1px solid #6b7280',
   width: '100%',
 }
 

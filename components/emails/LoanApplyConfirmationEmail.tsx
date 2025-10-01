@@ -322,14 +322,14 @@ const buttonStyle = {
   textDecoration: 'none',
   textAlign: 'center' as const,
   padding: '14px 32px', // Adjusted padding for better proportion
-  borderRadius: '8px', // Changed from 9999px to modern rounded corners
+  borderRadius: '16px', // Changed from 9999px to modern rounded corners
   letterSpacing: '0', // Removed negative letter spacing
 }
 
 const loanDetailsBoxStyle = {
   margin: '24px 0',
   backgroundColor: '#29819a',
-  borderRadius: '8px',
+  borderRadius: '16px',
   padding: '32px 40px',
   textAlign: 'center' as const,
 }

@@ -406,7 +406,7 @@ export async function prepareJointApplicationJson({
   const loanPurposeCode = loanPurposeCodesFallback.filter(
     (item) =>
       item.loan_purpose_sub_code === primePreliminaryQuestions.loanPurposeCode
-  )[0].loan_purpose_sub_code
+  )[0]?.loan_purpose_sub_code
 
   const originator = {
     clientNumber: '0003000100',
@@ -1019,7 +1019,7 @@ export async function prepareJointApplicationJson({
         loadedByClientNumber: '0000148335',
         loanPurpose: {
           level1: 'NBUS',
-          level2: loanPurposeCode,
+          level2: loanPurposeCode ?? 'MISC',
         },
         memoMaint: {
           memo: {

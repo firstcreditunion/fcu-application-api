@@ -16,6 +16,7 @@ import {
   generateLoanStatusLink,
   generateSecureToken,
 } from '../../lib/loan-status-link-generator'
+import { format } from 'date-fns'
 
 interface EmailProps {
   recipientEmail: string
@@ -166,13 +167,19 @@ export default function LoanApplyConfirmationEmail({
               </Row>
             )}
 
-            <Row style={detailRowStyle}>
-              <Column style={detailColumnStyle}>
-                <Text style={submittedDateStyle}>
-                  Submitted Date & Time: {submittedDateTime}
-                </Text>
-              </Column>
-            </Row>
+            {submittedDateTime && (
+              <Row style={detailRowStyle}>
+                <Column style={detailColumnStyle}>
+                  <Text style={submittedDateStyle}>
+                    Submitted Date & Time:{' '}
+                    {format(
+                      new Date(submittedDateTime),
+                      'dd/MM/yyyy hh:mm:ss aaaa'
+                    )}
+                  </Text>
+                </Column>
+              </Row>
+            )}
           </Section>
 
           <Section>

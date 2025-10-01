@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
   )
 
   const params: SendEmailCommandInput = {
-    Source: 'welcome@firstcu.co.nz',
+    Source: 'First Credit Union <welcome@firstcu.co.nz>',
     Destination: {
       ToAddresses: [recipientEmail],
     },

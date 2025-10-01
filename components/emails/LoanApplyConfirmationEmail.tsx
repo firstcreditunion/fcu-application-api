@@ -10,7 +10,6 @@ import {
   Preview,
   Row,
   Section,
-  Tailwind,
   Text,
 } from '@react-email/components'
 import {
@@ -36,9 +35,8 @@ interface EmailProps {
   coversIncluded?: string
   tempLoanApplicationNumber?: string
   submittedDateTime: string
-  // Add these new fields for status link
-  loanApplicationNumber: string // Required for status link
-  applicantName?: string // Optional but recommended
+  loanApplicationNumber: string
+  applicantName?: string
 }
 
 const linkToIdentification = process.env.IDENTIFICATION_LINK_WEBSITE!
@@ -62,7 +60,6 @@ export default function LoanApplyConfirmationEmail({
   loanApplicationNumber,
   applicantName,
 }: EmailProps) {
-  // Generate the loan status link with security token
   const securityToken = generateSecureToken(
     recipientEmail,
     loanApplicationNumber
@@ -73,325 +70,375 @@ export default function LoanApplyConfirmationEmail({
     applicantName: applicantName || firstName || 'Valued Customer',
     token: securityToken,
   })
+
   return (
     <Html>
       <Head />
       <Preview>First Credit Union - Loan Application Confirmation</Preview>
-      <Tailwind>
-        <Body className='bg-white font-sans'>
-          <Container className='mx-auto w-full max-w-[600px] p-0'>
-            <Section className='p-8 text-start'>
-              {/* <Text className='mx-0 mt-4 mb-8 p-0 text-center font-normal text-2xl'>
-                <span className='font-bold tracking-tighter text-fcu-primary-500'>
-                  First Credit Union
-                </span>
-              </Text> */}
-              <Text className='font-normal text-sm uppercase text-center tracking-wider text-[#828282]'>
-                Loan Application Confirmation
-              </Text>
-              <Heading className='my-4 font-medium text-lg leading-tight text-center'>
-                Your Loan Application has been received.
-              </Heading>
-              <Text className='text-lg mt-8 font-medium leading-none tracking-tight'>
-                Hi {firstName},
-              </Text>
+      <Body style={bodyStyle}>
+        <Container style={containerStyle}>
+          <Section style={headerSectionStyle}>
+            <Text style={confirmationLabelStyle}>
+              Loan Application Confirmation
+            </Text>
+            <Heading style={mainHeadingStyle}>
+              Your Loan Application has been received.
+            </Heading>
+            <Text style={greetingStyle}>Hi {firstName},</Text>
+            <Text style={introTextStyle}>
+              Thank you for applying for a loan with First Credit Union. Please
+              find below the details of your loan application.
+            </Text>
+          </Section>
 
-              <Text className='mb-8 text-lg leading-8 tracking-tight'>
-                Thank you for applying for a loan with First Credit Union.
-                Please find below the details of your loan application.
-              </Text>
-            </Section>
-            <Section className='pb-16 text-center'>
-              <Link
-                href={loanStatusLink}
-                className='inline-flex items-center rounded-full bg-[#bbbb14] px-12 py-4 text-center font-bold text-base text-white no-underline tracking-tight'
-              >
-                Track my application
-              </Link>
-            </Section>
+          <Section style={buttonSectionStyle}>
+            <Link href={loanStatusLink} style={buttonStyle}>
+              Track my application
+            </Link>
+          </Section>
 
-            <Section
-              style={codeBox}
-              className='my-6 bg-[#29819a] bg-[radial-gradient(circle_at_bottom_right,#00687f_0%,transparent_60%)] p-8 text-center'
-            >
-              <Heading className='m-0 font-light text-2xl text-[#fff] tracking-tight'>
-                Loan Amount
-              </Heading>
-              <Text className='mt-4 mb-10 font-bold text-5xl text-white leading-none tracking-tight'>
-                ${loanAmount}
-              </Text>
-              {/* <Text className='text-gray-900 text-sm leading-5 tracking-tight'>
-                That&apos;s a lot of engagement! Your documents are resonating
-                with your visitors.
-              </Text> */}
+          <Section style={loanDetailsBoxStyle}>
+            <Heading style={loanAmountHeadingStyle}>Loan Amount</Heading>
+            <Text style={loanAmountValueStyle}>${loanAmount}</Text>
 
-              {/* <Hr className='mt-6' style={{ borderColor: '#c9c9c9' }} /> */}
-              <Heading className='pt-5 font-medium text-[#bbbb14] text-xs uppercase tracking-widest'>
-                Repayment Details
-              </Heading>
-              <Row className='mt-5'>
-                <Column className='w-full text-center'>
-                  <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                    {instalmentFrequencyHeader}
-                  </Text>
-                  <Text className='my-1 font-semibold text-2xl text-white tracking-tight'>
-                    ${instalmentAmount}
-                  </Text>
-                  {/* <Text className='text-2xl text-gray-900'>documents</Text> */}
-                </Column>
-              </Row>
-              <Row className='mt-5'>
-                <Column className='w-full text-center'>
-                  <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                    Total Interest
-                  </Text>
-                  <Text className='my-1 font-semibold text-2xl text-white tracking-tight'>
-                    ${totalInterest}
-                  </Text>
-                  {/* <Text className='text-2xl text-gray-900'>links</Text> */}
-                </Column>
-              </Row>
-              <Row className='mt-5'>
-                <Column className='w-full text-center'>
-                  <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                    Amount Payable
-                  </Text>
-                  <Text className='my-1 font-semibold text-2xl text-white '>
-                    ${totalAmountPayable}
-                  </Text>
-                  {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                </Column>
-              </Row>
-              {needProvidentInsurance === 'Yes' && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Provident CreditCare Insurance Premium
-                    </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white '>
-                      ${insuranceAmount}
-                    </Text>
-                    {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                  </Column>
-                </Row>
-              )}
-              {needProvidentInsurance === 'Yes' && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Insurance Type
-                    </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white '>
-                      {insuranceType}
-                    </Text>
-                    {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                  </Column>
-                </Row>
-              )}
-              {needProvidentInsurance === 'Yes' && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Cover Type
-                    </Text>
-                    <Text className='my-1 font-semibold text-2xl text-white '>
-                      {coverType}
-                    </Text>
-                    {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                  </Column>
-                </Row>
-              )}
-              {needProvidentInsurance === 'Yes' && (
-                <Row className='mt-5'>
-                  <Column className='w-full text-center'>
-                    <Text className='font-light text-[#fff] text-sm tracking-widest uppercase'>
-                      Covers Included
-                    </Text>
-                    <Text className='my-1 font-semibold text-lg text-white '>
-                      {coversIncluded}
-                    </Text>
-                    {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                  </Column>
-                </Row>
-              )}
+            <Heading style={repaymentDetailsHeadingStyle}>
+              Repayment Details
+            </Heading>
 
-              <Row className='mt-5'>
-                <Column className='w-full text-center'>
-                  <Text className='my-1 font-light text-xs text-gray-200 uppercase'>
-                    Submitted Date & Time: {submittedDateTime}
-                  </Text>
-                  {/* <Text className='text-2xl text-gray-900'>views</Text> */}
-                </Column>
-              </Row>
-            </Section>
-            <Section>
-              <Row>
-                <Text className='m-0 mt-[8px] text-[16px] leading-[24px]'>
-                  Before we can open your account, we require the following
-                  documents:
+            <Row style={detailRowStyle}>
+              <Column style={detailColumnStyle}>
+                <Text style={detailLabelStyle}>
+                  {instalmentFrequencyHeader}
                 </Text>
-              </Row>
-            </Section>
-            <Section>
-              <Row className='items-center'>
-                <Column className='w-[90%]'>
-                  <Text className='m-0 text-[20px] font-semibold leading-[28px]'>
-                    <strong>Identification and Proof of Address</strong>
+                <Text style={detailValueStyle}>${instalmentAmount}</Text>
+              </Column>
+            </Row>
+
+            <Row style={detailRowStyle}>
+              <Column style={detailColumnStyle}>
+                <Text style={detailLabelStyle}>Total Interest</Text>
+                <Text style={detailValueStyle}>${totalInterest}</Text>
+              </Column>
+            </Row>
+
+            <Row style={detailRowStyle}>
+              <Column style={detailColumnStyle}>
+                <Text style={detailLabelStyle}>Amount Payable</Text>
+                <Text style={detailValueStyle}>${totalAmountPayable}</Text>
+              </Column>
+            </Row>
+
+            {needProvidentInsurance === 'Yes' && (
+              <Row style={detailRowStyle}>
+                <Column style={detailColumnStyle}>
+                  <Text style={detailLabelStyle}>
+                    Provident CreditCare Insurance Premium
                   </Text>
-                  <Text className='m-0 mt-[8px] text-[16px] leading-[24px]'>
-                    Two colour copies of identifications and Proof of Address.
-                    At least one form of identification{' '}
-                    <strong>must contain a photo</strong>.{' '}
-                    <Link style={anchor} href={linkToIdentification}>
-                      Click here
-                    </Link>{' '}
-                    to view the forms of identification and proof of address we
-                    can accept.
-                  </Text>
+                  <Text style={detailValueStyle}>${insuranceAmount}</Text>
                 </Column>
               </Row>
-            </Section>
+            )}
 
-            <Hr className='mx-0 my-[24px] w-full border border-solid !border-gray-300' />
-            <Text>
-              Please note that all identification and proof of address need to
-              be certified by a trusted referee which is outlined in forms of
-              identification link.
-            </Text>
-            <Text>
-              Please email the above documents through to this email. Upon
-              receiving your documents, you will receive a link by email to
-              validate that your identity documents are authentic through a
-              third-party company called Cloudcheck. Once that process is done,
-              we will then get in touch with you.
-            </Text>
-            <Text>
-              <strong>
-                Please note: If we do not receive the above documents, we will
-                be unable to open your First Credit Union account.
-              </strong>
-            </Text>
-            <Text>
-              If you have any questions, please give us a call. Our call centre
-              is open Monday 10am-5pm and Tuesday – Friday 8am-5pm (excluding
-              public holidays).
-            </Text>
-            <Text>We look forward to hearing from you.</Text>
-            <Text>— First Credit Union team</Text>
-
-            {/* <Section className='my-6 rounded-2xl bg-[#e4c5a0]/10 bg-[radial-gradient(circle_at_bottom_right,#e4c5a0_0%,transparent_60%)] p-8 text-center'>
-              <Heading className='m-0 font-medium text-3xl text-[#9c7b4a]'>
-                Your most active month
-              </Heading>
-              <Text className='my-4 font-bold text-5xl text-gray-900 leading-none'>
-                {mostActiveMonth}
-              </Text>
-              <Text className='mb-4 font-medium text-3xl text-gray-900'>
-                with {mostActiveMonthViews} views
-              </Text>
-              <Text className='text-gray-900 text-sm leading-5'>
-                {mostActiveMonth} was your busiest month. What did you share
-                that got so much attention?
-              </Text>
-
-              <Hr className='mt-6' style={{ borderColor: '#e4c5a0' }} />
-              <Heading className='pt-5 font-medium text-gray-900 text-xs uppercase tracking-wider'>
-                You&apos;re in the top
-              </Heading>
-              <Text className='my-4 font-bold text-7xl text-gray-900 leading-none'>
-                {sharerPercentile}%
-              </Text>
-              <Text className='mb-4 font-medium text-gray-900 text-xl'>
-                of sharers on Papermark
-              </Text>
-              <Text className='text-gray-900 text-sm leading-5'>
-                You&apos;re one of our most active users. Thank you for sharing
-                with Papermark!
-              </Text>
-            </Section> */}
-            {/* 
-            <Section className='my-6 rounded-2xl bg-[#10b981]/10 bg-[radial-gradient(circle_at_bottom_right,#10b981_0%,transparent_60%)] p-8 text-center'>
-              <Heading className='m-0 font-medium text-3xl text-[#065f46]'>
-                Your documents were viewed from
-              </Heading>
-              <Row className='mt-4'>
-                <Column>
-                  {viewingLocations.map((location, index) => (
-                    <Text
-                      key={index}
-                      className='rounded-full bg-[#10b981] px-3 py-1 font-medium text-sm text-white'
-                      style={{
-                        margin: '4px 4px',
-                        display: 'inline-block',
-                      }}
-                    >
-                      {location}
-                    </Text>
-                  ))}
+            {needProvidentInsurance === 'Yes' && (
+              <Row style={detailRowStyle}>
+                <Column style={detailColumnStyle}>
+                  <Text style={detailLabelStyle}>Insurance Type</Text>
+                  <Text style={detailValueStyle}>{insuranceType}</Text>
                 </Column>
               </Row>
-              <Text className='mt-4 text-[#065f46] text-sm leading-5 tracking-tight'>
-                To keep the information you&apos;ve entered safe, please do not
-                share this email.
-              </Text>
-            </Section> */}
+            )}
 
-            {/* <Section className='pb-6 text-center'>
-              <Text className='text-gray-900 text-xl leading-8 tracking-tight'>
-                Thank you for choosing First Credit Union. <br />
-              </Text>
-              <Link
-                href='https://www.papermark.com'
-                className='mt-4 inline-flex items-center rounded-full bg-gray-900 px-12 py-4 text-center font-bold text-sm text-white no-underline'
-              >
-                Share your stats
-              </Link>
-              <Link
-                href='https://www.papermark.com'
-                className='mt-4 block items-center text-center font-bold text-gray-900 text-sm no-underline'
-              >
-                Go to your dashboard
-              </Link>
-            </Section> */}
-            <Hr style={hr} />
-            <Section style={footer}>
-              <Row>
-                <Text style={{ textAlign: 'center', color: '#474747' }}>
-                  ©{toCurrentYear} First Credit Union, All Rights Reserved{' '}
-                  <br />
-                  111 Collingwood Street, Hamilton Central, Hamilton 3204
+            {needProvidentInsurance === 'Yes' && (
+              <Row style={detailRowStyle}>
+                <Column style={detailColumnStyle}>
+                  <Text style={detailLabelStyle}>Cover Type</Text>
+                  <Text style={detailValueStyle}>{coverType}</Text>
+                </Column>
+              </Row>
+            )}
+
+            {needProvidentInsurance === 'Yes' && (
+              <Row style={detailRowStyle}>
+                <Column style={detailColumnStyle}>
+                  <Text style={detailLabelStyle}>Covers Included</Text>
+                  <Text style={detailValueLargeStyle}>{coversIncluded}</Text>
+                </Column>
+              </Row>
+            )}
+
+            <Row style={detailRowStyle}>
+              <Column style={detailColumnStyle}>
+                <Text style={submittedDateStyle}>
+                  Submitted Date & Time: {submittedDateTime}
                 </Text>
-              </Row>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
+              </Column>
+            </Row>
+          </Section>
+
+          <Section>
+            <Row>
+              <Text style={documentRequirementStyle}>
+                Before we can open your account, we require the following
+                documents:
+              </Text>
+            </Row>
+          </Section>
+
+          <Section>
+            <Row>
+              <Column style={documentColumnStyle}>
+                <Text style={documentHeadingStyle}>
+                  <strong>Identification and Proof of Address</strong>
+                </Text>
+                <Text style={documentTextStyle}>
+                  Two colour copies of identifications and Proof of Address. At
+                  least one form of identification{' '}
+                  <strong>must contain a photo</strong>.{' '}
+                  <Link style={anchor} href={linkToIdentification}>
+                    Click here
+                  </Link>{' '}
+                  to view the forms of identification and proof of address we
+                  can accept.
+                </Text>
+              </Column>
+            </Row>
+          </Section>
+
+          <Hr style={hr} />
+
+          <Text style={bodyTextStyle}>
+            Please note that all identification and proof of address need to be
+            certified by a trusted referee which is outlined in forms of
+            identification link.
+          </Text>
+          <Text style={bodyTextStyle}>
+            Please email the above documents through to this email. Upon
+            receiving your documents, you will receive a link by email to
+            validate that your identity documents are authentic through a
+            third-party company called Cloudcheck. Once that process is done, we
+            will then get in touch with you.
+          </Text>
+          <Text style={bodyTextStyle}>
+            <strong>
+              Please note: If we do not receive the above documents, we will be
+              unable to open your First Credit Union account.
+            </strong>
+          </Text>
+          <Text style={bodyTextStyle}>
+            If you have any questions, please give us a call. Our call centre is
+            open Monday 10am-5pm and Tuesday – Friday 8am-5pm (excluding public
+            holidays).
+          </Text>
+          <Text style={bodyTextStyle}>
+            We look forward to hearing from you.
+          </Text>
+          <Text style={bodyTextStyle}>— First Credit Union team</Text>
+
+          <Hr style={hr} />
+          <Section style={footer}>
+            <Row>
+              <Text style={footerTextStyle}>
+                ©{toCurrentYear} First Credit Union, All Rights Reserved <br />
+                111 Collingwood Street, Hamilton Central, Hamilton 3204
+              </Text>
+            </Row>
+          </Section>
+        </Container>
+      </Body>
     </Html>
   )
 }
 
-// PapermarkYearInReviewEmail.PreviewProps = {
-//   submittedDateTime: '2024-01-01 12:00:00',
-//   title: 'Mr',
-//   firstName: 'John',
-//   loanAmount: '10000',
-//   loanTerm: '5 years',
-//   interestRate: '5%',
-//   totalInterest: '2500',
-//   totalAmountPayable: '12500',
-//   instalmentAmount: '2500',
-//   instalmentFrequencyHeader: 'Monthly',
-//   insuranceAmount: '1000',
-//   needProvidentInsurance: 'Yes',
-//   insuranceType: 'Provident',
-//   coverType: 'Personal Loan',
-//   coversIncluded: 'Accidental Death & Disability',
-//   tempLoanApplicationNumber: '1234567890',
-// } satisfies EmailProps
+// Inline styles for Outlook compatibility
+const bodyStyle = {
+  backgroundColor: '#ffffff',
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  margin: 0,
+  padding: 0,
+}
+
+const containerStyle = {
+  margin: '0 auto',
+  width: '100%',
+  maxWidth: '600px',
+  padding: 0,
+}
+
+const headerSectionStyle = {
+  padding: '32px',
+  textAlign: 'left' as const,
+}
+
+const confirmationLabelStyle = {
+  fontSize: '14px',
+  fontWeight: 'normal' as const,
+  textTransform: 'uppercase' as const,
+  textAlign: 'center' as const,
+  letterSpacing: '0.05em',
+  color: '#828282',
+  margin: 0,
+}
+
+const mainHeadingStyle = {
+  margin: '16px 0',
+  fontSize: '18px',
+  fontWeight: '500' as const,
+  lineHeight: '1.3',
+  textAlign: 'center' as const,
+  color: '#000000',
+}
+
+const greetingStyle = {
+  fontSize: '18px',
+  marginTop: '32px',
+  fontWeight: '500' as const,
+  lineHeight: '1',
+  letterSpacing: '-0.025em',
+  color: '#000000',
+}
+
+const introTextStyle = {
+  marginBottom: '32px',
+  fontSize: '18px',
+  lineHeight: '2',
+  letterSpacing: '-0.025em',
+  color: '#000000',
+}
+
+const buttonSectionStyle = {
+  paddingBottom: '64px',
+  textAlign: 'center' as const,
+}
+
+const buttonStyle = {
+  display: 'inline-block',
+  backgroundColor: '#bbbb14',
+  color: '#ffffff',
+  fontSize: '16px',
+  fontWeight: 'bold' as const,
+  textDecoration: 'none',
+  textAlign: 'center' as const,
+  padding: '16px 48px',
+  borderRadius: '9999px',
+  letterSpacing: '-0.025em',
+}
+
+const loanDetailsBoxStyle = {
+  margin: '24px 0',
+  backgroundColor: '#29819a',
+  padding: '32px 40px',
+  textAlign: 'center' as const,
+}
+
+const loanAmountHeadingStyle = {
+  margin: 0,
+  fontSize: '24px',
+  fontWeight: '300' as const,
+  color: '#ffffff',
+  letterSpacing: '-0.025em',
+}
+
+const loanAmountValueStyle = {
+  marginTop: '16px',
+  marginBottom: '40px',
+  fontSize: '48px',
+  fontWeight: 'bold' as const,
+  color: '#ffffff',
+  lineHeight: '1',
+  letterSpacing: '-0.025em',
+}
+
+const repaymentDetailsHeadingStyle = {
+  paddingTop: '20px',
+  fontSize: '12px',
+  fontWeight: '500' as const,
+  color: '#bbbb14',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.1em',
+  margin: 0,
+}
+
+const detailRowStyle = {
+  marginTop: '20px',
+}
+
+const detailColumnStyle = {
+  width: '100%',
+  textAlign: 'center' as const,
+}
+
+const detailLabelStyle = {
+  fontSize: '14px',
+  fontWeight: '300' as const,
+  color: '#ffffff',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.1em',
+  margin: 0,
+}
+
+const detailValueStyle = {
+  margin: '4px 0',
+  fontSize: '24px',
+  fontWeight: '600' as const,
+  color: '#ffffff',
+  letterSpacing: '-0.025em',
+}
+
+const detailValueLargeStyle = {
+  margin: '4px 0',
+  fontSize: '18px',
+  fontWeight: '600' as const,
+  color: '#ffffff',
+  letterSpacing: '-0.025em',
+}
+
+const submittedDateStyle = {
+  margin: '4px 0',
+  fontSize: '12px',
+  fontWeight: '300' as const,
+  color: '#e5e5e5',
+  textTransform: 'uppercase' as const,
+}
+
+const documentRequirementStyle = {
+  margin: '8px 0 0 0',
+  fontSize: '16px',
+  lineHeight: '24px',
+  color: '#000000',
+}
+
+const documentColumnStyle = {
+  width: '90%',
+}
+
+const documentHeadingStyle = {
+  margin: 0,
+  fontSize: '20px',
+  fontWeight: '600' as const,
+  lineHeight: '28px',
+  color: '#000000',
+}
+
+const documentTextStyle = {
+  margin: '8px 0 0 0',
+  fontSize: '16px',
+  lineHeight: '24px',
+  color: '#000000',
+}
+
+const bodyTextStyle = {
+  fontSize: '16px',
+  lineHeight: '24px',
+  color: '#000000',
+  margin: '16px 0',
+}
 
 const hr = {
   borderColor: '#e6ebf1',
-  margin: '20px 0',
+  margin: '24px 0',
+  width: '100%',
+  border: '1px solid #d1d5db',
 }
 
 const footer = {
@@ -400,10 +447,11 @@ const footer = {
   lineHeight: '16px',
 }
 
-const codeBox = {
-  borderRadius: '16px',
-  marginBottom: '30px',
-  padding: '30px 10px',
+const footerTextStyle = {
+  textAlign: 'center' as const,
+  color: '#474747',
+  fontSize: '12px',
+  lineHeight: '16px',
 }
 
 const anchor = {

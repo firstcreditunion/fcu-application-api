@@ -129,8 +129,6 @@ export async function POST(request: NextRequest) {
 
   const schemaToUse = await getSchemaToUse()
 
-  console.log('Schema to use: ', schemaToUse)
-
   if (schemaToUse === 'api') {
     const emailWhiteList = await getEmailWhitelist()
 

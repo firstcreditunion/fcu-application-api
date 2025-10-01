@@ -251,7 +251,7 @@ export default function LoanApplyConfirmationEmail({
 
 // Inline styles for Outlook compatibility
 const bodyStyle = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#f9fafb', // Changed from white to subtle gray for better visual separation
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   margin: 0,
@@ -263,51 +263,53 @@ const containerStyle = {
   width: '100%',
   maxWidth: '600px',
   padding: 0,
+  backgroundColor: '#ffffff', // Added white background to container for card effect
 }
 
 const headerSectionStyle = {
-  padding: '32px',
+  padding: '48px 40px 32px 40px', // Increased top padding for more breathing room
   textAlign: 'left' as const,
 }
 
 const confirmationLabelStyle = {
-  fontSize: '14px',
-  fontWeight: 'normal' as const,
+  fontSize: '12px', // Reduced from 14px for better hierarchy
+  fontWeight: '600' as const, // Increased weight for better visibility
   textTransform: 'uppercase' as const,
   textAlign: 'center' as const,
-  letterSpacing: '0.05em',
-  color: '#828282',
-  margin: 0,
+  letterSpacing: '0.1em', // Increased letter spacing for better readability
+  color: '#6b7280', // Changed to a more professional gray
+  margin: '0 0 8px 0', // Added bottom margin
 }
 
 const mainHeadingStyle = {
-  margin: '16px 0',
-  fontSize: '18px',
-  fontWeight: '500' as const,
+  margin: '0 0 32px 0', // Increased bottom margin for better spacing
+  fontSize: '24px', // Increased from 18px for better hierarchy
+  fontWeight: '600' as const, // Increased weight for emphasis
   lineHeight: '1.3',
   textAlign: 'center' as const,
-  color: '#000000',
+  color: '#111827', // Darker color for better contrast
 }
 
 const greetingStyle = {
-  fontSize: '18px',
-  marginTop: '32px',
-  fontWeight: '500' as const,
-  lineHeight: '1',
-  letterSpacing: '-0.025em',
-  color: '#000000',
+  fontSize: '16px', // Reduced from 18px for better hierarchy
+  marginTop: '0', // Removed top margin
+  marginBottom: '16px', // Added bottom margin
+  fontWeight: '600' as const,
+  lineHeight: '1.5', // Improved line height
+  letterSpacing: '-0.01em', // Reduced letter spacing
+  color: '#111827', // Darker color for better contrast
 }
 
 const introTextStyle = {
   marginBottom: '32px',
-  fontSize: '18px',
-  lineHeight: '2',
-  letterSpacing: '-0.025em',
-  color: '#000000',
+  fontSize: '16px', // Reduced from 18px for better hierarchy
+  lineHeight: '1.6', // Improved from 2 for better readability
+  letterSpacing: '-0.01em', // Reduced letter spacing
+  color: '#374151', // Professional gray for body text
 }
 
 const buttonSectionStyle = {
-  paddingBottom: '64px',
+  paddingBottom: '48px', // Reduced from 64px for better spacing
   textAlign: 'center' as const,
 }
 
@@ -315,13 +317,13 @@ const buttonStyle = {
   display: 'inline-block',
   backgroundColor: '#bbbb14',
   color: '#ffffff',
-  fontSize: '16px',
-  fontWeight: 'bold' as const,
+  fontSize: '15px', // Reduced from 16px for better proportion
+  fontWeight: '600' as const, // Reduced from bold for more refined look
   textDecoration: 'none',
   textAlign: 'center' as const,
-  padding: '16px 48px',
-  borderRadius: '9999px',
-  letterSpacing: '-0.025em',
+  padding: '14px 32px', // Adjusted padding for better proportion
+  borderRadius: '8px', // Changed from 9999px to modern rounded corners
+  letterSpacing: '0', // Removed negative letter spacing
 }
 
 const loanDetailsBoxStyle = {
@@ -402,58 +404,61 @@ const submittedDateStyle = {
 }
 
 const documentRequirementStyle = {
-  margin: '8px 0 0 0',
+  margin: '40px 40px 24px 40px', // Added horizontal padding and increased spacing
   fontSize: '16px',
-  lineHeight: '24px',
-  color: '#000000',
+  lineHeight: '1.6', // Improved line height
+  color: '#111827', // Darker color for better contrast
+  fontWeight: '500' as const, // Added weight for emphasis
 }
 
 const documentColumnStyle = {
-  width: '90%',
+  width: '100%', // Changed from 90% for full width
+  padding: '0 40px', // Added horizontal padding
 }
 
 const documentHeadingStyle = {
-  margin: 0,
-  fontSize: '20px',
+  margin: '0 0 12px 0', // Added bottom margin
+  fontSize: '18px', // Reduced from 20px for better hierarchy
   fontWeight: '600' as const,
-  lineHeight: '28px',
-  color: '#000000',
+  lineHeight: '1.4', // Improved line height
+  color: '#111827', // Darker color for better contrast
 }
 
 const documentTextStyle = {
-  margin: '8px 0 0 0',
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: '#000000',
+  margin: '0 0 24px 0', // Added bottom margin for spacing
+  fontSize: '15px', // Reduced from 16px for better hierarchy
+  lineHeight: '1.6', // Improved line height
+  color: '#374151', // Professional gray for body text
 }
 
 const bodyTextStyle = {
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: '#000000',
-  margin: '16px 0',
+  fontSize: '15px', // Reduced from 16px for better hierarchy
+  lineHeight: '1.6', // Improved line height
+  color: '#374151', // Professional gray for body text
+  margin: '0 40px 16px 40px', // Added horizontal padding for consistency
 }
 
 const hr = {
-  borderColor: '#e6ebf1',
-  margin: '24px 0',
-  width: '100%',
-  border: '1px solid #d1d5db',
+  borderColor: '#e5e7eb', // Lighter, more subtle divider
+  margin: '32px 40px', // Added horizontal padding and increased spacing
+  width: 'auto', // Changed from 100% to work with padding
+  border: 'none', // Reset border
+  borderTop: '1px solid #e5e7eb', // Single top border for cleaner look
 }
 
 const footer = {
-  color: '#8898aa',
-  fontSize: '12px',
-  lineHeight: '16px',
+  padding: '32px 40px 40px 40px', // Added padding for better spacing
 }
 
 const footerTextStyle = {
   textAlign: 'center' as const,
-  color: '#474747',
-  fontSize: '12px',
-  lineHeight: '16px',
+  color: '#6b7280', // Lighter gray for footer
+  fontSize: '13px', // Increased from 12px for better readability
+  lineHeight: '1.6', // Improved line height
+  margin: 0, // Reset margin
 }
 
 const anchor = {
   color: '#00687f',
+  textDecoration: 'underline', // Added underline for better link visibility
 }

@@ -329,6 +329,7 @@ const buttonStyle = {
 const loanDetailsBoxStyle = {
   margin: '24px 0',
   backgroundColor: '#29819a',
+  borderRadius: '8px',
   padding: '32px 40px',
   textAlign: 'center' as const,
 }

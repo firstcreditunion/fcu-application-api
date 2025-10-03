@@ -13,7 +13,7 @@ export async function getLoanApplicationDetailsByApplicationNumber(
     .schema(schema)
     .from('tblLoanApplication')
     .select('*')
-    .eq('application_number', applicationNumber)
+    .eq('Lnd_application_number', applicationNumber)
 
   console.log('FOUND APPLICATION data: ', data)
 

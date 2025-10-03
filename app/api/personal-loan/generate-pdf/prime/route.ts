@@ -17,7 +17,9 @@ export async function POST(request: NextRequest) {
           success: false,
           error: 'Internal Server Error: Service not configured.',
         },
-        { status: 500 }
+        {
+          status: 500,
+        }
       )
     }
 

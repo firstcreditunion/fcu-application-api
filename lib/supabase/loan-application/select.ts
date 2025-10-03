@@ -15,6 +15,8 @@ export async function getLoanApplicationDetailsByApplicationNumber(
     .select('*')
     .eq('application_number', applicationNumber)
 
+  console.log('FOUND APPLICATION data: ', data)
+
   if (!data) return
 
   return data

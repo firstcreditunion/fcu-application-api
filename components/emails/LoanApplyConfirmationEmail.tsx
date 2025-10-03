@@ -178,7 +178,7 @@ export default function LoanApplyConfirmationEmail({
               </Row>
             )}
 
-            {submittedDateTime && (
+            {/* {submittedDateTime && (
               <Row style={detailRowStyle}>
                 <Column style={detailColumnStyle}>
                   <Text style={submittedDateStyle}>
@@ -190,7 +190,7 @@ export default function LoanApplyConfirmationEmail({
                   </Text>
                 </Column>
               </Row>
-            )}
+            )} */}
           </Section>
 
           <Section>

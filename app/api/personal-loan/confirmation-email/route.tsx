@@ -113,16 +113,26 @@ export async function POST(request: NextRequest) {
   if (!recipientEmail) {
     console.log('Recipient email is missing.')
     return NextResponse.json(
-      { success: false, error: 'Recipient email is missing.' },
-      { status: 400 }
+      {
+        success: false,
+        error: 'Recipient email is missing.',
+      },
+      {
+        status: 400,
+      }
     )
   }
 
   if (!loanApplicationNumber) {
     console.log('Loan application number is missing.')
     return NextResponse.json(
-      { success: false, error: 'Loan application number is missing.' },
-      { status: 400 }
+      {
+        success: false,
+        error: 'Loan application number is missing.',
+      },
+      {
+        status: 400,
+      }
     )
   }
 
@@ -135,8 +145,13 @@ export async function POST(request: NextRequest) {
 
     if (emailsOnly && !emailsOnly.includes(recipientEmail)) {
       return NextResponse.json(
-        { success: false, error: 'Recipient email is not in the white list.' },
-        { status: 400 }
+        {
+          success: false,
+          error: 'Recipient email is not in the white list.',
+        },
+        {
+          status: 400,
+        }
       )
     }
   }

@@ -2,15 +2,21 @@
 
 // import { getEnvironemnt } from '@/utils/globalUtils'
 import { lambdaClient } from '@/utils/aws/config'
+import { getSchemaToUse } from '@/utils/schemToUse'
 import { InvokeCommand } from '@aws-sdk/client-lambda'
 
 export async function triggerDraftApplicationMatching(
   draft_application_number: number
 ) {
-  //   const environemnt = await getEnvironemnt()
+  const schema = await getSchemaToUse()
+
+  const functionToUse =
+    schema === 'production'
+      ? process.env.LAMBDA_FUNCTION_DRAFT_PROD!
+      : process.env.LAMBDA_FUNCTION_DRAFT_TEST!
 
   const params = {
-    FunctionName: process.env.LAMBDA_FUNCTION_DRAFT_TEST!,
+    FunctionName: functionToUse!,
     Payload: JSON.stringify({
       portal_app_ID: draft_application_number,
     }),

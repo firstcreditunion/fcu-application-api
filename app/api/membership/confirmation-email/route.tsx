@@ -5,7 +5,6 @@ import type { SendEmailCommandInput } from '@aws-sdk/client-ses'
 import { SES } from '@aws-sdk/client-ses'
 
 import { headers } from 'next/headers'
-import { emailWhiteListForComms } from '@/utils/emailWhitelist'
 import MembershipConfirmationEmail from '@/components/emails/MembershipApplyConfirmationEmail'
 import { getEmailWhitelist } from '@/lib/supabase/controls'
 import { getSchemaToUse } from '@/utils/schemToUse'

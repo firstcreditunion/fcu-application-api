@@ -1,0 +1,191 @@
+{
+  "loanApplicationNumber": 687,
+  "primeClientNumber": 2916,
+  "supabaseIntegrityState": {
+    "loan_application_number": 687,
+    "portal_client_number": 2916,
+    "primeClientPersonalDetailsUID": 833,
+    "primeClientWorkVisaDetailsUniqueID": 755,
+    "primeClientBankruptcyUID": 866,
+    "primeClientExtensionUniqueID": 867,
+    "product": "PERN",
+    "costOfGoods": "3,000",
+    "defaultFees": false,
+    "Loan_Term_1": 36,
+    "start_Date": "2025-10-02",
+    "Loan_Term_2": "M",
+    "paymentFrequency": "W",
+    "Interest_Rate": "12.75",
+    "fees": ["LCFRA", "LCRFB", "LCRFC", "LCRFD", "LCRFE", "LCRFF", "LCRFG"],
+    "primeResidentialAddressUniqueID": 1378,
+    "primeMailingAddressUniqueID": 1379,
+    "primeEmailUniqueID": 726,
+    "primeEmploymentUniqueID": 671,
+    "primeClientIncomeUniqueID": 230,
+    "primeSecurityUniqueID": "d018ce0a-0418-482b-988a-8986a278f2ca",
+    "primeCreditSenseReference": "ONL_CS_xIuopLcmCA",
+    "membership_application_number": 1727,
+    "emailAddressForProgress": "melissa.hay@firstcu.co.nz",
+    "primeDriversLicenceUniqueID": "d0bbfafd-ffdf-48ba-b2c7-fe323a2c7eb4",
+    "primeFinancialDetailsUniqueID": 125
+  },
+  "supabaseIntegrityJointState": {},
+  "primePreliminaryQuestions": {
+    "isNzCitizen": "Y",
+    "citizenship": "",
+    "isNzResident": "",
+    "hasWorkPermit": "",
+    "askFurtherQuestions": "Y",
+    "loanPurposeCode": "MTRV",
+    "tradingBranch": "HAM",
+    "wasDeclaredBankrupt": "N",
+    "bankruptcyYear": ""
+  },
+  "primeDriversLicence": {
+    "licenceType": "F",
+    "licenceNumber": "IBACKSPACE",
+    "licenceVersion": "363",
+    "licenceIssueDate": "2025-09-29T00:00:00.000Z",
+    "licenceExpiryDate": "2025-10-07T00:00:00.000Z"
+  },
+  "primePassport": { "passportNumber": "" },
+  "primeFirearmsLicence": { "firearmsNumber": "" },
+  "primeBirthCertificate": { "birthCertificateRegNo": "" },
+  "primeKiwiAccessCard": { "kiwiAccessCardNumber": "" },
+  "primeCommunityServiceCard": { "communityServiceCardNumber": "" },
+  "primegoldCard": { "goldCardNumber": "" },
+  "primestudentID": { "currentStudentCardNumber": "" },
+  "primePersonalDetails": {
+    "title": "Mrs",
+    "firstName": "Melissa",
+    "middleName": "Anne",
+    "lastName": "Hay",
+    "gender": "F",
+    "maritalStatus": "M",
+    "dateOfBirth": "1993-10-03T11:00:00.000Z",
+    "dependantAdults": 0,
+    "dependantChildren": 2
+  },
+  "primeEmployment": {
+    "employmentType": "CAS",
+    "schoolorTertiaryInst": "",
+    "occupation": "7",
+    "employerName": "Somewhere cool",
+    "typeOfBenefit": [],
+    "exceptionEmpMonth": "February",
+    "expceptionEmpYear": "2023",
+    "incomeFrequency": "F",
+    "netIncome": "100"
+  },
+  "primeContactDetails": {
+    "residentialAddress": "16 Mahy Way, Leamington, Cambridge 3432",
+    "residentialAddressPxid": "2-.E.G.2.w$D",
+    "accommodationType": "OWM",
+    "residentialEffectiveMonth": "February",
+    "residentialEffectiveYear": "2014",
+    "mailingAddress": "16 Mahy Way, Leamington, Cambridge 3432",
+    "mailingAddressPxid": "2-.E.G.2.w$D",
+    "emailAddress": "melissa.hay@firstcu.co.nz",
+    "mobileNumber": "",
+    "workPhoneNumber": ""
+  },
+  "formFinancialDetails": {
+    "product": "PERN",
+    "costOfGoods": "30,000",
+    "defaultFees": false,
+    "needCreditCareInsurance": "No",
+    "Loan_Term_1": 36,
+    "start_Date": "2025-10-02",
+    "Loan_Term_2": "M",
+    "paymentFrequency": "F",
+    "Interest_Rate": "12.75",
+    "fees": ["LCFRA", "LCRFB", "LCRFC", "LCRFD", "LCRFE", "LCRFF", "LCRFG"],
+    "instalmentAmount": "464.23",
+    "totalInterest": "6,180.65",
+    "totalAmountPayable": "36,209.95"
+  },
+  "vehicleSecurity": { "provideVehicleAsLoanSecurity": "N" },
+  "providentInsurance": [
+    {
+      "g3_insurance_cover_type": "CCI1",
+      "insurance_type": "Single",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI2",
+      "insurance_type": "Single",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI3",
+      "insurance_type": "Single",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI4",
+      "insurance_type": "Double",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI5",
+      "insurance_type": "Double",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI6",
+      "insurance_type": "Double",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI7",
+      "insurance_type": "Joint",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI8",
+      "insurance_type": "Joint",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI9",
+      "insurance_type": "Joint",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "Y"
+    }
+  ]
+}

@@ -17,16 +17,11 @@ export async function getSchemaToUse(): Promise<Schema> {
     return 'api'
   }
 
-  if (host && host === 'staff-portal-test.vercel.app') {
+  if (host && host === 'fcu-application-api.vercel.app') {
     return 'api'
   }
 
-  if (
-    host &&
-    (host === 'rachel-karalus-prod.vercel.app' ||
-      host === 'www.rachelkaralus.co.nz' ||
-      host === 'rachelkaralus.co.nz')
-  ) {
+  if (host && host === 'fcu-portal-api-prod.vercel.app') {
     return 'production'
   }
 

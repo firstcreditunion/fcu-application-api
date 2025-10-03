@@ -16,6 +16,10 @@ export async function insertDraftLoanApplication(
   const supabase = await createClient()
   const schema = await getSchemaToUse()
 
+  console.log('SCHEMA: ', schema)
+
+  console.log('INSERT DRAFT LOAN APPLICATION DATA: ', _data)
+
   try {
     const { data, error } = await supabase
       .schema(schema)

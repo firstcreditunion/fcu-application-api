@@ -4237,3 +4237,50 @@ export interface Included_ApplicationRelationships {
 }
 
 // Commit Control 1
+
+export interface ApplicationDateSince {
+  type: string
+  id: string
+  attributes: {
+    lastSavedDateTime: string
+  }
+  links: {
+    self: string
+  }
+}
+export interface ApplicationMedium {
+  type: string
+  id: string
+  attributes: {
+    applicationInternalNumber: string
+    applicationName: string
+    clientApplication: string
+    loadedByClientNumber: string
+    owner: string
+    applicationTitle: string
+    tradingBranch: string
+    salesChannel: string
+    subPrime: string
+    comparisonRatesSupplied: string
+    paymentMethod: string
+    type: string
+    appStatusDesc: string
+    appStatusCode: string
+    currentTaskWith: string
+    lastSavedDateTime: string // Added this field
+  }
+  relationships: {
+    originator: RelationshipApplicationMedium
+    associatedClients: RelationshipApplicationMedium
+  }
+}
+
+interface RelationshipApplicationMedium {
+  links: LinkApplicationMedium
+  data: unknown
+}
+
+interface LinkApplicationMedium {
+  related: string
+  self: string
+}

@@ -1,6 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import {
+  fetchApplicationsSinceData,
+  fetchMediumApplicationData,
+} from '@/lib/occ/applications'
 
 export default function Home() {
   const sendEmail = async () => {
@@ -322,12 +326,34 @@ export default function Home() {
     console.log('Email send response: ', result)
   }
 
+  const testFetchApplications = async () => {
+    try {
+      const result = await fetchApplicationsSinceData('2025-10-01')
+      console.log('Applications fetched:', result)
+
+      // Fetch detailed data for each application in parallel
+      const detailedApplicationsPromises = result.map((app) =>
+        fetchMediumApplicationData(app.id)
+      )
+
+      const detailedApplications = await Promise.all(
+        detailedApplicationsPromises
+      )
+      console.log('Detailed applications:', detailedApplications)
+    } catch (error) {
+      console.error('Error fetching applications:', error)
+    }
+  }
+
   return (
     <div className='h-screen flex flex-col items-center justify-center text-fcu-primary-500 text-5xl font-light gap-2'>
       <div>First Credit Union API</div>
       <div className='text-xl font-light text-fcu-secondary-300'>
         Current Version: 1.0.0
       </div>
+      <Button onClick={testFetchApplications} className='mt-4'>
+        Test Fetch Applications
+      </Button>
     </div>
   )
 }

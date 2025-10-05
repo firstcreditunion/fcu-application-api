@@ -72,6 +72,8 @@ export default function LoanApplyConfirmationEmail({
     token: securityToken,
   })
 
+  console.log('LOAN STATUS LINK: ', loanStatusLink)
+
   return (
     <Html>
       <Head>

@@ -351,9 +351,6 @@ export default function Home() {
       <div className='text-xl font-light text-fcu-secondary-300'>
         Current Version: 1.0.0
       </div>
-      <Button onClick={testFetchApplications} className='mt-4'>
-        Test Fetch Applications
-      </Button>
     </div>
   )
 }

@@ -11,6 +11,16 @@ import { getSchemaToUse } from '@/utils/schemToUse'
 import type { ApplicationMedium } from '@/types/occ/applicationTypes'
 import type { insert_tblSovereignApplications } from '@/types/supabase/loanApplications'
 
+/**
+ * Helper function to safely extract error message from unknown error
+ */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message
+  }
+  return 'Unknown error'
+}
+
 interface SyncResult {
   success: boolean
   message: string
@@ -61,7 +71,7 @@ async function createSyncLog(sinceDate: string): Promise<string> {
 
   const { data, error } = await supabase
     .schema(schema)
-    .from('tblSovereignApplicationsSyncLog')
+    .from('tblsovereignapplicationssynclog')
     .insert({
       since_date: sinceDate,
       status: 'running',
@@ -91,7 +101,7 @@ async function updateSyncLog(
 
   await supabase
     .schema(schema)
-    .from('tblSovereignApplicationsSyncLog')
+    .from('tblsovereignapplicationssynclog')
     .update({
       sync_completed_at: new Date().toISOString(),
       applications_found: stats.applicationsFound,
@@ -100,7 +110,7 @@ async function updateSyncLog(
       fetch_failures: stats.fetchFailures,
       upsert_failures: stats.upsertFailures,
       status,
-      error_details: errorDetails || null,
+      error_details: errorDetails ? JSON.stringify(errorDetails) : null,
     })
     .eq('id', syncLogId)
 }
@@ -174,7 +184,7 @@ export async function syncApplicationsSince(
         stats,
         errors: failed.map((f) => ({
           id: f.item.id,
-          error: f.error.message || 'Unknown error',
+          error: getErrorMessage(f.error),
         })),
       }
     }
@@ -223,7 +233,7 @@ export async function syncApplicationsSince(
       stats,
       errors: failed.map((f) => ({
         id: f.item.id,
-        error: f.error.message || 'Unknown error',
+        error: getErrorMessage(f.error),
       })),
     }
   } catch (error) {
@@ -253,7 +263,7 @@ export async function getLastSyncDate(): Promise<string | null> {
 
   const { data } = await supabase
     .schema(schema)
-    .from('tblSovereignApplicationsSyncLog')
+    .from('tblsovereignapplicationssynclog')
     .select('since_date, sync_completed_at')
     .eq('status', 'completed')
     .order('sync_completed_at', { ascending: false })

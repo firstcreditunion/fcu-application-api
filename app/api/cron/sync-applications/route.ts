@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  syncApplicationsSince,
-  getLastSyncDate,
-} from '@/lib/occ/syncApplications'
+import { syncApplicationsSince } from '@/lib/occ/syncApplications'
 
 // Vercel timeout: 300 seconds (5 minutes) on Pro plan
 export const maxDuration = 300
@@ -26,27 +23,9 @@ export async function GET(request: NextRequest) {
   try {
     console.log('[Cron] Starting sync job...')
 
-    // Get the date to sync from (query param or last sync date)
-    const searchParams = request.nextUrl.searchParams
-    let sinceDate = searchParams.get('since')
-
-    if (!sinceDate) {
-      // Try to get last successful sync date
-      const lastSync = await getLastSyncDate()
-
-      if (lastSync) {
-        console.log(`[Cron] Using last sync date: ${lastSync}`)
-        sinceDate = lastSync
-      } else {
-        // Default to 7 days ago if no previous sync
-        const defaultDate = new Date()
-        defaultDate.setDate(defaultDate.getDate() - 7)
-        sinceDate = defaultDate.toISOString().split('T')[0]
-        console.log(
-          `[Cron] No previous sync found, using default: ${sinceDate}`
-        )
-      }
-    }
+    // Hardcoded sync date
+    const sinceDate = '2025-07-07'
+    console.log(`[Cron] Using hardcoded sync date: ${sinceDate}`)
 
     // Run the sync
     const result = await syncApplicationsSince(sinceDate)

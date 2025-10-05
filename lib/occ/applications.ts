@@ -23,8 +23,8 @@ export async function fetchApplicationsSinceData(
     FunctionName: functionToUse,
     Payload: JSON.stringify({
       functionName: process.env.LAMBDA_FUNCTION_APPLICATIONS_BY_DATE!,
-      changed_date_since: changedDateSince,
-      client_id: process.env.SOV_AWS_CLIENT_NUMBER!,
+      changedDatSince: changedDateSince,
+      clientId: process.env.SOV_AWS_CLIENT_NUMBER!,
     }),
   }
 
@@ -67,8 +67,8 @@ export async function fetchMediumApplicationData(
     FunctionName: functionToUse,
     Payload: JSON.stringify({
       functionName: process.env.LAMBDA_FUNCTION_APPLICTION_MEDIUM,
-      application_external_number: applicationExternalNumber,
-      staff_client_number: process.env.SOV_AWS_CLIENT_NUMBER!,
+      applicationExternalNumber: applicationExternalNumber,
+      clientId: process.env.SOV_AWS_CLIENT_NUMBER!,
     }),
   }
 

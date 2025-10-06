@@ -312,12 +312,13 @@ const mainHeadingStyle = {
 }
 
 const applicationNumberStyle = {
-  fontSize: '14px',
-  fontWeight: '400' as const,
+  fontSize: '18px',
+  fontWeight: '600' as const,
+  fontFamily: '"Courier New", Courier, monospace',
   textAlign: 'center' as const,
   color: '#29819a', // Using the brand blue color for emphasis
   margin: '0 0 24px 0',
-  letterSpacing: '0.01em',
+  letterSpacing: '0.05em',
 }
 
 const greetingStyle = {

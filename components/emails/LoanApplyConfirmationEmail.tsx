@@ -72,8 +72,6 @@ export default function LoanApplyConfirmationEmail({
     token: securityToken,
   })
 
-  console.log('LOAN STATUS LINK: ', loanStatusLink)
-
   return (
     <Html>
       <Head>
@@ -98,6 +96,9 @@ export default function LoanApplyConfirmationEmail({
             <Heading style={mainHeadingStyle}>
               Your Loan Application has been received.
             </Heading>
+            <Text style={applicationNumberStyle}>
+              Application Number: <strong>{loanApplicationNumber}</strong>
+            </Text>
             <Text style={greetingStyle}>Hi {firstName},</Text>
             <Text style={introTextStyle}>
               Thank you for applying for a loan with First Credit Union. Please
@@ -308,6 +309,15 @@ const mainHeadingStyle = {
   lineHeight: '1.3',
   textAlign: 'center' as const,
   color: '#111827', // Darker color for better contrast
+}
+
+const applicationNumberStyle = {
+  fontSize: '14px',
+  fontWeight: '400' as const,
+  textAlign: 'center' as const,
+  color: '#29819a', // Using the brand blue color for emphasis
+  margin: '0 0 24px 0',
+  letterSpacing: '0.01em',
 }
 
 const greetingStyle = {

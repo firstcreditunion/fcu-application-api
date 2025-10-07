@@ -114,15 +114,22 @@ export async function enrichPrimeLoanData(
       licenceIssueDate: string
       licenceExpiryDate: string
     },
-    primePassport: jsonRequest.primePassport as { passportNumber: string },
+    primePassport: jsonRequest.primePassport as {
+      passportNumber: string
+      passportIssueDate?: string
+      passportExpiryDate?: string
+    },
     primeFirearmsLicence: jsonRequest.primeFirearmsLicence as {
       firearmsNumber: string
     },
     primeBirthCertificate: jsonRequest.primeBirthCertificate as {
       birthCertificateRegNo: string
+      birthCertificateIssueDate?: string
     },
     primeKiwiAccessCard: jsonRequest.primeKiwiAccessCard as {
       kiwiAccessCardNumber: string
+      kiwiAccessCardIssueDate?: string
+      kiwiAccessCardExpiryDate?: string
     },
     primeCommunityServiceCard: jsonRequest.primeCommunityServiceCard as {
       communityServiceCardNumber: string
@@ -156,6 +163,10 @@ export async function enrichPrimeLoanData(
     },
     vehicleSecurity: jsonRequest.vehicleSecurity as {
       provideVehicleAsLoanSecurity: string
+      haveYouPurchasedVehicle?: string
+      vehicleRegistrationNumber?: string
+      isVehicleInsured?: string
+      nameOfInsurer?: string
     },
     providentInsurance: jsonRequest.providentInsurance as Array<{
       g3_insurance_cover_type: string
@@ -179,6 +190,8 @@ export async function enrichPrimeLoanData(
         tradingBranch: string
         wasDeclaredBankrupt: string
         bankruptcyYear: string
+        visaStartDate?: string
+        visaExpiryDate?: string
       }),
       tradingBranchDescription: tradingBranchDescription || undefined,
       loanPurposeDescription: loanPurposeDescription || undefined,
@@ -204,15 +217,19 @@ export async function enrichPrimeLoanData(
         costOfGoods: string
         defaultFees: boolean
         needCreditCareInsurance: string
+        component?: string
+        coverType?: string
         Loan_Term_1: number
         start_Date: string
         Loan_Term_2: string
         paymentFrequency: string
         Interest_Rate: string
         fees: string[]
+        premiumAmount?: number
         instalmentAmount: string
         totalInterest: string
         totalAmountPayable: string
+        coversIncluded?: string
       }),
       productDescription,
       feesWithDescriptions,

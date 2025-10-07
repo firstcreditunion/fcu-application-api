@@ -181,25 +181,19 @@ export default function LoanApplyConfirmationEmail({
               </Row>
             )}
 
-            {/* {submittedDateTime && (
-              <Row style={detailRowStyle}>
-                <Column style={detailColumnStyle}>
-                  <Text style={submittedDateStyle}>
-                    Submitted Date & Time:{' '}
-                    {format(
-                      new Date(submittedDateTime),
-                      'dd/MM/yyyy hh:mm:ss aaaa'
-                    )}
-                  </Text>
-                </Column>
-              </Row>
-            )} */}
+            <Row style={detailRowStyle}>
+              <Column style={detailColumnStyle}>
+                <Text style={submittedDateStyle}>
+                  The above figures are indicative only
+                </Text>
+              </Column>
+            </Row>
           </Section>
 
           <Section>
             <Row>
               <Text style={documentRequirementStyle}>
-                Before we can open your account, we require the following
+                If your loan application is successful, we require the following
                 documents:
               </Text>
             </Row>
@@ -233,25 +227,17 @@ export default function LoanApplyConfirmationEmail({
             identification link.
           </Text>
           <Text style={bodyTextStyle}>
-            Please email the above documents through to this email. Upon
-            receiving your documents, you will receive a link by email to
-            validate that your identity documents are authentic through a
-            third-party company called Cloudcheck. Once that process is done, we
-            will then get in touch with you.
+            Your lending consultant will guide you through the identification
+            verification process following your successful loan application.
           </Text>
-          <Text style={bodyTextStyle}>
-            <strong>
-              Please note: If we do not receive the above documents, we will be
-              unable to open your First Credit Union account.
-            </strong>
-          </Text>
+
           <Text style={bodyTextStyle}>
             If you have any questions, please give us a call. Our call centre is
             open Monday 10am-5pm and Tuesday – Friday 8am-5pm (excluding public
             holidays).
           </Text>
           <Text style={bodyTextStyle}>
-            We look forward to hearing from you.
+            We look forward to helping you with your loan application.
           </Text>
           <Text style={bodyTextStyle}>— First Credit Union team</Text>
 

@@ -1,0 +1,217 @@
+{
+  "loanApplicationNumber": 712,
+  "primeClientNumber": 2946,
+  "supabaseIntegrityState": {
+    "loan_application_number": 712,
+    "portal_client_number": 2946,
+    "primeClientPersonalDetailsUID": 862,
+    "primeClientWorkVisaDetailsUniqueID": 782,
+    "primeClientBankruptcyUID": 895,
+    "primeClientExtensionUniqueID": 896,
+    "product": "PERN",
+    "costOfGoods": "3,000",
+    "defaultFees": false,
+    "Loan_Term_1": 36,
+    "start_Date": "2025-10-07",
+    "Loan_Term_2": "M",
+    "paymentFrequency": "W",
+    "Interest_Rate": "12.75",
+    "fees": ["LCFRA", "LCRFB", "LCRFC", "LCRFD", "LCRFE", "LCRFF", "LCRFG"],
+    "primeResidentialAddressUniqueID": 1432,
+    "primeMailingAddressUniqueID": 1433,
+    "primeEmailUniqueID": 753,
+    "primeClientMobileUniqueID": 776,
+    "primeEmploymentUniqueID": 696,
+    "primeClientIncomeUniqueID": 246,
+    "primeSecurityUniqueID": "55949108-8e50-4a91-9347-9b1275256a51",
+    "primeCreditSenseReference": "ONL_CS_ZNwFMPjSxg",
+    "membership_application_number": 1753,
+    "primeDriversLicenceUniqueID": "86c7086c-500b-435c-9aba-c65e868b07ab",
+    "primePassportUniqueID": "b840f0b5-82a9-4dbf-b20c-218a5fe24bd0",
+    "primeBirthCertificateUniqueID": "8c8e6144-6d9e-40b5-a37e-3437419f639a",
+    "primeKiwiAccessCardUniqueID": "5ea73825-f1b3-4a11-9db5-62ea6879bd0b",
+    "primeFinancialDetailsUniqueID": 146
+  },
+  "supabaseIntegrityJointState": { "portal_client_number": null },
+  "primePreliminaryQuestions": {
+    "isNzCitizen": "N",
+    "citizenship": "AT",
+    "isNzResident": "N",
+    "hasWorkPermit": "Y",
+    "askFurtherQuestions": "Y",
+    "loanPurposeCode": "VHRP",
+    "tradingBranch": "HAM",
+    "wasDeclaredBankrupt": "N",
+    "bankruptcyYear": "",
+    "visaStartDate": "2025-09-30T11:00:00.000Z",
+    "visaExpiryDate": "2025-10-27T11:00:00.000Z"
+  },
+  "primeDriversLicence": {
+    "licenceType": "L",
+    "licenceNumber": "DT123456",
+    "licenceVersion": "085",
+    "licenceIssueDate": "2025-09-30T11:00:00.000Z",
+    "licenceExpiryDate": "2025-10-29T11:00:00.000Z"
+  },
+  "primePassport": {
+    "passportNumber": "DR123456",
+    "passportIssueDate": "2025-10-06T11:00:00.000Z",
+    "passportExpiryDate": "2025-10-30T11:00:00.000Z"
+  },
+  "primeFirearmsLicence": { "firearmsNumber": "" },
+  "primeBirthCertificate": {
+    "birthCertificateRegNo": "Fesdfsf",
+    "birthCertificateIssueDate": "2007-10-06T11:00:00.000Z"
+  },
+  "primeKiwiAccessCard": {
+    "kiwiAccessCardNumber": "DR456789",
+    "kiwiAccessCardIssueDate": "2025-09-30T11:00:00.000Z",
+    "kiwiAccessCardExpiryDate": "2025-10-30T11:00:00.000Z"
+  },
+  "primeCommunityServiceCard": { "communityServiceCardNumber": "" },
+  "primegoldCard": { "goldCardNumber": "" },
+  "primestudentID": { "currentStudentCardNumber": "" },
+  "primePersonalDetails": {
+    "title": "Mr",
+    "firstName": "Isaac",
+    "middleName": "",
+    "lastName": "Vicliph",
+    "gender": "M",
+    "maritalStatus": "S",
+    "dateOfBirth": "2007-10-01T11:00:00.000Z",
+    "dependantAdults": 2,
+    "dependantChildren": 2
+  },
+  "primeEmployment": {
+    "employmentType": "FTM",
+    "schoolorTertiaryInst": "",
+    "occupation": "2",
+    "employerName": "FCU",
+    "typeOfBenefit": [],
+    "exceptionEmpMonth": "March",
+    "expceptionEmpYear": "2022",
+    "incomeFrequency": "F",
+    "netIncome": "7000"
+  },
+  "primeContactDetails": {
+    "residentialAddress": "111 Cole Street, Dannevirke 4930",
+    "residentialAddressPxid": "2-.6.I.1.Y$R",
+    "accommodationType": "OWOM",
+    "residentialEffectiveMonth": "March",
+    "residentialEffectiveYear": "2022",
+    "mailingAddress": "111 Collingwood Street, Hamilton Central, Hamilton 3204",
+    "mailingAddressPxid": "2-.E.Y.L.C$W",
+    "emailAddress": "samisaac75@gmail.com",
+    "mobileNumber": "+64212549633",
+    "workPhoneNumber": ""
+  },
+  "formFinancialDetails": {
+    "product": "PERN",
+    "costOfGoods": "3,000",
+    "defaultFees": false,
+    "needCreditCareInsurance": "Yes",
+    "component": "Double",
+    "coverType": "Option 2",
+    "Loan_Term_1": 36,
+    "start_Date": "2025-10-07",
+    "Loan_Term_2": "M",
+    "paymentFrequency": "W",
+    "Interest_Rate": "12.75",
+    "fees": ["LCFRA", "LCRFB", "LCRFC", "LCRFD", "LCRFE", "LCRFF", "LCRFG"],
+    "premiumAmount": 328.19,
+    "instalmentAmount": "25.93",
+    "totalInterest": "685.92",
+    "totalAmountPayable": "4,043.41",
+    "coversIncluded": "Death, Accident, Illness, Hospitalisation, or Bankruptcy"
+  },
+  "vehicleSecurity": {
+    "provideVehicleAsLoanSecurity": "Y",
+    "haveYouPurchasedVehicle": "Y",
+    "vehicleRegistrationNumber": "FAM999",
+    "isVehicleInsured": "Y",
+    "nameOfInsurer": "Provident Insurance"
+  },
+  "providentInsurance": [
+    {
+      "g3_insurance_cover_type": "CCI1",
+      "insurance_type": "Single",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI2",
+      "insurance_type": "Single",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI3",
+      "insurance_type": "Single",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI4",
+      "insurance_type": "Double",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI5",
+      "insurance_type": "Double",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI6",
+      "insurance_type": "Double",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI7",
+      "insurance_type": "Joint",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI8",
+      "insurance_type": "Joint",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI9",
+      "insurance_type": "Joint",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "Y"
+    }
+  ]
+}

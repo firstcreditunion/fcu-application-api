@@ -7,7 +7,7 @@ import { PersonalDetails } from './sections/PersonalDetails'
 import { EmploymentIncome } from './sections/EmploymentIncome'
 import { ContactAddress } from './sections/ContactAddress'
 import { FinancialDetails } from './sections/FinancialDetails'
-import { SecurityInsurance } from './sections/SecurityInsurance'
+import { PrimeVehicleSecurity } from './sections/PrimeVehicleSecurity'
 
 interface LoanApplicationPDFProps {
   data: EnrichedPrimeLoanData
@@ -24,7 +24,7 @@ export const LoanApplicationPDF: React.FC<LoanApplicationPDFProps> = ({
       <EmploymentIncome data={data} />
       <ContactAddress data={data} />
       <FinancialDetails data={data} />
-      <SecurityInsurance data={data} />
+      <PrimeVehicleSecurity data={data} />
     </Document>
   )
 }

@@ -24,6 +24,8 @@ export interface EnrichedPrimeLoanData {
     tradingBranchDescription?: string // Enriched
     wasDeclaredBankrupt: string
     bankruptcyYear: string
+    visaStartDate?: string
+    visaExpiryDate?: string
   }
   primeDriversLicence: {
     licenceType: string
@@ -34,15 +36,20 @@ export interface EnrichedPrimeLoanData {
   }
   primePassport: {
     passportNumber: string
+    passportIssueDate?: string
+    passportExpiryDate?: string
   }
   primeFirearmsLicence: {
     firearmsNumber: string
   }
   primeBirthCertificate: {
     birthCertificateRegNo: string
+    birthCertificateIssueDate?: string
   }
   primeKiwiAccessCard: {
     kiwiAccessCardNumber: string
+    kiwiAccessCardIssueDate?: string
+    kiwiAccessCardExpiryDate?: string
   }
   primeCommunityServiceCard: {
     communityServiceCardNumber: string
@@ -95,6 +102,8 @@ export interface EnrichedPrimeLoanData {
     costOfGoods: string
     defaultFees: boolean
     needCreditCareInsurance: string
+    component?: string
+    coverType?: string
     Loan_Term_1: number
     start_Date: string
     Loan_Term_2: string
@@ -102,12 +111,18 @@ export interface EnrichedPrimeLoanData {
     Interest_Rate: string
     fees: string[]
     feesWithDescriptions?: Array<{ code: string; description: string }> // Enriched
+    premiumAmount?: number
     instalmentAmount: string
     totalInterest: string
     totalAmountPayable: string
+    coversIncluded?: string
   }
   vehicleSecurity: {
     provideVehicleAsLoanSecurity: string
+    haveYouPurchasedVehicle?: string
+    vehicleRegistrationNumber?: string
+    isVehicleInsured?: string
+    nameOfInsurer?: string
   }
   providentInsurance: Array<{
     g3_insurance_cover_type: string

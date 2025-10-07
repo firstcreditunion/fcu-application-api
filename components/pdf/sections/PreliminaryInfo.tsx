@@ -65,6 +65,32 @@ export const PreliminaryInfo: React.FC<PreliminaryInfoProps> = ({ data }) => {
         )}
       </View>
 
+      {/* Visa Information */}
+      {(data.primePreliminaryQuestions.visaStartDate ||
+        data.primePreliminaryQuestions.visaExpiryDate) && (
+        <>
+          <Text style={pdfStyles.subtitle}>Visa Information</Text>
+          <View style={pdfStyles.section}>
+            {data.primePreliminaryQuestions.visaStartDate && (
+              <View style={pdfStyles.row}>
+                <Text style={pdfStyles.label}>Visa Start Date:</Text>
+                <Text style={pdfStyles.value}>
+                  {formatDate(data.primePreliminaryQuestions.visaStartDate)}
+                </Text>
+              </View>
+            )}
+            {data.primePreliminaryQuestions.visaExpiryDate && (
+              <View style={pdfStyles.row}>
+                <Text style={pdfStyles.label}>Visa Expiry Date:</Text>
+                <Text style={pdfStyles.value}>
+                  {formatDate(data.primePreliminaryQuestions.visaExpiryDate)}
+                </Text>
+              </View>
+            )}
+          </View>
+        </>
+      )}
+
       {/* Bankruptcy Information */}
       <Text style={pdfStyles.subtitle}>Bankruptcy Information</Text>
       <View style={pdfStyles.section}>

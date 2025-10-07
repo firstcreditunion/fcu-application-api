@@ -121,6 +121,22 @@ export const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
               {data.primePassport.passportNumber}
             </Text>
           </View>
+          {data.primePassport.passportIssueDate && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Issue Date:</Text>
+              <Text style={pdfStyles.value}>
+                {formatDate(data.primePassport.passportIssueDate)}
+              </Text>
+            </View>
+          )}
+          {data.primePassport.passportExpiryDate && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Expiry Date:</Text>
+              <Text style={pdfStyles.value}>
+                {formatDate(data.primePassport.passportExpiryDate)}
+              </Text>
+            </View>
+          )}
         </View>
       )}
 
@@ -151,6 +167,16 @@ export const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
               {data.primeBirthCertificate.birthCertificateRegNo}
             </Text>
           </View>
+          {data.primeBirthCertificate.birthCertificateIssueDate && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Issue Date:</Text>
+              <Text style={pdfStyles.value}>
+                {formatDate(
+                  data.primeBirthCertificate.birthCertificateIssueDate
+                )}
+              </Text>
+            </View>
+          )}
         </View>
       )}
 
@@ -166,6 +192,22 @@ export const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
               {data.primeKiwiAccessCard.kiwiAccessCardNumber}
             </Text>
           </View>
+          {data.primeKiwiAccessCard.kiwiAccessCardIssueDate && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Issue Date:</Text>
+              <Text style={pdfStyles.value}>
+                {formatDate(data.primeKiwiAccessCard.kiwiAccessCardIssueDate)}
+              </Text>
+            </View>
+          )}
+          {data.primeKiwiAccessCard.kiwiAccessCardExpiryDate && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Expiry Date:</Text>
+              <Text style={pdfStyles.value}>
+                {formatDate(data.primeKiwiAccessCard.kiwiAccessCardExpiryDate)}
+              </Text>
+            </View>
+          )}
         </View>
       )}
 

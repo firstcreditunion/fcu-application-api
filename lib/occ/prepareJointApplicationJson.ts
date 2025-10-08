@@ -1051,7 +1051,7 @@ export async function prepareJointApplicationJson({
         taxRegion: null,
         accountManager: null,
         openingBranch: openingBranch,
-        tradingBranch: 'VIR',
+        tradingBranch: primePreliminaryQuestions?.tradingBranch ?? 'VIR',
         type: 'D',
       },
       relationships: relationships,

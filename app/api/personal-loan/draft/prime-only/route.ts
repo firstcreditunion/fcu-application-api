@@ -455,7 +455,7 @@ export async function POST(request: NextRequest) {
     datetime: convertToUTCTime(),
     email: primeEmail,
     portal_application_number: loanApplicationNumber,
-    trading_branch: 'VIR',
+    trading_branch: primePreliminaryQuestions?.tradingBranch ?? 'VIR',
     online_json: JSON.stringify(primeOnlineJson),
   }
 

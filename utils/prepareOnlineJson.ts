@@ -433,7 +433,7 @@ export async function preparePrimeOnlineJson({
         taxRegion: null,
         accountManager: null,
         openingBranch: openingBranch,
-        tradingBranch: 'VIR',
+        tradingBranch: primePreliminaryQuestions?.tradingBranch ?? 'VIR',
         type: 'D',
       },
       relationships: relationships,

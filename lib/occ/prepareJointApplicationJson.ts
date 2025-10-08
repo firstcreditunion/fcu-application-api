@@ -328,7 +328,7 @@ export async function prepareJointApplicationJson({
               formFinancialDetails.costOfGoods
             ),
             surrenderValue: 0,
-            commencementDate: '2025-04-27T00:00:00Z',
+            commencementDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00`,
             term: {
               unit: 'M',
               value: formFinancialDetails.Loan_Term_1,
@@ -394,8 +394,8 @@ export async function prepareJointApplicationJson({
       reapplyDefaults: null,
       residualValue: 0,
       seq: '1',
-      settlementDate: '2025-04-27T00:00:00Z',
-      signatureDate: '2025-04-27T00:00:00Z',
+      settlementDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00Z`, //* TODO: check in modify function
+      signatureDate: `${format(new Date(), 'yyyy-MM-dd')}T00:00:00Z`, //* TODO: check in modify function
       taxTreatment: null,
       term: formFinancialDetails.Loan_Term_1,
       termType: 'M',

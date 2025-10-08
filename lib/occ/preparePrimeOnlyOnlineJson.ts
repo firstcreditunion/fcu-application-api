@@ -517,14 +517,14 @@ export async function preparePrimeOnlineJson({
               ? [
                   {
                     countryCode: workPhoneVerificationDetails[0].calling_code,
-                    networkCode: workPhoneVerificationDetails[0].sov_stdCode,
+                    stdCode: workPhoneVerificationDetails[0].sov_stdCode,
                     number: workPhoneVerificationDetails[0].sov_number,
                     preferredMethod: 'N',
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
                     )}T00:00:00`,
-                    type: 'MB',
+                    type: 'WK',
                     seq: '1',
                   },
                 ]

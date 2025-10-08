@@ -594,14 +594,14 @@ export async function prepareJointApplicationJson({
               ? [
                   {
                     countryCode: workPhoneVerificationDetails[0].calling_code,
-                    networkCode: workPhoneVerificationDetails[0].sov_stdCode,
+                    stdCode: workPhoneVerificationDetails[0].sov_stdCode,
                     number: workPhoneVerificationDetails[0].sov_number,
                     preferredMethod: 'N',
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
                     )}T00:00:00`,
-                    type: 'MB',
+                    type: 'WK',
                     seq: '1',
                   },
                 ]
@@ -844,15 +844,14 @@ export async function prepareJointApplicationJson({
                   {
                     countryCode:
                       jointWorkPhoneVerificationDetails[0].calling_code,
-                    networkCode:
-                      jointWorkPhoneVerificationDetails[0].sov_stdCode,
+                    stdCode: jointWorkPhoneVerificationDetails[0].sov_stdCode,
                     number: jointWorkPhoneVerificationDetails[0].sov_number,
                     preferredMethod: 'N',
                     effectiveDate: `${format(
                       new Date(),
                       'yyyy-MM-dd'
                     )}T00:00:00`,
-                    type: 'MB',
+                    type: 'WK',
                     seq: '1',
                   },
                 ]

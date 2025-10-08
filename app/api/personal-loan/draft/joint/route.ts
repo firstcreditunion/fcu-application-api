@@ -809,7 +809,7 @@ export async function POST(request: Request) {
     datetime: convertToUTCTime(),
     email: primeEmail,
     portal_application_number: loanApplicationNumber,
-    trading_branch: 'VIR',
+    trading_branch: jointPreliminaryQuestions?.tradingBranch ?? 'VIR',
     online_json: JSON.stringify(jointOnlineJson),
   }
 

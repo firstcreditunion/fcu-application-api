@@ -1,0 +1,183 @@
+{
+  "loanApplicationNumber": 500131,
+  "primeClientNumber": 3356,
+  "supabaseIntegrityState": {
+    "loan_application_number": 500131,
+    "portal_client_number": 3356,
+    "primeClientPersonalDetailsUID": 2849,
+    "primeClientBankruptcyUID": 2850,
+    "primeClientExtensionUniqueID": 2849,
+    "product": "PERN",
+    "costOfGoods": "3,000",
+    "defaultFees": false,
+    "Loan_Term_1": 36,
+    "start_Date": "2025-10-08",
+    "Loan_Term_2": "M",
+    "paymentFrequency": "W",
+    "Interest_Rate": "12.75",
+    "fees": ["LCFRA", "LCRFB", "LCRFC", "LCRFD", "LCRFE", "LCRFF", "LCRFG"],
+    "primeResidentialAddressUniqueID": 4679,
+    "primeMailingAddressUniqueID": 4680,
+    "primeEmailUniqueID": 2327,
+    "primeClientMobileUniqueID": 2802,
+    "primeEmploymentUniqueID": 2159,
+    "primeBenefitsUniqueID": 510,
+    "primeBenefitDetailsUniqueID": 510,
+    "primeSecurityUniqueID": "8739d169-8a44-441f-bfb7-8c40336f7e1b",
+    "primeCreditSenseReference": "ONL_CS_WsRMYTzbjy",
+    "membership_application_number": 102979,
+    "primeFinancialDetailsUniqueID": 69
+  },
+  "supabaseIntegrityJointState": {},
+  "primePreliminaryQuestions": {
+    "isNzCitizen": "Y",
+    "citizenship": "",
+    "isNzResident": "",
+    "hasWorkPermit": "",
+    "askFurtherQuestions": "Y",
+    "loanPurposeCode": "TRVL",
+    "tradingBranch": "WHK",
+    "wasDeclaredBankrupt": "N",
+    "bankruptcyYear": ""
+  },
+  "primeDriversLicence": { "licenceNumber": "", "licenceVersion": "" },
+  "primePassport": { "passportNumber": "" },
+  "primeFirearmsLicence": { "firearmsNumber": "" },
+  "primeBirthCertificate": { "birthCertificateRegNo": "" },
+  "primeKiwiAccessCard": { "kiwiAccessCardNumber": "" },
+  "primeCommunityServiceCard": { "communityServiceCardNumber": "" },
+  "primegoldCard": { "goldCardNumber": "" },
+  "primestudentID": { "currentStudentCardNumber": "" },
+  "primePersonalDetails": {
+    "title": "Mr",
+    "firstName": "Nature",
+    "middleName": "Huia",
+    "lastName": "Henry",
+    "gender": "F",
+    "maritalStatus": "S",
+    "dateOfBirth": "1997-06-28T12:00:00.000Z",
+    "dependantAdults": 0,
+    "dependantChildren": 3
+  },
+  "primeEmployment": {
+    "employmentType": "BNF",
+    "schoolorTertiaryInst": "",
+    "occupation": "",
+    "employerName": "",
+    "typeOfBenefit": ["SOLP"],
+    "exceptionEmpMonth": "February",
+    "expceptionEmpYear": "2018",
+    "incomeFrequency": "W",
+    "netIncome": ""
+  },
+  "primeContactDetails": {
+    "residentialAddress": "6 Casquet Lane, Aranui, Christchurch 8061",
+    "residentialAddressPxid": "2-.3.i.5.E$2",
+    "accommodationType": "RENT",
+    "residentialEffectiveMonth": "February",
+    "residentialEffectiveYear": "2024",
+    "mailingAddress": "",
+    "emailAddress": "naturehenry101@gmail.com",
+    "mobileNumber": "+6421584326",
+    "workPhoneNumber": ""
+  },
+  "formFinancialDetails": {
+    "product": "PERN",
+    "costOfGoods": "1,000",
+    "defaultFees": false,
+    "needCreditCareInsurance": "No",
+    "Loan_Term_1": 36,
+    "start_Date": "2025-10-08",
+    "Loan_Term_2": "M",
+    "paymentFrequency": "W",
+    "Interest_Rate": "12.75",
+    "fees": ["LCFRA", "LCRFB", "LCRFC", "LCRFD", "LCRFE", "LCRFF", "LCRFG"],
+    "instalmentAmount": "7.85",
+    "totalInterest": "206.97",
+    "totalAmountPayable": "1,223.47"
+  },
+  "vehicleSecurity": { "provideVehicleAsLoanSecurity": "N" },
+  "providentInsurance": [
+    {
+      "g3_insurance_cover_type": "CCI1",
+      "insurance_type": "Single",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI2",
+      "insurance_type": "Single",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI3",
+      "insurance_type": "Single",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "SINGLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "N"
+    },
+    {
+      "g3_insurance_cover_type": "CCI4",
+      "insurance_type": "Double",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI5",
+      "insurance_type": "Double",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI6",
+      "insurance_type": "Double",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "DOUBLE",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI7",
+      "insurance_type": "Joint",
+      "cover_type": "Option 1",
+      "lambda_code_component": "OPTION1",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI8",
+      "insurance_type": "Joint",
+      "cover_type": "Option 2",
+      "lambda_code_component": "OPTION2",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, or Bankruptcy",
+      "joint": "Y"
+    },
+    {
+      "g3_insurance_cover_type": "CCI9",
+      "insurance_type": "Joint",
+      "cover_type": "Option 3",
+      "lambda_code_component": "OPTION3",
+      "lambda_code_cover_type": "JOINT",
+      "cover_desc": "Death, Accident, Illness, Hospitalisation, Bankruptcy, or Income Disruption",
+      "joint": "Y"
+    }
+  ]
+}

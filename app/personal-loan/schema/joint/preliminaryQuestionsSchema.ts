@@ -12,6 +12,7 @@ export const jointPreliminaryQuestionSchema = z
     loanPurposeCode: z.string(),
     wasDeclaredBankrupt: z.string(),
     bankruptcyYear: z.string(),
+    tradingBranch: z.string().optional(),
   })
   .superRefine(
     (

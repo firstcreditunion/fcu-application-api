@@ -386,15 +386,9 @@ export async function preparePrimeOnlineJson({
   console.log('primePersonalDetails PREPARE PRIME ONLY: ', primePersonalDetails)
 
   // Format date of birth ensuring no timezone shift
-  const dobYear = primePersonalDetails.dateOfBirth.getFullYear()
-  const dobMonth = String(
-    primePersonalDetails.dateOfBirth.getMonth() + 1
-  ).padStart(2, '0')
-  const dobDay = String(primePersonalDetails.dateOfBirth.getDate()).padStart(
-    2,
-    '0'
-  )
-  const dateOfBirth = `${dobYear}-${dobMonth}-${dobDay}T00:00:00`
+  // dateOfBirth comes as ISO string from JSON, extract date portion and append time
+  const dateOfBirth =
+    String(primePersonalDetails.dateOfBirth).split('T')[0] + 'T00:00:00'
 
   const maritalStatus = maritalStatusOptions.find(
     (item) => item.key === primePersonalDetails.maritalStatus

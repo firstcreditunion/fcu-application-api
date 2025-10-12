@@ -448,7 +448,14 @@ export async function POST(request: NextRequest) {
       ' ' +
       primePersonalDetails?.lastName,
     dateOfBirth: primePersonalDetails?.dateOfBirth
-      ? String(primePersonalDetails.dateOfBirth).split('T')[0]
+      ? (() => {
+          const dobDate = new Date(primePersonalDetails.dateOfBirth)
+          dobDate.setHours(dobDate.getHours() + 12) // Adjust for NZ timezone
+          const year = dobDate.getUTCFullYear()
+          const month = String(dobDate.getUTCMonth() + 1).padStart(2, '0')
+          const day = String(dobDate.getUTCDate()).padStart(2, '0')
+          return `${year}-${month}-${day}`
+        })()
       : '',
     datetime: convertToUTCTime(),
     email: primeEmail,

@@ -385,10 +385,14 @@ export async function preparePrimeOnlineJson({
 
   console.log('primePersonalDetails PREPARE PRIME ONLY: ', primePersonalDetails)
 
-  // Format date of birth ensuring no timezone shift
-  // dateOfBirth comes as ISO string from JSON, extract date portion and append time
-  const dateOfBirth =
-    String(primePersonalDetails.dateOfBirth).split('T')[0] + 'T00:00:00'
+  // Format date of birth adjusting for NZ timezone (UTC+12/13)
+  // The date comes as midnight NZ time converted to UTC, so add 12 hours to get correct date
+  const dobDate = new Date(primePersonalDetails.dateOfBirth)
+  dobDate.setHours(dobDate.getHours() + 12) // Shift to NZ timezone
+  const dobYear = dobDate.getUTCFullYear()
+  const dobMonth = String(dobDate.getUTCMonth() + 1).padStart(2, '0')
+  const dobDay = String(dobDate.getUTCDate()).padStart(2, '0')
+  const dateOfBirth = `${dobYear}-${dobMonth}-${dobDay}T00:00:00`
 
   const maritalStatus = maritalStatusOptions.find(
     (item) => item.key === primePersonalDetails.maritalStatus

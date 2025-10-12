@@ -1,5 +1,4 @@
 import z from 'zod'
-import { format } from 'date-fns'
 import { headers } from 'next/headers'
 import { convertToUTCTime } from '@/utils/constants'
 import { processMobileNumber } from '@/utils/occUtils'
@@ -451,7 +450,9 @@ export async function POST(request: NextRequest) {
       primePersonalDetails?.firstName +
       ' ' +
       primePersonalDetails?.lastName,
-    dateOfBirth: format(primePersonalDetails?.dateOfBirth, 'yyyy-MM-dd'),
+    dateOfBirth: primePersonalDetails?.dateOfBirth
+      ? `${primePersonalDetails.dateOfBirth.getFullYear()}-${String(primePersonalDetails.dateOfBirth.getMonth() + 1).padStart(2, '0')}-${String(primePersonalDetails.dateOfBirth.getDate()).padStart(2, '0')}`
+      : '',
     datetime: convertToUTCTime(),
     email: primeEmail,
     portal_application_number: loanApplicationNumber,

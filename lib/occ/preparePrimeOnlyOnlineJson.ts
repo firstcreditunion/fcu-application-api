@@ -383,6 +383,8 @@ export async function preparePrimeOnlineJson({
     (item) => item.key === primePersonalDetails.gender
   )?.value
 
+  console.log('primePersonalDetails PREPARE PRIME ONLY: ', primePersonalDetails)
+
   // Format date of birth ensuring no timezone shift
   const dobYear = primePersonalDetails.dateOfBirth.getFullYear()
   const dobMonth = String(

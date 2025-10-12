@@ -459,9 +459,16 @@ export async function prepareJointApplicationJson({
     (item) => item.key === primePersonalDetails.gender
   )?.value
 
-  const dateOfBirth =
-    format(new Date(primePersonalDetails.dateOfBirth), 'yyyy-MM-dd') +
-    'T00:00:00'
+  // Format date of birth ensuring no timezone shift
+  const dobYear = primePersonalDetails.dateOfBirth.getFullYear()
+  const dobMonth = String(
+    primePersonalDetails.dateOfBirth.getMonth() + 1
+  ).padStart(2, '0')
+  const dobDay = String(primePersonalDetails.dateOfBirth.getDate()).padStart(
+    2,
+    '0'
+  )
+  const dateOfBirth = `${dobYear}-${dobMonth}-${dobDay}T00:00:00`
 
   const maritalStatus = maritalStatusOptions.find(
     (item) => item.key === primePersonalDetails.maritalStatus
@@ -708,10 +715,15 @@ export async function prepareJointApplicationJson({
     (item) => item.key === jointPersonalDetails.gender
   )?.value
 
-  const jointDateOfBirth = format(
-    new Date(jointPersonalDetails.dateOfBirth),
-    'yyyy-MM-dd'
-  )
+  // Format joint date of birth ensuring no timezone shift
+  const jointDobYear = jointPersonalDetails.dateOfBirth.getFullYear()
+  const jointDobMonth = String(
+    jointPersonalDetails.dateOfBirth.getMonth() + 1
+  ).padStart(2, '0')
+  const jointDobDay = String(
+    jointPersonalDetails.dateOfBirth.getDate()
+  ).padStart(2, '0')
+  const jointDateOfBirth = `${jointDobYear}-${jointDobMonth}-${jointDobDay}`
 
   const jointMaritalStatus = maritalStatusOptions.find(
     (item) => item.key === jointPersonalDetails.maritalStatus

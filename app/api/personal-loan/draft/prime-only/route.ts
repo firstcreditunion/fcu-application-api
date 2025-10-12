@@ -99,16 +99,6 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // if (API_SECRET) {
-  //   return NextResponse.json(
-  //     {
-  //       success: false,
-  //       error: 'Warning: Production Not ready yet!',
-  //     },
-  //     { status: 500 }
-  //   )
-  // }
-
   const headersList = await headers()
   // Get the secret from the request's 'X-API-Secret' header.
   const providedSecret = headersList.get('X-API-Secret')
@@ -129,8 +119,13 @@ export async function POST(request: NextRequest) {
   // For this example, a direct comparison is shown for simplicity.
   if (providedSecret !== API_SECRET) {
     return NextResponse.json(
-      { success: false, error: 'Invalid API Secret.' },
-      { status: 403 } // Forbidden
+      {
+        success: false,
+        error: 'Invalid API Secret.',
+      },
+      {
+        status: 403,
+      } // Forbidden
     )
   }
 

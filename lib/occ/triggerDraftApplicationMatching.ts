@@ -22,23 +22,10 @@ export async function triggerDraftApplicationMatching(
     }),
   }
 
-  console.log('Params:', params)
-
-  console.log('Outside try catch')
   try {
-    console.log('Inside try catch')
-
     const command = new InvokeCommand(params)
 
-    console.log('Past Command')
-
-    console.log('Lambda Client', await lambdaClient)
-
     const { Payload } = await lambdaClient.send(command)
-
-    console.log('past lambda client send')
-
-    console.log('BeginFCULoanWorkflow Payload:', Payload)
 
     if (!Payload) {
       console.log('Empty response from Lambda function')
@@ -47,8 +34,6 @@ export async function triggerDraftApplicationMatching(
     }
 
     const result = JSON.parse(Buffer.from(Payload).toString())
-
-    console.log('Result:', result)
 
     if (result.statusCode !== 200) {
       return null

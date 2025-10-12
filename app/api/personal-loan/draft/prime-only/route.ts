@@ -419,6 +419,8 @@ export async function POST(request: NextRequest) {
     await Promise.all(supabaseUpdatePromises)
   }
 
+  console.log('primePersonalDetails: ', primePersonalDetails)
+
   const primeOnlineJson = await preparePrimeOnlineJson({
     supabaseIntegrityState,
     primePreliminaryQuestions,

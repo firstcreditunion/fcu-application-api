@@ -446,7 +446,7 @@ export async function POST(request: NextRequest) {
       ' ' +
       primePersonalDetails?.lastName,
     dateOfBirth: primePersonalDetails?.dateOfBirth
-      ? `${primePersonalDetails.dateOfBirth.getFullYear()}-${String(primePersonalDetails.dateOfBirth.getMonth() + 1).padStart(2, '0')}-${String(primePersonalDetails.dateOfBirth.getDate()).padStart(2, '0')}`
+      ? String(primePersonalDetails.dateOfBirth).split('T')[0]
       : '',
     datetime: convertToUTCTime(),
     email: primeEmail,

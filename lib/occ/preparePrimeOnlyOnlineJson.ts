@@ -194,7 +194,7 @@ export async function preparePrimeOnlineJson({
       seq: '1',
     },
     {
-      amount: 5.40,
+      amount: 5.4,
       capitalised: 'Y',
       code: 'LCRFF',
       gstAmount: 0,

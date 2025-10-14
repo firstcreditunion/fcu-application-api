@@ -61,7 +61,7 @@ export const primeRawJson = {
                 seq: '1',
               },
               {
-                amount: 2.72,
+                amount: 5.4,
                 capitalised: 'Y',
                 code: 'LCRFF',
                 gstAmount: 0,

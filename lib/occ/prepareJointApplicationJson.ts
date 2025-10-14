@@ -276,7 +276,7 @@ export async function prepareJointApplicationJson({
       seq: '1',
     },
     {
-      amount: 2.72,
+      amount: 5.40,
       capitalised: 'Y',
       code: 'LCRFF',
       gstAmount: 0,

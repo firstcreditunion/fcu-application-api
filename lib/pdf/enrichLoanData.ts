@@ -230,6 +230,7 @@ export async function enrichPrimeLoanData(
         totalInterest: string
         totalAmountPayable: string
         coversIncluded?: string
+        first_payment_date?: string
       }),
       productDescription,
       feesWithDescriptions,

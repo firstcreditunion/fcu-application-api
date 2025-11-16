@@ -26,7 +26,40 @@ export const financialDetialsSchema = z.object({
   paymentFrequency: z.string({
     message: 'Frequency is required',
   }),
-
+  first_payment_date: z
+    .date({
+      message: 'First payment date is required',
+    })
+    .refine(
+      (date) => {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0) // Normalize to midnight
+        const minDate = new Date(today)
+        minDate.setDate(today.getDate() + 7)
+        const selectedDate = new Date(date)
+        selectedDate.setHours(0, 0, 0, 0) // Normalize to midnight
+        return selectedDate >= minDate
+      },
+      {
+        message:
+          'First payment date must be between 7 days and 2 months from today',
+      }
+    )
+    .refine(
+      (date) => {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0) // Normalize to midnight
+        const maxDate = new Date(today)
+        maxDate.setDate(today.getDate() + 67) // 7 + 60 days
+        const selectedDate = new Date(date)
+        selectedDate.setHours(0, 0, 0, 0) // Normalize to midnight
+        return selectedDate <= maxDate
+      },
+      {
+        message:
+          'First payment date must be between 7 days and 2 months from today',
+      }
+    ),
   start_Date: z.string(),
   Interest_Rate: z
     .string({

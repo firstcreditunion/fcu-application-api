@@ -2562,7 +2562,7 @@ export interface RepaymentFrequency {
    * • F = Forthnightly,
    * • M = Monthly
    */
-  value?: 'F' | 'M' | 'W'
+  value?: string
 
   /**
    * First repayment date

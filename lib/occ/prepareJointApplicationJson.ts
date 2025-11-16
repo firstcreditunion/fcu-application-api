@@ -276,7 +276,7 @@ export async function prepareJointApplicationJson({
       seq: '1',
     },
     {
-      amount: 5.40,
+      amount: 5.4,
       capitalised: 'Y',
       code: 'LCRFF',
       gstAmount: 0,
@@ -384,6 +384,10 @@ export async function prepareJointApplicationJson({
             : formFinancialDetails.paymentFrequency === 'F'
               ? 'FORTNIGHTLY'
               : 'MONTHLY',
+      },
+      repaymentFreq: {
+        value: formFinancialDetails.paymentFrequency,
+        firstRepaymentDate: `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`,
       },
       paymentFrequencyUnit: 1,
       paymentMethod: {

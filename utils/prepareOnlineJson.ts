@@ -220,6 +220,10 @@ export async function preparePrimeOnlineJson({
               ? 'FORTNIGHTLY'
               : 'MONTHLY',
       },
+      repaymentFreq: {
+        value: formFinancialDetails.paymentFrequency,
+        firstRepaymentDate: `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`,
+      },
       paymentFrequencyUnit: 1,
       paymentMethod: {
         paymentMethod: 'AUTOPAY',

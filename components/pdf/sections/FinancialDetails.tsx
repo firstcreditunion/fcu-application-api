@@ -88,6 +88,16 @@ export const FinancialDetails: React.FC<FinancialDetailsProps> = ({ data }) => {
             {formatDate(data.formFinancialDetails.start_Date)}
           </Text>
         </View>
+        {data.formFinancialDetails.first_payment_date && (
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>First Payment Date:</Text>
+            <Text style={pdfStyles.value}>
+              {data.formFinancialDetails.first_payment_date
+                ? formatDate(data.formFinancialDetails.first_payment_date)
+                : 'N/A'}
+            </Text>
+          </View>
+        )}
         <View style={pdfStyles.row}>
           <Text style={pdfStyles.label}>Payment Frequency:</Text>
           <Text style={pdfStyles.value}>

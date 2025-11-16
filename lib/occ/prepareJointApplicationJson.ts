@@ -1,7 +1,7 @@
 'use server'
 
 import z from 'zod'
-import { format, differenceInYears } from 'date-fns'
+import { format, differenceInYears, addDays } from 'date-fns'
 
 import {
   Fee,
@@ -387,7 +387,9 @@ export async function prepareJointApplicationJson({
       },
       repaymentFreq: {
         value: formFinancialDetails.paymentFrequency,
-        firstRepaymentDate: `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`,
+        firstRepaymentDate: formFinancialDetails.first_payment_date
+          ? `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`
+          : `${format(addDays(new Date(), 7), 'yyyy-MM-dd')}T00:00:00Z`, // Default to 7 days from today
       },
       paymentFrequencyUnit: 1,
       paymentMethod: {

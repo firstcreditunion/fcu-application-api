@@ -16,7 +16,7 @@ import { row_tblProvidentInsuranceCoverTypes } from '@/types/supabase/insurance/
 import z from 'zod'
 import { preliminaryQuestionSchema } from '@/app/personal-loan/schema/prime/preliminaryQuestionsSchema'
 
-import { format, differenceInYears } from 'date-fns'
+import { format, differenceInYears, addDays } from 'date-fns'
 
 import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
 import { personalDetailsSchema } from '@/app/personal-loan/schema/prime/personalDetailsSchema'
@@ -242,11 +242,16 @@ export async function preparePrimeOnlineJson({
     formFinancialDetails.needCreditCareInsurance
   )
 
-  console.log('First Payment Date: ', formFinancialDetails.first_payment_date)
+  // Log first payment date (use provided or default to 7 days from today)
+  const effectiveFirstPaymentDate = formFinancialDetails.first_payment_date
+    ? formFinancialDetails.first_payment_date
+    : addDays(new Date(), 7)
+
   console.log(
-    'First Payment Date FORMATTED: ',
-    `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`
+    'First Payment Date (provided): ',
+    formFinancialDetails.first_payment_date
   )
+  console.log('First Payment Date (effective): ', effectiveFirstPaymentDate)
 
   const insurances: Insurance[] =
     formFinancialDetails.needCreditCareInsurance === 'Yes' &&
@@ -323,7 +328,9 @@ export async function preparePrimeOnlineJson({
       },
       repaymentFreq: {
         value: formFinancialDetails.paymentFrequency,
-        firstRepaymentDate: `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`,
+        firstRepaymentDate: formFinancialDetails.first_payment_date
+          ? `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`
+          : `${format(addDays(new Date(), 7), 'yyyy-MM-dd')}T00:00:00Z`, // Default to 7 days from today
       },
       paymentFrequencyUnit: 1, //* TODO: check in modify function
       paymentMethod: {

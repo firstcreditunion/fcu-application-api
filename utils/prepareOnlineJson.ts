@@ -21,7 +21,7 @@ import {
   loanPurposeCodesFallback,
   maritalStatusOptions,
 } from './constants'
-import { format, differenceInYears } from 'date-fns'
+import { format, differenceInYears, addDays } from 'date-fns'
 import { financialDetialsSchema } from '@/app/personal-loan/schema/prime/financialDetailsSchema'
 import { securitySchema } from '@/app/personal-loan/schema/prime/securitySchema'
 import { personalDetailsSchema } from '@/app/personal-loan/schema/prime/personalDetailsSchema'
@@ -222,7 +222,9 @@ export async function preparePrimeOnlineJson({
       },
       repaymentFreq: {
         value: formFinancialDetails.paymentFrequency,
-        firstRepaymentDate: `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`,
+        firstRepaymentDate: formFinancialDetails.first_payment_date
+          ? `${format(formFinancialDetails.first_payment_date, 'yyyy-MM-dd')}T00:00:00Z`
+          : `${format(addDays(new Date(), 7), 'yyyy-MM-dd')}T00:00:00Z`, // Default to 7 days from today
       },
       paymentFrequencyUnit: 1,
       paymentMethod: {

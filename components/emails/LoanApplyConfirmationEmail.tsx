@@ -203,17 +203,15 @@ export default function LoanApplyConfirmationEmail({
             <Row>
               <Column style={documentColumnStyle}>
                 <Text style={documentHeadingStyle}>
-                  <strong>Identification and Proof of Address</strong>
+                  <strong>Identification</strong>
                 </Text>
                 <Text style={documentTextStyle}>
-                  Two colour copies of identifications and Proof of Address. At
-                  least one form of identification{' '}
-                  <strong>must contain a photo</strong>.{' '}
+                  Two colour copies of identifications - at least one form of
+                  identification <strong>must contain a photo</strong>.{' '}
                   <Link style={anchor} href={linkToIdentification}>
                     Click here
                   </Link>{' '}
-                  to view the forms of identification and proof of address we
-                  can accept.
+                  to view the forms of identifications we can accept.
                 </Text>
               </Column>
             </Row>
@@ -222,9 +220,8 @@ export default function LoanApplyConfirmationEmail({
           <Hr style={hr} />
 
           <Text style={bodyTextStyle}>
-            Please note that all identification and proof of address need to be
-            certified by a trusted referee which is outlined in forms of
-            identification link.
+            Please note that all identifications need to be certified by a
+            trusted referee which is outlined in forms of identification link.
           </Text>
           <Text style={bodyTextStyle}>
             Your lending consultant will guide you through the identification

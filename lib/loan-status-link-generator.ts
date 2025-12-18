@@ -102,3 +102,5 @@ export function createExampleLink(): string {
     token: generateSecureToken('john.doe@example.com', '12345'),
   })
 }
+
+// Git Commit Control

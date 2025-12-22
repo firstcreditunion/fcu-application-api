@@ -9,7 +9,7 @@ export const jointDriversLicenceSchema = z
       .string({
         message: 'Please enter your licence number',
       })
-      .regex(/^([a-zA-Z][a-zA-Z]\d\d\d\d\d\d*)$/, 'Invalid Drivers Licence'),
+      .regex(/^[a-zA-Z]{2}\d{6}$/, 'Invalid Drivers Licence'),
     licenceVersion: z
       .string({
         message: 'Please enter your licence version',

@@ -237,14 +237,14 @@ export async function buildClientIdentifications(
       effectiveDate: CommunityServiceCard.communityServiceCardIssueDate
         ? format(
             CommunityServiceCard.communityServiceCardIssueDate,
-            'yyyy-MM-dd' + 'T00:00:00'
-          )
+            'yyyy-MM-dd'
+          ) + 'T00:00:00'
         : undefined,
       expiryDate: CommunityServiceCard.communityServiceCardExpiryDate
         ? format(
             CommunityServiceCard.communityServiceCardExpiryDate,
-            'yyyy-MM-dd' + 'T00:00:00'
-          )
+            'yyyy-MM-dd'
+          ) + 'T00:00:00'
         : undefined,
       reference: CommunityServiceCard.communityServiceCardNumber,
       seq: String(seqCounter++),

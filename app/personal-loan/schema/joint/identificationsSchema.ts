@@ -12,9 +12,10 @@ export const jointDriversLicenceSchema = z
       .regex(/^([a-zA-Z][a-zA-Z]\d\d\d\d\d\d*)$/, 'Invalid Drivers Licence'),
     licenceVersion: z
       .string({
-        message: 'Please enter your licence number',
+        message: 'Please enter your licence version',
       })
-      .regex(/^[0-9]*$/, 'Invalid Version Number'),
+      .min(1, { message: 'Licence version is required' })
+      .regex(/^(?!0+$)[0-9]+$/, 'Invalid Version Number'),
     licenceIssueDate: z.date().optional(),
     licenceExpiryDate: z.date().optional(),
   })
@@ -28,13 +29,13 @@ export const jointDriversLicenceSchema = z
     if (hasLicenceNumber) {
       if (!data.licenceIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your licence issue date',
           path: ['licenceIssueDate'],
         })
       } else if (data.licenceIssueDate > new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Issue date cannot be in the future',
           path: ['licenceIssueDate'],
         })
@@ -42,13 +43,13 @@ export const jointDriversLicenceSchema = z
 
       if (!data.licenceExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your licence expiry date',
           path: ['licenceExpiryDate'],
         })
       } else if (data.licenceExpiryDate < new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Expiry date cannot be in the past',
           path: ['licenceExpiryDate'],
         })
@@ -84,13 +85,13 @@ export const jointPassportSchema = z
     if (hasPassportNumber) {
       if (!data.passportIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your passport issue date',
           path: ['passportIssueDate'],
         })
       } else if (data.passportIssueDate > new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Issue date cannot be in the future',
           path: ['passportIssueDate'],
         })
@@ -98,13 +99,13 @@ export const jointPassportSchema = z
 
       if (!data.passportExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your passport expiry date',
           path: ['passportExpiryDate'],
         })
       } else if (data.passportExpiryDate < new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Expiry date cannot be in the past',
           path: ['passportExpiryDate'],
         })
@@ -117,7 +118,7 @@ export const jointPassportSchema = z
       maxExpiryDate.setFullYear(maxExpiryDate.getFullYear() + 10)
       if (data.passportExpiryDate > maxExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message:
             'Expiry date cannot be more than 10 years from the issue date',
           path: ['passportExpiryDate'],
@@ -141,7 +142,7 @@ export const jointFirearmsLicenceSchema = z
       .string({
         message: 'Please enter your firearms number',
       })
-      .regex(/^([A-Z]{2}\d{6})$|^([A-Z]{1}\d{7})$/, 'Invalid passport number'),
+      .regex(/^([A-Z]{2}\d{6})$|^([A-Z]{1}\d{7})$/, 'Invalid licence number'),
     firearmsIssueDate: z.date().optional(),
     firearmsExpiryDate: z.date().optional(),
   })
@@ -154,13 +155,13 @@ export const jointFirearmsLicenceSchema = z
     if (hasFirearmsNumber) {
       if (!data.firearmsIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your firearms issue date',
           path: ['firearmsIssueDate'],
         })
       } else if (data.firearmsIssueDate > new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Issue date cannot be in the future',
           path: ['firearmsIssueDate'],
         })
@@ -168,13 +169,13 @@ export const jointFirearmsLicenceSchema = z
 
       if (!data.firearmsExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your firearms expiry date',
           path: ['firearmsExpiryDate'],
         })
       } else if (data.firearmsExpiryDate < new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Expiry date cannot be in the past',
           path: ['firearmsExpiryDate'],
         })
@@ -187,7 +188,7 @@ export const jointFirearmsLicenceSchema = z
       maxExpiryDate.setFullYear(maxExpiryDate.getFullYear() + 10)
       if (data.firearmsExpiryDate > maxExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message:
             'Expiry date cannot be more than 10 years from the issue date',
           path: ['firearmsExpiryDate'],
@@ -227,13 +228,13 @@ export const jointKiwiAccessCardSchema = z
     if (hasKiwiAccessCardNumber) {
       if (!data.kiwiAccessCardIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your kiwi access card issue date',
           path: ['kiwiAccessCardIssueDate'],
         })
       } else if (data.kiwiAccessCardIssueDate > new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Issue date cannot be in the future',
           path: ['kiwiAccessCardIssueDate'],
         })
@@ -241,13 +242,13 @@ export const jointKiwiAccessCardSchema = z
 
       if (!data.kiwiAccessCardExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your kiwi access card expiry date',
           path: ['kiwiAccessCardExpiryDate'],
         })
       } else if (data.kiwiAccessCardExpiryDate < new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Expiry date cannot be in the past',
           path: ['kiwiAccessCardExpiryDate'],
         })
@@ -260,7 +261,7 @@ export const jointKiwiAccessCardSchema = z
       maxExpiryDate.setFullYear(maxExpiryDate.getFullYear() + 10)
       if (data.kiwiAccessCardExpiryDate > maxExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message:
             'Expiry date cannot be more than 10 years from the issue date',
           path: ['kiwiAccessCardExpiryDate'],
@@ -300,13 +301,13 @@ export const jointCommunityServiceCardSchema = z
     if (hasCommunityServiceCardNumber) {
       if (!data.communityServiceCardIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your community service card issue date',
           path: ['communityServiceCardIssueDate'],
         })
       } else if (data.communityServiceCardIssueDate > new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Issue date cannot be in the future',
           path: ['communityServiceCardIssueDate'],
         })
@@ -314,13 +315,13 @@ export const jointCommunityServiceCardSchema = z
 
       if (!data.communityServiceCardExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your community service card expiry date',
           path: ['communityServiceCardExpiryDate'],
         })
       } else if (data.communityServiceCardExpiryDate < new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Expiry date cannot be in the past',
           path: ['communityServiceCardExpiryDate'],
         })
@@ -335,7 +336,7 @@ export const jointCommunityServiceCardSchema = z
       maxExpiryDate.setFullYear(maxExpiryDate.getFullYear() + 10)
       if (data.communityServiceCardExpiryDate > maxExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message:
             'Expiry date cannot be more than 10 years from the issue date',
           path: ['communityServiceCardExpiryDate'],
@@ -367,7 +368,7 @@ export const jointBirthCertificateSchema = z
     if (hasBirthCertificateRegNo) {
       if (!data.birthCertificateIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your birth certificate issue date',
           path: ['birthCertificateIssueDate'],
         })
@@ -405,13 +406,13 @@ export const jointCurrentStudentCardSchema = z
     if (hasCurrentStudentCardNumber) {
       if (!data.currentStudentCardIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your current student card issue date',
           path: ['currentStudentCardIssueDate'],
         })
       } else if (data.currentStudentCardIssueDate > new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Issue date cannot be in the future',
           path: ['currentStudentCardIssueDate'],
         })
@@ -419,13 +420,13 @@ export const jointCurrentStudentCardSchema = z
 
       if (!data.currentStudentCardExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your current student card expiry date',
           path: ['currentStudentCardExpiryDate'],
         })
       } else if (data.currentStudentCardExpiryDate < new Date()) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Expiry date cannot be in the past',
           path: ['currentStudentCardExpiryDate'],
         })
@@ -437,7 +438,7 @@ export const jointCurrentStudentCardSchema = z
       maxExpiryDate.setFullYear(maxExpiryDate.getFullYear() + 10)
       if (data.currentStudentCardExpiryDate > maxExpiryDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message:
             'Expiry date cannot be more than 10 years from the issue date',
           path: ['currentStudentCardExpiryDate'],
@@ -471,7 +472,7 @@ export const jointGoldCardSchema = z
     if (hasGoldCardNumber) {
       if (!data.goldCardIssueDate) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your gold card issue date',
           path: ['goldCardIssueDate'],
         })

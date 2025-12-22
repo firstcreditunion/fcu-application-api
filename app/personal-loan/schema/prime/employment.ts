@@ -14,13 +14,16 @@ export const employmentSchema = z
       }),
     schoolorTertiaryInst: z.string(),
     occupation: z.string().or(z.literal('')),
-    employerName: z.string().or(z.literal('')),
+    employerName: z
+      .string()
+      .max(50, { message: 'Employer name must be less than 50 characters' })
+      .or(z.literal('')),
+
     typeOfBenefit: z.array(z.string()),
     incomeFrequency: z.string().optional(),
     netIncome: z.string().optional(),
     exceptionEmpMonth: z.string(),
     expceptionEmpYear: z.string(),
-    employmentEffctiveDate: z.date().optional(),
   })
   .superRefine(
     (
@@ -28,7 +31,6 @@ export const employmentSchema = z
         employmentType,
         occupation,
         employerName,
-        employmentEffctiveDate,
         typeOfBenefit,
         incomeFrequency,
         netIncome,
@@ -40,7 +42,7 @@ export const employmentSchema = z
     ) => {
       if (!employmentsToExclude.includes(employmentType) && occupation === '') {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please select your occupation',
           path: ['occupation'],
         })
@@ -50,9 +52,25 @@ export const employmentSchema = z
         employerName === ''
       ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'The name of your employer is required',
           path: ['employerName'],
+        })
+      }
+
+      if (exceptionEmpMonth === '') {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Please select the month',
+          path: ['exceptionEmpMonth'],
+        })
+      }
+
+      if (expceptionEmpYear === '') {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Please select the year',
+          path: ['expceptionEmpYear'],
         })
       }
 
@@ -61,54 +79,17 @@ export const employmentSchema = z
         schoolorTertiaryInst === ''
       ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please choose a school or a tertiary institution',
           path: ['schoolorTertiaryInst'],
         })
       }
 
-      if (
-        // C1 & C2
-        (!employmentsToExclude.includes(employmentType.trim()) &&
-          employmentEffctiveDate === undefined) ||
-        employmentEffctiveDate === null
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Please choose employment effective date',
-          path: ['employmentEffctiveDate'],
-        })
-      }
-
       if (employmentType === 'BNF' && typeOfBenefit.length === 0) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please choose the type of benefit',
           path: ['typeOfBenefit'],
-        })
-      }
-
-      if (
-        //  C2 & C1
-        employmentsToExclude.includes(employmentType) &&
-        exceptionEmpMonth === ''
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Please choose a month',
-          path: ['exceptionEmpMonth'],
-        })
-      }
-
-      if (
-        //  C2 & C1
-        employmentsToExclude.includes(employmentType) &&
-        expceptionEmpYear === ''
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Please choose a year',
-          path: ['expceptionEmpYear'],
         })
       }
 
@@ -118,7 +99,7 @@ export const employmentSchema = z
         incomeFrequency === ''
       ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please choose the income frequency',
           path: ['incomeFrequency'],
         })
@@ -130,7 +111,7 @@ export const employmentSchema = z
         netIncome === ''
       ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Please provide your net income',
           path: ['netIncome'],
         })
@@ -141,7 +122,7 @@ export const employmentSchema = z
         Number(netIncome) <= 0
       ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           message: 'Net income must be greater than $0',
           path: ['netIncome'],
         })

@@ -77,8 +77,10 @@ export default function MembershipConfirmationEmail({
               Your Membership Application has been received.
             </Heading>
             <Text style={greetingStyle}>
-              Hi {primeFirstName
-                ? primeFirstName.charAt(0).toUpperCase() + primeFirstName.slice(1).toLowerCase()
+              Hi{' '}
+              {primeFirstName
+                ? primeFirstName.charAt(0).toUpperCase() +
+                  primeFirstName.slice(1).toLowerCase()
                 : ''}
               ,
             </Text>
@@ -436,3 +438,5 @@ const footerTextStyle = {
   lineHeight: '1.5',
   margin: '0',
 }
+
+// Git Commit Control

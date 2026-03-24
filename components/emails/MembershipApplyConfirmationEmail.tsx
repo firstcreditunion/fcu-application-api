@@ -76,7 +76,12 @@ export default function MembershipConfirmationEmail({
             <Heading style={mainHeadingStyle}>
               Your Membership Application has been received.
             </Heading>
-            <Text style={greetingStyle}>Hi {primeFirstName},</Text>
+            <Text style={greetingStyle}>
+              Hi {primeFirstName
+                ? primeFirstName.charAt(0).toUpperCase() + primeFirstName.slice(1).toLowerCase()
+                : ''}
+              ,
+            </Text>
 
             <Text style={introTextStyle}>
               Thank you for applying for a membership with First Credit Union.
@@ -166,7 +171,7 @@ export default function MembershipConfirmationEmail({
                             Submitted Date & Time:{' '}
                             {format(
                               new Date(submittedDateTime),
-                              'dd/MM/yyyy hh:mm:ss aaaa'
+                              'dd/MM/yyyy hh:mm:ss aaaa',
                             )}
                           </Text>
                         </div>
@@ -190,18 +195,17 @@ export default function MembershipConfirmationEmail({
               <tr>
                 <td style={documentSectionStyle}>
                   <Text style={documentHeadingStyle}>
-                    <strong>Identification and Proof of Address</strong>
+                    <strong>Identification</strong>
                   </Text>
                   <Text style={bodyTextStyle}>
                     If you have a NZ Passport we only require one form of
                     identification. Otherwise we require two forms of
-                    identification, and a Proof of Address. At least one form of
-                    identification <strong>must contain a photo</strong>.{' '}
+                    identification. At least one form of identification{' '}
+                    <strong>must contain a photo</strong>.{' '}
                     <Link style={linkStyle} href={linkToIdentification}>
                       Click here
                     </Link>{' '}
-                    to view the forms of identification and proof of address we
-                    can accept.
+                    to view the forms of identification we can accept.
                   </Text>
                 </td>
               </tr>
@@ -209,12 +213,6 @@ export default function MembershipConfirmationEmail({
           </Section>
 
           <Hr style={hrStyle} />
-
-          <Text style={bodyTextStyle}>
-            Please note that all identification and proof of address need to be
-            certified by a trusted referee which is outlined in forms of
-            identification link.
-          </Text>
 
           <Text style={bodyTextStyle}>
             Please email the above documents through to this email. Upon

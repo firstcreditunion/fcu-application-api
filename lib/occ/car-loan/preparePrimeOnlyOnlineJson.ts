@@ -340,7 +340,7 @@ export async function preparePrimeOnlineJson({
       paymentMethod: {
         paymentMethod: 'AUTOPAY', //* TODO: check in modify function
       },
-      product: 'PERN', //* TODO: check in modify function
+      product: 'CAR',
       purchasePrice: purchasePrice, //* TODO: check in modify function
       reapplyDefaults: null,
       residualValue: 0,
@@ -713,11 +713,11 @@ export async function preparePrimeOnlineJson({
           primePersonalDetails.firstName.charAt(0) +
           ' ' +
           primePersonalDetails.lastName,
-        clientApplication: 'FCUWEBAPP',
+        clientApplication: 'FCUCARWEBAPP',
         comparisonRatesSupplied: 'N',
         externalSystemReference: 'ONL_kjmNWvoESz',
         draft: 'N',
-        bossType: 'FCUONPLAP',
+        bossType: 'FCUCARLAPP',
         customAttributes: [],
         financialDetails: financialDetails,
         loadedByClientNumber: '0000148335',

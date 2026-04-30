@@ -399,7 +399,7 @@ export async function prepareJointApplicationJson({
       paymentMethod: {
         paymentMethod: 'AUTOPAY',
       },
-      product: 'PERN',
+      product: 'CAR',
       purchasePrice: purchasePrice,
       reapplyDefaults: null,
       residualValue: 0,
@@ -1031,11 +1031,11 @@ export async function prepareJointApplicationJson({
           ' ' +
           jointPersonalDetails.lastName,
 
-        clientApplication: 'FCUWEBAPP',
+        clientApplication: 'FCUCARWEBAPP',
         comparisonRatesSupplied: 'N',
         externalSystemReference: 'ONL_kjmNWvoESz',
         draft: 'N',
-        bossType: 'FCUONPLAP',
+        bossType: 'FCUCARLAPP',
         customAttributes: [],
         financialDetails: financialDetails,
         loadedByClientNumber: '0000148335',

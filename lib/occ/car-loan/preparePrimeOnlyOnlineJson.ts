@@ -749,7 +749,7 @@ export async function preparePrimeOnlineJson({
         originator: originator,
         owner: '0000148335',
         recourseAccount: 'Y',
-        salesChannel: 'INTERNET',
+        salesChannel: 'DEALER',
         salutation: 'N',
         subPrime: 'N',
         taxRegion: null,

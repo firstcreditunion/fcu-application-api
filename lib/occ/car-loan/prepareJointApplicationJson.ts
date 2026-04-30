@@ -1031,7 +1031,7 @@ export async function prepareJointApplicationJson({
           ' ' +
           jointPersonalDetails.lastName,
 
-        clientApplication: 'FCUCARWEBAPP',
+        clientApplication: 'FCUCARONL',
         comparisonRatesSupplied: 'N',
         externalSystemReference: 'ONL_kjmNWvoESz',
         draft: 'N',

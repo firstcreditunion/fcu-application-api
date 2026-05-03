@@ -125,7 +125,7 @@ export async function POST(request: Request) {
         success: false,
         error: 'Internal Server Error: Service not configured.',
       },
-      { status: 500 }
+      { status: 500 },
     )
   }
 
@@ -147,7 +147,7 @@ export async function POST(request: Request) {
   if (!providedSecret) {
     return NextResponse.json(
       { success: false, error: 'API Secret is missing from headers.' },
-      { status: 401 } // Unauthorized
+      { status: 401 }, // Unauthorized
     )
   }
 
@@ -160,7 +160,7 @@ export async function POST(request: Request) {
   if (providedSecret !== API_SECRET) {
     return NextResponse.json(
       { success: false, error: 'Invalid API Secret.' },
-      { status: 403 } // Forbidden
+      { status: 403 }, // Forbidden
     )
   }
 
@@ -483,12 +483,12 @@ export async function POST(request: Request) {
       updated_datetime: convertToUTCTime(),
       sov_networkCode: primeMobileVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            primeMobileVerificationMetaData?.formatted_national
+            primeMobileVerificationMetaData?.formatted_national,
           ).sov_networkCode
         : '',
       sov_number: primeMobileVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            primeMobileVerificationMetaData?.formatted_national
+            primeMobileVerificationMetaData?.formatted_national,
           ).sov_number
         : '',
       metadata: JSON.stringify(primeMobileVerificationMetaData),
@@ -497,8 +497,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientPhoneUpdatePhoneVerificationDetails(
         primeClientMobileUniqueID,
-        phoneVerificationResultData
-      )
+        phoneVerificationResultData,
+      ),
     )
   }
 
@@ -529,12 +529,12 @@ export async function POST(request: Request) {
       updated_datetime: convertToUTCTime(),
       sov_stdCode: primeWorkPhoneVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            primeWorkPhoneVerificationMetaData?.formatted_national
+            primeWorkPhoneVerificationMetaData?.formatted_national,
           ).sov_networkCode
         : '',
       sov_number: primeWorkPhoneVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            primeWorkPhoneVerificationMetaData?.formatted_national
+            primeWorkPhoneVerificationMetaData?.formatted_national,
           ).sov_number
         : '',
       metadata: JSON.stringify(primeWorkPhoneVerificationMetaData),
@@ -543,8 +543,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientPhoneUpdatePhoneVerificationDetails(
         primeClientWorkPhoneUniqueID,
-        phoneVerificationResultData
-      )
+        phoneVerificationResultData,
+      ),
     )
   }
 
@@ -576,8 +576,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientEmailVerificationUpdate(
         primeEmailUniqueID,
-        emailVerificationResultData
-      )
+        emailVerificationResultData,
+      ),
     )
   }
 
@@ -596,8 +596,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientAddressMetadataUpdate(
         primeResidentialAddressUniqueID,
-        primeResidentialAddressVerificationResultData
-      )
+        primeResidentialAddressVerificationResultData,
+      ),
     )
   }
 
@@ -616,8 +616,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientAddressMetadataUpdate(
         primeMailingAddressUniqueID,
-        primeMailingAddressVerificationResultData
-      )
+        primeMailingAddressVerificationResultData,
+      ),
     )
   }
 
@@ -645,12 +645,12 @@ export async function POST(request: Request) {
       updated_datetime: convertToUTCTime(),
       sov_networkCode: jointMobileVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            jointMobileVerificationMetaData?.formatted_national
+            jointMobileVerificationMetaData?.formatted_national,
           ).sov_networkCode
         : '',
       sov_number: jointMobileVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            jointMobileVerificationMetaData?.formatted_national
+            jointMobileVerificationMetaData?.formatted_national,
           ).sov_number
         : '',
       metadata: JSON.stringify(jointMobileVerificationMetaData),
@@ -659,8 +659,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientPhoneUpdatePhoneVerificationDetails(
         jointClientMobileUniqueID,
-        phoneVerificationResultData
-      )
+        phoneVerificationResultData,
+      ),
     )
   }
 
@@ -691,12 +691,12 @@ export async function POST(request: Request) {
       updated_datetime: convertToUTCTime(),
       sov_stdCode: jointWorkPhoneVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            jointWorkPhoneVerificationMetaData?.formatted_national
+            jointWorkPhoneVerificationMetaData?.formatted_national,
           ).sov_networkCode
         : '',
       sov_number: jointWorkPhoneVerificationMetaData?.formatted_national
         ? processMobileNumber(
-            jointWorkPhoneVerificationMetaData?.formatted_national
+            jointWorkPhoneVerificationMetaData?.formatted_national,
           ).sov_number
         : '',
       metadata: JSON.stringify(jointWorkPhoneVerificationMetaData),
@@ -705,8 +705,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientPhoneUpdatePhoneVerificationDetails(
         jointClientWorkPhoneUniqueID,
-        phoneVerificationResultData
-      )
+        phoneVerificationResultData,
+      ),
     )
   }
 
@@ -738,8 +738,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientEmailVerificationUpdate(
         jointEmailUniqueID,
-        emailVerificationResultData
-      )
+        emailVerificationResultData,
+      ),
     )
   }
 
@@ -758,8 +758,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientAddressMetadataUpdate(
         jointResidentialAddressUniqueID,
-        jointResidentialAddressVerificationResultData
-      )
+        jointResidentialAddressVerificationResultData,
+      ),
     )
   }
 
@@ -778,8 +778,8 @@ export async function POST(request: Request) {
     supabaseUpdatePromises.push(
       tblClientAddressMetadataUpdate(
         jointMailingAddressUniqueID,
-        jointMailingAddressVerificationResultData
-      )
+        jointMailingAddressVerificationResultData,
+      ),
     )
   }
 
@@ -862,3 +862,5 @@ export async function POST(request: Request) {
     },
   })
 }
+
+// Re-deploy

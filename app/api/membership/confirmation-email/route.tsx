@@ -6,7 +6,7 @@ import { SES } from '@aws-sdk/client-ses'
 
 import { headers } from 'next/headers'
 import MembershipConfirmationEmail from '@/components/emails/MembershipApplyConfirmationEmail'
-import { getEmailWhitelist } from '@/lib/supabase/controls'
+import { checkEmailRecipients } from '@/lib/email-guard/test-whitelist'
 import { getSchemaToUse } from '@/utils/schemToUse'
 
 import { render, pretty } from '@react-email/render'
@@ -126,23 +126,21 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const schemaToUse = await getSchemaToUse()
-
-  if (schemaToUse === 'api') {
-    const emailWhiteList = await getEmailWhitelist()
-
-    const emailsOnly = emailWhiteList?.map((email) => email.email_address)
-
-    console.log('Email white list: ', emailsOnly)
-    console.log('Recipient email: ', recipientEmail)
-
-    if (emailsOnly && !emailsOnly.includes(recipientEmail)) {
-      console.log('Recipient email is not in the white list.')
-      return NextResponse.json(
-        { success: false, error: 'Recipient email is not in the white list.' },
-        { status: 400 }
-      )
-    }
+  // TEST-ENVIRONMENT WHITELIST (@/lib/email-guard/test-whitelist.ts).
+  //
+  // Was `if (emailsOnly && !emailsOnly.includes(recipientEmail))`, which failed
+  // OPEN: getEmailWhitelist() returns undefined for BOTH a query error and an
+  // empty table, and `emailsOnly &&` then skipped the check entirely — so a
+  // Supabase blip or an RLS change meant this route emailed a real member from
+  // test. The exact-match includes() also refused the four whitelist rows that
+  // carry mixed casing. The guard fails CLOSED and normalises before comparing.
+  const guard = await checkEmailRecipients([recipientEmail])
+  if (!guard.allowed) {
+    console.log(`[membership/confirmation-email] ${guard.reason}`)
+    return NextResponse.json(
+      { success: false, error: guard.reason },
+      { status: 400 }
+    )
   }
 
   const emailHtml = await pretty(

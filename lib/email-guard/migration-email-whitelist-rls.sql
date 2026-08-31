@@ -1,10 +1,15 @@
 -- api.fn_email_is_whitelisted — the TEST send-whitelist check this app needs.
 --
--- 🔴 RUN THIS. Until it is applied, `checkEmailRecipients` cannot get an answer
---    and therefore BLOCKS EVERY test confirmation email. That is the correct
---    failure direction, but it means testers stop receiving mail. What it
---    replaced was worse: the old gate has been INERT (see below), so those
---    emails were going out unchecked.
+-- ✅ APPLIED 2026-08-31. Verified afterwards: the function returns true for a
+--    whitelisted address in any casing or padding (incl. the mixed-case rows
+--    such as Richard.ORegan@), false for a stranger, and it is callable with
+--    the ANON key while the table itself still returns 42501 to that same key.
+--    The deployed test API was re-probed and correctly blocks a non-whitelisted
+--    address without sending.
+--
+--    Before this, the gate here was INERT: anon could not read the table, so
+--    getEmailWhitelist() returned undefined and the fail-open shape skipped the
+--    check — test confirmation emails went out unchecked.
 --
 -- Run in the Supabase SQL editor for project hojrhcbubaafsqjqvezq — the
 -- estate's established mechanism (there is no CLI push and `supabase/migrations`

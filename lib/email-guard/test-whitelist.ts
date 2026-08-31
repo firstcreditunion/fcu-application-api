@@ -7,95 +7,82 @@ import { getSchemaToUse } from '@/utils/schemToUse'
  * THE RULE (standing, from Isaac, 2026-08-31): on the TEST environment NO email
  * may leave unless its recipient is a row in `api."tblEmailWhitelistForComms"`.
  *
- * WHAT THIS REPLACES, and why it is not just a tidy-up. Both confirmation-email
- * routes already read that table, but the check was:
+ * WHAT THIS REPLACES, and why it is not a tidy-up. Both confirmation-email
+ * routes already "checked" that table:
  *
  *     const emailsOnly = emailWhiteList?.map((e) => e.email_address)
  *     if (emailsOnly && !emailsOnly.includes(recipientEmail)) { refuse }
  *
- * which FAILS OPEN twice over. `getEmailWhitelist()` returns `undefined` for
- * BOTH "the query errored" and "there are no rows", and `emailsOnly &&` then
- * skips the check entirely — so a transient Supabase blip, a changed RLS policy
- * or an accidentally emptied table all mean the test API happily emails a real
- * member. And `includes()` is exact, while four of the seventeen rows carry
- * mixed casing (Richard.ORegan@…, Simon.Scott@…, Stephen.Hawkins@…,
- * Mark.Beaudoin@…), so those people were refused with an error that told them
- * nothing about why.
+ * `getEmailWhitelist()` returns `undefined` for BOTH a query error and an empty
+ * result, and `emailsOnly &&` then skips the check entirely. That is not a
+ * hypothetical weakness — it is the LIVE STATE. This app reads Supabase with the
+ * ANON key, and the `api` schema revoked anon's grants on that table, so the
+ * read has been returning `permission denied` and the gate has been doing
+ * NOTHING. Every test confirmation email has gone out unchecked.
  *
- * This module fails CLOSED on both counts and normalises before comparing.
+ * WHY AN RPC AND NOT A TABLE READ. Keeping anon locked out of the table is
+ * right: it holds staff email addresses and mobile numbers, and this app's anon
+ * key is `NEXT_PUBLIC_*` — public by construction. So the question is answered
+ * by a SECURITY DEFINER function instead: `api.fn_email_is_whitelisted(text)`
+ * takes an address the caller already knows and returns a boolean. Nobody can
+ * enumerate the list through it, the table stays closed, and this app needs no
+ * new secret in its environment.
+ *
+ * The function is created by `lib/email-guard/migration-email-whitelist-rls.sql`.
+ * Until that migration is applied, every call below fails and — correctly — NO
+ * test confirmation email is sent.
+ *
+ * FAIL CLOSED, in every direction: the RPC erroring, the RPC missing, a null
+ * answer, or a `false` answer all BLOCK. The one thing that sends is an explicit
+ * `true`.
  *
  * Mirrors lib/email-guard/test-whitelist.ts in the staff portal, the loan
  * application and the Loan Status Hub, and WhitelistedOtpMailer in the mobile
- * auth service. Separate deployments, duplicated code — but the BEHAVIOUR must
- * not diverge.
+ * auth service — all of which read the table directly because they hold a
+ * service-role key and this app does not. Different mechanism, same behaviour;
+ * the behaviour must not diverge.
  *
  * WHICH ENVIRONMENT. `getSchemaToUse()` resolves 'production' for
  * fcu-portal-api-prod.vercel.app and 'api' (= TEST) for everything else,
  * including this deployment and any host nobody has thought of. Production
  * passes straight through — it mails real members by design.
- *
- * DELIBERATELY UNTYPED CLIENT. The generated `Database` type has no
- * `tblEmailWhitelistForComms`, so a typed read does not compile; the shape is
- * validated here instead. It is also cookie-free — this is a
- * machine-to-machine route with no user session to carry.
  */
 
-type WhitelistRow = { email_address: string | null }
-
-const CACHE_TTL_MS = 60_000
-let cache: { loadedAt: number; allowed: Set<string> } | null = null
-
-/** `"Jane Doe <jane@x.com>"` -> `"jane@x.com"`, lowercased. */
+/** `"Jane Doe <jane@x.com>"` -> `"jane@x.com"`. The RPC lowercases and trims on
+ *  its side too; doing it here as well keeps the logged `blocked` list tidy. */
 function normalizeAddress(raw: string): string {
   const trimmed = raw.trim()
   const angled = trimmed.match(/<([^>]+)>/)
   return (angled?.[1] ?? trimmed).trim().toLowerCase()
 }
 
-async function loadWhitelist(): Promise<Set<string> | null> {
-  const now = Date.now()
-  if (cache && now - cache.loadedAt < CACHE_TTL_MS) return cache.allowed
+function anonClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { db: { schema: 'api' }, auth: { persistSession: false } }
+  )
+}
 
+async function isWhitelisted(address: string): Promise<boolean> {
   try {
-    // Pinned to `api`: the whitelist is a property of the TEST sandbox, not of
-    // whichever schema this request happens to be serving.
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      { db: { schema: 'api' }, auth: { persistSession: false } }
-    )
-    const { data, error } = await supabase
-      .from('tblEmailWhitelistForComms')
-      .select('email_address')
+    const { data, error } = await anonClient().rpc('fn_email_is_whitelisted', {
+      p_email: address,
+    })
 
-    if (error || !data) {
+    if (error) {
       console.error(
-        '[email-guard] could not read api."tblEmailWhitelistForComms" — BLOCKING all test email:',
-        error?.message ?? 'no rows returned'
+        '[email-guard] api.fn_email_is_whitelisted failed — BLOCKING this send:',
+        error.message
       )
-      return null
+      return false
     }
-
-    const allowed = new Set(
-      (data as WhitelistRow[])
-        .map((row) => (row.email_address ? normalizeAddress(row.email_address) : ''))
-        .filter((address) => address !== '')
-    )
-
-    if (allowed.size === 0) {
-      // An empty table is not "allow everything" — it is a truncation accident
-      // or an RLS policy hiding every row, and both should stop the mail.
-      console.error(
-        '[email-guard] api."tblEmailWhitelistForComms" returned zero usable rows — BLOCKING all test email'
-      )
-      return null
-    }
-
-    cache = { loadedAt: now, allowed }
-    return allowed
+    // Anything other than an explicit `true` is a refusal. A null answer means
+    // the function returned something unexpected, which is not permission.
+    return data === true
   } catch (e) {
-    console.error('[email-guard] whitelist read threw — BLOCKING all test email:', e)
-    return null
+    console.error('[email-guard] whitelist RPC threw — BLOCKING this send:', e)
+    return false
   }
 }
 
@@ -114,18 +101,13 @@ export async function checkEmailRecipients(
     .map(normalizeAddress)
   if (addresses.length === 0) return { allowed: true }
 
-  const allowed = await loadWhitelist()
-  if (!allowed) {
-    return {
-      allowed: false,
-      blocked: addresses,
-      reason:
-        'The TEST email whitelist could not be read, so no email may be sent. ' +
-        'Check api."tblEmailWhitelistForComms".',
-    }
+  // Sequential rather than concurrent: every send this app makes has exactly
+  // one recipient, so a Promise.all would add machinery for a case that does
+  // not occur. The loop is here so a future Cc cannot slip past unchecked.
+  const blocked: string[] = []
+  for (const address of addresses) {
+    if (!(await isWhitelisted(address))) blocked.push(address)
   }
-
-  const blocked = addresses.filter((address) => !allowed.has(address))
   if (blocked.length === 0) return { allowed: true }
 
   return {

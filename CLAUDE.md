@@ -13,6 +13,15 @@ Call `checkEmailRecipients([...])` from `@/lib/email-guard/test-whitelist`
 immediately before the send, passing **every** recipient (To, Cc, Bcc), and
 return 400 without sending when it refuses.
 
+**It goes through an RPC, not a table read, and that is deliberate.** This app
+holds only the ANON key (`NEXT_PUBLIC_*`, public by construction), and the `api`
+schema correctly revokes anon's grants on `tblEmailWhitelistForComms` — which
+holds staff email addresses and mobile numbers. So the guard calls
+`api.fn_email_is_whitelisted(text)`, a SECURITY DEFINER function that answers
+"may I email this address I already have?" without exposing or allowing
+enumeration of the list. Created by
+`lib/email-guard/migration-email-whitelist-rls.sql`.
+
 **Do not branch a send on `getEmailWhitelist()`.** It returns `undefined` for
 both a query error and an empty table, and every caller wrote
 `if (list && !list.includes(to))` — which skips the check entirely in exactly

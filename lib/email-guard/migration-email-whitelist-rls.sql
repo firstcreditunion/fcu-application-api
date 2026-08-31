@@ -1,25 +1,31 @@
--- TEST send whitelist — the RPC this app needs, and the lockdown of the
--- production twin.
+-- api.fn_email_is_whitelisted — the TEST send-whitelist check this app needs.
 --
--- 🔴 RUN THIS. Until part 1 is applied, `checkEmailRecipients` cannot get an
---    answer and therefore BLOCKS EVERY test confirmation email — which is the
---    correct failure direction, but it means testers stop receiving mail. What
---    it replaced was worse: the old gate has been inert (see below), so those
+-- 🔴 RUN THIS. Until it is applied, `checkEmailRecipients` cannot get an answer
+--    and therefore BLOCKS EVERY test confirmation email. That is the correct
+--    failure direction, but it means testers stop receiving mail. What it
+--    replaced was worse: the old gate has been INERT (see below), so those
 --    emails were going out unchecked.
 --
--- Run in the Supabase SQL editor for project hojrhcbubaafsqjqvezq.
+-- Run in the Supabase SQL editor for project hojrhcbubaafsqjqvezq — the
+-- estate's established mechanism (there is no CLI push and `supabase/migrations`
+-- is unused; see the header of lib/actions/supabase/admin-audit/
+-- migration-tblAdminAuditLog.sql in the staff portal).
+--
+-- The companion that hardens the schemas themselves —
+-- migration-email-whitelist-rls.production.sql in the staff portal's
+-- lib/actions/supabase/parity/ — is a separate file because production-schema
+-- DDL lives with the portal's parity trail, which is where anyone hardening
+-- production will look. Run both.
+--
 -- Idempotent; safe to re-run.
 
 
--- ─────────────────────────────────────────────────────────────────────────────
--- PART 1 — api.fn_email_is_whitelisted
---
 -- WHY A FUNCTION AND NOT A GRANT. This app reads Supabase with the ANON key —
 -- `NEXT_PUBLIC_SUPABASE_ANON_KEY`, public by construction. The `api` schema has
 -- (correctly) revoked anon's grants on "tblEmailWhitelistForComms", which holds
--- staff email addresses and mobile numbers. Granting anon SELECT to make the
--- guard work would publish that list to anyone holding a key that ships in a
--- browser bundle.
+-- staff email addresses and mobile numbers; verified 2026-08-31, anon SELECT
+-- returns 42501. Granting anon SELECT to make the guard work would publish that
+-- list to anyone holding a key that ships in a browser bundle.
 --
 -- A SECURITY DEFINER function answers the only question the guard actually asks
 -- — "may I email THIS address, which I already have?" — without exposing the
@@ -50,65 +56,21 @@ as $$
 $$;
 
 comment on function api.fn_email_is_whitelisted(text) is
-  'TEST send whitelist check. Returns true when the address is in api."tblEmailWhitelistForComms" (case- and whitespace-insensitive). SECURITY DEFINER so the anon-key callers (fcu-application-api) can ask the question without being able to read, or enumerate, the list itself.';
+  'TEST send whitelist check. Returns true when the address is in api."tblEmailWhitelistForComms" (case- and whitespace-insensitive). SECURITY DEFINER so the anon-key caller (fcu-application-api) can ask the question without being able to read, or enumerate, the list itself.';
 
 revoke all on function api.fn_email_is_whitelisted(text) from public;
 grant execute on function api.fn_email_is_whitelisted(text) to anon, authenticated, service_role;
 
 
--- ─────────────────────────────────────────────────────────────────────────────
--- PART 2 — lock down production."tblEmailWhitelistForComms"
---
--- The `api` copy is already closed to anon (verified 2026-08-31: both SELECT and
--- INSERT return 42501). The PRODUCTION twin is not. It was created by
--- migration-parity-batch4.production.sql with four `using (true)` policies and
--- INSERT/SELECT grants to anon, and it is reachable with the public anon key —
--- verified by probing it on 2026-08-31 (the probe row was inserted successfully
--- and then deleted).
---
--- The table holds 0 rows and nothing reads it: the production API's whitelist
--- path only runs when `getSchemaToUse() === 'api'`, which never happens on the
--- production host. So it is a writable, readable, unused table hanging off the
--- public key — pure liability. If a whitelist is ever wanted on production, the
--- grants should be added back deliberately, to service_role only.
-
-revoke all on table production."tblEmailWhitelistForComms" from anon;
-revoke all on table production."tblEmailWhitelistForComms" from authenticated;
-
-alter table production."tblEmailWhitelistForComms" enable row level security;
-
-drop policy if exists "Select for Anon" on production."tblEmailWhitelistForComms";
-drop policy if exists "Insert for Anon" on production."tblEmailWhitelistForComms";
-drop policy if exists "Update for Anon" on production."tblEmailWhitelistForComms";
-drop policy if exists "Delete for Anon" on production."tblEmailWhitelistForComms";
-
--- service_role bypasses RLS, so no replacement policy is needed for the portal.
-grant all on table production."tblEmailWhitelistForComms" to service_role;
-
-
--- ─────────────────────────────────────────────────────────────────────────────
 -- VERIFY
 --
---   -- 1. the function answers, and does not leak the list
---   select api.fn_email_is_whitelisted('isaac.vicliph@firstcu.co.nz');  -- t
---   select api.fn_email_is_whitelisted('ISAAC.VICLIPH@firstcu.co.nz '); -- t
---   select api.fn_email_is_whitelisted('a.stranger@example.com');       -- f
+--   select api.fn_email_is_whitelisted('isaac.vicliph@firstcu.co.nz');   -- t
+--   select api.fn_email_is_whitelisted('ISAAC.VICLIPH@firstcu.co.nz ');  -- t
+--   select api.fn_email_is_whitelisted('a.stranger@example.com');        -- f
 --
---   -- 2. anon holds nothing on either table
---   select grantee, privilege_type
---   from information_schema.role_table_grants
---   where table_name = 'tblEmailWhitelistForComms'
---     and grantee in ('anon','authenticated')
---   order by table_schema, grantee;          -- expect zero rows
---
---   -- 3. no permissive anon policies survive on the production twin
---   select policyname, roles, cmd
---   from pg_policies
---   where schemaname = 'production'
---     and tablename = 'tblEmailWhitelistForComms';   -- expect zero rows
---
--- Then, from a shell, confirm the public key really is shut out:
+-- Then confirm the table itself is STILL closed to the public key — the whole
+-- point of doing this with a function:
 --
 --   curl -s "$SUPABASE_URL/rest/v1/tblEmailWhitelistForComms?select=email_address" \
 --     -H "apikey: $ANON" -H "Authorization: Bearer $ANON" \
---     -H "Accept-Profile: production"                    # expect 42501
+--     -H "Accept-Profile: api"                            # expect 42501

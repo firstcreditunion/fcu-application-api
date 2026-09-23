@@ -1,30 +1,27 @@
 import { Database } from '@/database.types'
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
+/**
+ * The Portal API's database client, on its own secret key.
+ *
+ * The Portal API is a backend: every caller is a route handler or the sync cron,
+ * never a browser. Until 23 Sep 2026 it used the public (anon) key, which kept
+ * the draft application tables, the sync tables and the storage bucket open to
+ * anyone holding that key. On the secret key the database can close them.
+ *
+ * There is no fallback to the public key. A missing SUPABASE_SECRET_KEY fails
+ * the request with a clear error instead of quietly reopening the tables.
+ * Security programme: PORTALAPI-DB-01.
+ */
 export async function createClient() {
-  const cookieStore = await cookies()
+  const secretKey = process.env.SUPABASE_SECRET_KEY
+  if (!secretKey) {
+    throw new Error(
+      'SUPABASE_SECRET_KEY is not set. The Portal API reads and writes with its own secret key.'
+    )
+  }
 
-  return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll()
-        },
-        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
-          } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
-        },
-      },
-    }
-  )
+  return createSupabaseClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, secretKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
 }

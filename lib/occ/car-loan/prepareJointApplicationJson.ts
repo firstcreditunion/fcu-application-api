@@ -527,7 +527,8 @@ export async function prepareJointApplicationJson({
       code: 'A',
     },
     gna: 'N',
-    existingClient: 'Y',
+    // Ticket #35: G3 goes by clientReference; an online applicant is new until matched.
+    existingClient: 'N',
     defaultManager: '0000148335',
     individualDetails: {
       title: primePersonalDetails.title,
@@ -780,7 +781,8 @@ export async function prepareJointApplicationJson({
       code: 'A',
     },
     gna: 'N',
-    existingClient: 'Y',
+    // Ticket #35: G3 goes by clientReference; an online applicant is new until matched.
+    existingClient: 'N',
     defaultManager: '0000148335',
     individualDetails: {
       title: jointPersonalDetails.title,
